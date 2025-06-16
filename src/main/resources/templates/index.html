@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ProtoSpace</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+<main class="main">
+  <div class="inner">
+    <div class="greeting">こんにちは、<a href="">OOさん!</a><div>
+    <div class="card__wrapper">
+      <div class="card">
+        <a href="/prototypes/1383"><img class="card__img" src=""></a>
+        <div class="card__body">
+          <a class="card__title" href="/prototypes/1383">mmm</a>
+          <p class="card__summary">mmm</p>
+          <a class="card__user" href="/users/1801">by mmm</a>
+        </div>
+      </div>
+      <div class="card">
+        <a href="/prototypes/1384"><img class="card__img" src=""></a>
+        <div class="card__body">
+          <a class="card__title" href="/prototypes/1384">MMM2</a>
+          <p class="card__summary">mmm</p>
+          <a class="card__user" href="/users/1801">by mmm</a>
+        </div>
+      </div>
+      <div class="card">
+        <a href="/prototypes/1384"><img class="card__img" src=""></a>
+        <div class="card__body">
+          <a class="card__title" href="/prototypes/1384">MMM2</a>
+          <p class="card__summary">mmm</p>
+          <a class="card__user" href="/users/1801">by mmm</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>
