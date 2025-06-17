@@ -2,6 +2,16 @@
     box-sizing: border-box;
 }
 
+html,body,ul,li,h1,h2,p,div {
+  margin: 0;
+  padding: 0
+}
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN W3", sans-serif;
+  color: #3b4043
+}
+
 .header {
     background-color: #f1f8fe;
     margin-bottom: 48px;
@@ -17,6 +27,7 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;  /* 追加 */
 }
 
 .logo {
@@ -57,6 +68,7 @@
 .footer {
     background-color: #999;
     padding: 10px 0;
+    width: 100%;
 }
 
 .copyright {
@@ -133,7 +145,7 @@
     margin-bottom: 40px;
 }
 
-.signup_btn {
+.form_btn {
     display: inline-block;
     padding: 0.4em 1.6em;
     font-size: 0.8em;
@@ -145,4 +157,72 @@
     border-radius: 3px;
     box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14),0 1px 2px 0 rgba(0,0,0,0.12);
     transition: 0.2s ease
+}
+
+/* 追加分 （style.cssに追記してください）*/
+.form__wrapper {
+  min-height: calc(100vh - 161px);
+}
+
+.page-heading {
+  font-size: 30px;
+  margin-bottom: 28px;
+}
+
+.field {
+  margin: 10px 0;
+}
+
+.form__text {
+  width: 50%;
+}
+
+.actions {
+  margin-bottom: 40px;
+}
+
+.form__btn {
+  display: inline-block;
+  padding: 0.4em 1.6em;
+  font-size: 0.8em;
+  color: #fff;
+  text-decoration: none;
+  user-select: none;
+  background: #87CEFA;
+  border: 1px #87CEFA solid;
+  border-radius: 3px;
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14),0 1px 2px 0 rgba(0,0,0,0.12);
+  transition: 0.2s ease;
+}
+
+.form__btn:hover {
+  box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2),0 1px 8px 0 rgba(0,0,0,0.12);
+  cursor: pointer;
+}
+
+
+@media (max-width: 1024px) {
+  .inner {
+      width:90%;
+      margin: 0 auto;
+  }
+
+  .header_bar {
+      width:90%;
+      margin: 0 auto;
+  }
+
+  .page-heading {
+      font-size: 24px;
+  }
+}
+
+@media (max-width: 599px) {
+  .logo {
+      width:120px;
+  }
+
+  .page-heading {
+      font-size: 20px;
+  }
 }
