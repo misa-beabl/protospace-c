@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import lombok.AllArgsConstructor;
 
 
+
 @Controller
 @AllArgsConstructor
 public class PrototypeController {
@@ -16,7 +17,13 @@ public class PrototypeController {
     // @AuthenticationPrincipal CustomUserDetail currentUser, 
     Model model
     ) {
-      return "prototype/new";
+      return "prototypes/new";
   }
-  
+
+  // パスは後で変更
+  @GetMapping("/prototype")
+  public String editPrototype() {
+      return "prototypes/edit";
+  }
+
 }
