@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ProtoSpace</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<header class="header">
+  <div class="header_bar">
+    <div class="nav">
+      <div class="nav_left">
+        <a th:href="@{#}"><img class="logo" src="/images/protoSpace-logo.png"></a>
+      </div>
+      <div class="user_nav">
+        <a class="logout" th:href="@{#}">ログアウト</a>
+        <a class="nav_btn" th:href="@{#}">New Proto</a>
+      </div>
+    </div>
+  </div>
+</header>
+<main class="main">
+  <div class="inner">
+    <div class="user_wrapper">
+      <h2 class="heading">OOOさんの情報</h2>
+      <table class="table">
+        <tbody>
+          <tr>
+            <th class="table_column1">名前</th>
+            <td class="table_column2">OOO</td>
+          </tr>
+          <tr>
+            <th class="table_column1">プロフィール</th>
+            <td class="table_column2">OOO</td>
+          </tr>
+          <tr>
+            <th class="table_column1">所属</th>
+            <td class="table_column2">OOO</td>
+          </tr>
+          <tr>
+            <th class="table_column1">役職</th>
+            <td class="table_column2">OOO</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2 class="heading">OOOさんのプロトタイプ</h2>
+      <div class="user__card">
+        <div class="card">
+          <a th:href="@{#}">
+            <img class="card__img" src="">
+          </a>
+          <div class="card__body">
+            <a class="card__title" th:href="@{#}">title</a>
+            <p class="card__summary">summary</p>
+            <a class="card__user" th:href="@{#}">by username</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>
