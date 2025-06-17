@@ -10,7 +10,7 @@ public class UserEntity {
   private String password;
   private String profile;
   private String affiliation;
-  private String Position;
+  private String position;
   // private List<TweetEntity> tweets;
   // private List<CommentEntity> comments;
 }

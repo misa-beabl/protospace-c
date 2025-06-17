@@ -12,49 +12,55 @@
   <div class="inner">
     <div class="form_cover">
       <h2 class="heading">ユーザー新規登録</h2>
-      <form method="post">
+      <form th:action="@{/user}" method="post" th:object="${userForm}">
+        <div th:if="${errorMessages != null}">
+          <ul>
+            <li th:each="msg : ${errorMessages}" th:text="${msg}" style="color:red"></li>
+          </ul>
+        </div>
         <div class="form_field">
           <label for="email">メールアドレス</label>
           <br>
-          <input type="email" id="email">
+          <input type="email" id="email" name="email" th:field="*{email}">
         </div>
         <div class="form_field">
           <label for="password">パスワード (6文字以上)</label>
           <br>
-          <input type="password" id="password">
+          <input type="password" id="password" name="password" th:field="*{password}">
         </div>
         <div class="form_field">
-          <label for="password_confirmation">パスワード再入力</label>
+          <label for="passwordConfirmation">パスワード再入力</label>
           <br>
-          <input type="password" id="password_confirmation">
+          <input type="password" id="passwordConfirmation" name="passwordConfirmation" th:field="*{passwordConfirmation}">
         </div>
         <div class="form_field">
-          <label for="user_name">ユーザー名</label>
+          <label for="nickname">ユーザー名</label>
           <br>
-          <input type="text" id="user_name">
+          <input type="text" id="nickname" name="nickname" th:field="*{nickname}">
         </div>
         <div class="form_field">
           <label for="profile">プロフィール</label>
           <br>
-          <textarea class="text_form" id="profile"></textarea>
+          <textarea class="text_form" id="profile" name="profile" th:field="*{profile}"></textarea>
         </div>
         <div class="form_field">
           <label for="affiliation">所属</label>
           <br>
-          <textarea class="text_form" id="affiliation"></textarea>
+          <textarea class="text_form" id="affiliation" name="affiliation" th:field="*{affiliation}"></textarea>
         </div>
         <div class="form_field">
           <label for="position">役職</label>
           <br>
-          <textarea class="text_form" id="position"></textarea>
+          <textarea class="text_form" id="position" name="position" th:field="*{position}"></textarea>
         </div>
         <div class="action">
-          <input class="form_btn" type="submit" value="ログイン"></button>
+          <input class="form_btn" type="submit" value="新規登録"/>
         </div>
       </form>
     </div>
   </div>
 </main>
+
 
 <div th:insert="~{footer :: footer}"></div>
 </body>

@@ -65,7 +65,7 @@ public class UserController {
       userService.createUserWithEncryptedPassword(userEntity);
     } catch (Exception e) {
       System.out.println("エラー：" + e);
-      return "redirect:/";
+      return "users/signUp";
     }
 
     return "redirect:/";
