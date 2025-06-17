@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ProtoSpace</title>
+  <!-- あとで style.css に統合 ⇓  -->
+  <!-- <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"> -->
+  <link th:href="@{/css/prototypeStyle.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<main class="main">
+  <div class="inner">
+    <div class="form__wrapper">
+      <h2 class="page-heading">新規プロトタイプ投稿</h2>
+        <form enctype="multipart/form-data" action="/prototypes" accept-charset="UTF-8" method="post">
+          <div class="field">
+            <label for="prototype_title">プロトタイプの名称</label><br>
+            <input type="text" name="prototype[title]" id="prototype_title">
+          </div>
+
+          <div class="field">
+            <label for="prototype_catch_copy">キャッチコピー</label><br>
+            <textarea class="form__text" name="prototype[catch_copy]" id="prototype_catch_copy"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="prototype_concept">コンセプト</label><br>
+            <textarea class="form__text" name="prototype[concept]" id="prototype_concept"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="prototype_image">プロトタイプの画像</label><br>
+            <input type="file" name="prototype[image]" id="prototype_image">
+          </div>
+
+          <div class="actions">
+            <input type="submit" name="commit" value="保存する" class="form__btn" data-disable-with="保存する">
+          </div>
+        </form>
+    </div>
+  </div>
+</main>
+
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>
