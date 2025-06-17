@@ -12,30 +12,29 @@
   <div class="inner">
     <div class="form__wrapper">
       <h2 class="page-heading">プロトタイプ編集</h2>
-        <!-- th:object と th:field の未記述 -->
-        <form enctype="multipart/form-data" th:action="@{/prototypes/{prototypeId/update(prototypeId=${prototypeId})}}" accept-charset="UTF-8" th:method="post">
+        <form enctype="multipart/form-data" th:action="@{/prototypes/{prototypeId/update(prototypeId=${prototypeId})}}" accept-charset="UTF-8" th:method="post" th:object="${prototypeForm}">
           <div th:if="${errorMessages}" th:each="error : ${errorMessages}">
             <div th:text="${error}"></div>
           </div>
 
           <div class="field">
-            <label for="prototype_title">プロトタイプの名称</label><br>
-            <input type="text" id="prototype_title">
+            <label for="prototype_name">プロトタイプの名称</label><br>
+            <input type="text" id="prototype_name" th:field="*{name}" required>
           </div>
 
           <div class="field">
-            <label for="prototype_catch_copy">キャッチコピー</label><br>
-            <textarea class="form__text" id="prototype_catch_copy"></textarea>
+            <label for="prototype_slogan">キャッチコピー</label><br>
+            <textarea class="form__text" id="prototype_slogan" th:field="*{slogan}" required></textarea>
           </div>
 
           <div class="field">
             <label for="prototype_concept">コンセプト</label><br>
-            <textarea class="form__text" id="prototype_concept"></textarea>
+            <textarea class="form__text" id="prototype_concept" th:field="*{concept}" required></textarea>
           </div>
 
           <div class="field">
             <label for="prototype_image">プロトタイプの画像</label><br>
-            <input type="file" id="prototype_image">
+            <input type="file" id="prototype_image" th:field="*{image}" required>
           </div>
 
           <div class="actions">
