@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ProtoSpace</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<main class="main">
+  <div class="inner">
+    <div class="form_cover">
+      <h2 class="heading">ユーザー新規登録</h2>
+      <form method="post">
+        <div class="form_field">
+          <label for="email">メールアドレス</label>
+          <br>
+          <input type="email" id="email">
+        </div>
+        <div class="form_field">
+          <label for="password">パスワード (6文字以上)</label>
+          <br>
+          <input type="password" id="password">
+        </div>
+        <div class="form_field">
+          <label for="password_confirmation">パスワード再入力</label>
+          <br>
+          <input type="password" id="password_confirmation">
+        </div>
+        <div class="form_field">
+          <label for="user_name">ユーザー名</label>
+          <br>
+          <input type="text" id="user_name">
+        </div>
+        <div class="form_field">
+          <label for="profile">プロフィール</label>
+          <br>
+          <textarea class="text_form" id="profile"></textarea>
+        </div>
+        <div class="form_field">
+          <label for="affiliation">所属</label>
+          <br>
+          <textarea class="text_form" id="affiliation"></textarea>
+        </div>
+        <div class="form_field">
+          <label for="position">役職</label>
+          <br>
+          <textarea class="text_form" id="position"></textarea>
+        </div>
+        <div class="action">
+          <input class="signup_btn" type="submit" value="新規登録"></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>
