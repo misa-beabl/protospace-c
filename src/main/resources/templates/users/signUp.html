@@ -12,41 +12,44 @@
   <div class="inner">
     <div class="form_cover">
       <h2 class="heading">ユーザー新規登録</h2>
-      <form method="post">
+      <div th:if="${errorMessages}" th:each="error : ${errorMessages}">
+        <div th:text="${error}"></div>
+      </div>
+      <form th:action="{/user}" th:method="post" th:object="${userForm}">
         <div class="form_field">
           <label for="email">メールアドレス</label>
           <br>
-          <input type="email" id="email">
+          <input type="email" id="email" th:field="*{email}">
         </div>
         <div class="form_field">
           <label for="password">パスワード (6文字以上)</label>
           <br>
-          <input type="password" id="password">
+          <input type="password" id="password" th:field="*{password}">
         </div>
         <div class="form_field">
           <label for="password_confirmation">パスワード再入力</label>
           <br>
-          <input type="password" id="password_confirmation">
+          <input type="password" id="password_confirmation" th:field="*{passwordConfirmation}">
         </div>
         <div class="form_field">
           <label for="user_name">ユーザー名</label>
           <br>
-          <input type="text" id="user_name">
+          <input type="text" id="user_name" th:field="*{nickname}">
         </div>
         <div class="form_field">
           <label for="profile">プロフィール</label>
           <br>
-          <textarea class="text_form" id="profile"></textarea>
+          <textarea class="text_form" id="profile" th:field="*{profile}"></textarea>
         </div>
         <div class="form_field">
           <label for="affiliation">所属</label>
           <br>
-          <textarea class="text_form" id="affiliation"></textarea>
+          <textarea class="text_form" id="affiliation" th:field="*{affiliation}"></textarea>
         </div>
         <div class="form_field">
           <label for="position">役職</label>
           <br>
-          <textarea class="text_form" id="position"></textarea>
+          <textarea class="text_form" id="position" th:field="*{position}" ></textarea>
         </div>
         <div class="action">
           <input class="form_btn" type="submit" value="ログイン"></button>
