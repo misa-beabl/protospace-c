@@ -3,8 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>ProtoSpace</title>
-  <!-- あとで style.css に統合 ⇓  -->
-  <!-- <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"> -->
   <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -13,30 +11,31 @@
 <main class="main">
   <div class="inner">
     <div class="form__wrapper">
-      <h2 class="page-heading">新規プロトタイプ投稿</h2>
-        <form enctype="multipart/form-data" th:action="@{/prototypes}" accept-charset="UTF-8" th:method="post" th:object="${prototypeForm}">
+      <h2 class="page-heading">プロトタイプ編集</h2>
+        <!-- th:object と th:field の未記述 -->
+        <form enctype="multipart/form-data" th:action="@{/prototypes/{prototypeId/update(prototypeId=${prototypeId})}}" accept-charset="UTF-8" th:method="post">
           <div th:if="${errorMessages}" th:each="error : ${errorMessages}">
             <div th:text="${error}"></div>
           </div>
 
           <div class="field">
             <label for="prototype_title">プロトタイプの名称</label><br>
-            <input type="text" th:field="*{title}" id="prototype_title" th:>
+            <input type="text" id="prototype_title">
           </div>
 
           <div class="field">
             <label for="prototype_catch_copy">キャッチコピー</label><br>
-            <textarea class="form__text" th:field="*{catch_copy}" id="prototype_catch_copy"></textarea>
+            <textarea class="form__text" id="prototype_catch_copy"></textarea>
           </div>
 
           <div class="field">
             <label for="prototype_concept">コンセプト</label><br>
-            <textarea class="form__text" th:field="*{concept}" id="prototype_concept"></textarea>
+            <textarea class="form__text" id="prototype_concept"></textarea>
           </div>
 
           <div class="field">
             <label for="prototype_image">プロトタイプの画像</label><br>
-            <input type="file" th:field="*{image}" id="prototype_image">
+            <input type="file" id="prototype_image">
           </div>
 
           <div class="actions">
