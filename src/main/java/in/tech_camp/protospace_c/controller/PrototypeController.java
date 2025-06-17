@@ -72,7 +72,7 @@ public class PrototypeController {
 
       PrototypeEntity prototype = new PrototypeEntity();
       // userが存在するか確認する（UserRepositoryにメソッド追加）
-      prototype.setUserId(1);
+      prototype.setUserId(userId);
       prototype.setName(prototypeForm.getName());
       prototype.setSlogan(prototypeForm.getSlogan());
       prototype.setConcept(prototypeForm.getConcept());
