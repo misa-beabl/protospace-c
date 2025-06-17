@@ -6,19 +6,8 @@
   <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
-<header class="header">
-  <div class="header_bar">
-    <div class="nav">
-      <div class="nav_left">
-        <a th:href="@{#}"><img class="logo" src="/images/protoSpace-logo.png"></a>
-      </div>
-      <div class="user_nav">
-        <a class="logout" th:href="@{#}">ログアウト</a>
-        <a class="nav_btn" th:href="@{#}">New Proto</a>
-      </div>
-    </div>
-  </div>
-</header>
+<div th:insert="~{header :: header}"></div>
+
 <main class="main">
   <div class="inner">
     <div class="user_wrapper">
