@@ -12,8 +12,7 @@
   <div class="inner">
     <div class="form__wrapper">
       <h2 class="page-heading">新規プロトタイプ投稿</h2>
-        <!-- th:object と th:field の未記述 -->
-        <form enctype="multipart/form-data" th:action="@{/prototypes}" accept-charset="UTF-8" th:method="post" th:object="${prototypeForm}">
+        <form enctype="multipart/form-data" th:action="@{/prototype}" accept-charset="UTF-8" th:method="post" th:object="${prototypeForm}">
           <div th:if="${errorMessages}" th:each="error : ${errorMessages}">
             <div th:text="${error}"></div>
           </div>

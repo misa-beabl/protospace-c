@@ -1,22 +1,45 @@
 package in.tech_camp.protospace_c.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import in.tech_camp.protospace_c.ImageUrl;
+import in.tech_camp.protospace_c.entity.PrototypeEntity;
+import in.tech_camp.protospace_c.form.PrototypeForm;
+import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import lombok.AllArgsConstructor;
+
 
 
 
 @Controller
 @AllArgsConstructor
 public class PrototypeController {
+  private final PrototypeRepository prototypeRepository;
+  private final ImageUrl imageUrl;
 
   @GetMapping("/prototype/new")
   public String showPrototypeNew(
     // @AuthenticationPrincipal CustomUserDetail currentUser, 
     Model model
     ) {
+      model.addAttribute("prototypeForm", new PrototypeForm());
       return "prototypes/new";
   }
 
@@ -26,4 +49,53 @@ public class PrototypeController {
       return "prototypes/edit";
   }
 
+  @PostMapping("/prototype")
+  public String createPrototypes(
+    @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm,
+    Integer userId, // 後でAuthenticationに修正
+    BindingResult result,
+    Model model) {
+      MultipartFile imageFile = prototypeForm.getImage();
+      // 画像バリデーション（NotNullと合わせて実装）
+      if (imageFile == null || imageFile.isEmpty()) {
+        result.rejectValue("image", "required", "画像を添付してください");
+      }
+
+      if (result.hasErrors()) {
+      List<String> errorMessages = result.getAllErrors().stream()
+              .map(DefaultMessageSourceResolvable::getDefaultMessage)
+              .collect(Collectors.toList());
+      model.addAttribute("errorMessages", errorMessages);
+      model.addAttribute("prototypeForm", prototypeForm);
+      return "prototypes/new";
+    }
+
+      PrototypeEntity prototype = new PrototypeEntity();
+      // userが存在するか確認する（UserRepositoryにメソッド追加）
+      prototype.setUserId(1);
+      prototype.setName(prototypeForm.getName());
+      prototype.setSlogan(prototypeForm.getSlogan());
+      prototype.setConcept(prototypeForm.getConcept());
+
+      try {
+        String uploadDir = imageUrl.getImageUrl();
+        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
+        Path imagePath = Paths.get(uploadDir, fileName);
+        Files.copy(imageFile.getInputStream(), imagePath);
+        prototype.setImage("/uploads/" + fileName);
+      } catch (IOException e) {
+        System.out.println("エラー：" + e);
+        return "prototypes/new";
+      }
+
+      try {
+        prototypeRepository.insert(prototype);
+      } catch (Exception e) {
+        System.out.println("エラー：" + e);
+        return "redirect:/";
+      }
+
+      return "redirect:/";
+  }
+  
 }
