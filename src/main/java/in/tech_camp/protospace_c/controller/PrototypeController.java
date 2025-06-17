@@ -56,7 +56,6 @@ public class PrototypeController {
     BindingResult result,
     Model model) {
       MultipartFile imageFile = prototypeForm.getImage();
-      // 画像バリデーション（NotNullと合わせて実装）
       if (imageFile == null || imageFile.isEmpty()) {
         result.rejectValue("image", "required", "画像を添付してください");
       }
