@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class PrototypeEntity {
   private Integer id;
-  private Integer user_id;
+  private Integer userId;
   private String name;
   private String slogan;
   private String concept;
