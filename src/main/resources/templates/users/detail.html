@@ -11,43 +11,46 @@
 <main class="main">
   <div class="inner">
     <div class="user_wrapper">
-      <h2 class="heading">OOOさんの情報</h2>
+      <h2 class="heading" th:text="${user.nickname} + 'さんの情報'">OOOさんの情報</h2>
       <table class="table">
         <tbody>
           <tr>
             <th class="table_column1">名前</th>
-            <td class="table_column2">OOO</td>
+            <td class="table_column2" th:text="${user.nickname}">OOO</td>
           </tr>
           <tr>
             <th class="table_column1">プロフィール</th>
-            <td class="table_column2">OOO</td>
+            <td class="table_column2" th:text="${user.profile}">OOO</td>
           </tr>
           <tr>
             <th class="table_column1">所属</th>
-            <td class="table_column2">OOO</td>
+            <td class="table_column2" th:text="${user.affiliation}">OOO</td>
           </tr>
           <tr>
             <th class="table_column1">役職</th>
-            <td class="table_column2">OOO</td>
+            <td class="table_column2" th:text="${user.position}">OOO</td>
           </tr>
         </tbody>
       </table>
-      <h2 class="heading">OOOさんのプロトタイプ</h2>
+      <h2 class="heading" th:text="${user.nickname} + 'さんのプロトタイプ'">OOOさんのプロトタイプ</h2>
       <div class="user__card">
-        <div class="card">
-          <a th:href="@{#}">
-            <img class="card__img" src="">
-          </a>
-          <div class="card__body">
-            <a class="card__title" th:href="@{#}">title</a>
-            <p class="card__summary">summary</p>
-            <a class="card__user" th:href="@{#}">by username</a>
+        <div th:if="${prototypes != null and !prototypes.isEmpty()}">
+          <div th:each="prototype : ${prototypes}" class="card">
+            <a th:href="@{#}">
+              <img class="card__img" th:src="@{${prototype.image}}">
+            </a>
+            <div class="card__body">
+              <a class="card__title" th:href="@{#}" th:text="${prototype.name}">title</a>
+              <p class="card__summary" th:text="${prototype.slogan}">summary</p>
+              <a class="card__user" th:text="'by ' + ${user.nickname}">by username</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </main>
+
 <div th:insert="~{footer :: footer}"></div>
 </body>
 </html>
