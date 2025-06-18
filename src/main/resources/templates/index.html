@@ -11,17 +11,15 @@
   <div class="inner">
     <div class="greeting" th:if="${#authorization.expression('isAuthenticated()')}">こんにちは、<a th:href="@{/users/{userId}(userId=${user.id})}" th:text="${user.nickname} + さん！">OOさん!</a></div>
     <div class="card__wrapper">
-      <div class="card">
-        <div th:each="prototype : ${prototypes}">
+      <div class="card" th:each="prototype : ${prototypes}">
           <!-- attach the link which jumps to prototype detail page below -->
           <a th:href="@{#}"><img class="card__img" th:src="${prototype.image}"></a>
           <div class="card__body">
             <!-- attach the link which jumps to prototype detail page below -->
             <a class="card__title" th:href="@{#}" th:text="${prototype.slogan}">title</a>
             <p class="card__summary" th:text="${prototype.concept}">concept</p>
-            <a class="card__user" th:href="@{/users/{userId}(userId=${user.id})}" th:text="by + ${prototype.name}">by username</a>
+            <a class="card__user" th:href="@{/users/{userId}(userId=${prototype.user.id})}" th:text="by + ${prototype.name}">by username</a>
           </div>
-        </div>
       </div>
     </div>
   </div>

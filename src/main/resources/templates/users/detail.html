@@ -34,7 +34,6 @@
       </table>
       <h2 class="heading" th:text="${user.nickname} + 'さんのプロトタイプ'">OOOさんのプロトタイプ</h2>
       <div class="user__card">
-        <div th:if="${prototypes != null and !prototypes.isEmpty()}">
           <div th:each="prototype : ${prototypes}" class="card">
             <a th:href="@{#}">
               <img class="card__img" th:src="@{${prototype.image}}">
@@ -45,7 +44,6 @@
               <a class="card__user" th:text="'by ' + ${user.nickname}">by username</a>
             </div>
           </div>
-        </div>
       </div>
     </div>
   </div>
