@@ -29,6 +29,7 @@ import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
 
+
 @Controller
 @AllArgsConstructor
 public class PrototypeController {
@@ -156,5 +157,18 @@ public class PrototypeController {
 
     return "prototypes/detail";
   }
+
+  // 削除機能
+  @PostMapping("/prototype/{prototypeId}/delete")
+  public String deletePrototype(@PathVariable("prototypeId") Integer prototypeId) {
+    try {
+      prototypeRepository.deleteById(prototypeId);
+    } catch (Exception e) {
+      System.out.println("エラー：" + e);
+      return "redirect:/";
+    }
+    return "redirect:/";
+  }
+  
   
 }
