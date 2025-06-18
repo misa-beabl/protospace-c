@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import in.tech_camp.protospace_c.entity.UserEntity;
 import in.tech_camp.protospace_c.form.UserForm;
@@ -70,4 +71,28 @@ public class UserController {
 
     return "redirect:/";
   }
+
+  // 登陆页面的 post 功能是由 spring security 自动实现的，在校验有问题的时候，会自动返回 error 的路径参数
+  @GetMapping("/login")
+  public String showLoginWithError(@RequestParam(value = "error") String error, Model model) {
+    if (error != null) {
+      model.addAttribute("loginError", "Invalid email or password.");
+    }
+    return "users/login";
+  }
+
+  @GetMapping("/users/login")
+  public String showLogin(){
+      return "users/login";
+  }
+
+  // @GetMapping("/users/{userId}")
+  // public String showMypage(@PathVariable("userId") Integer userId, Model model) {
+  //   UserEntity user = userRepository.findById(userId);
+  //   List<PrototypeEntity> prototypes = user.getPrototypes();
+
+  //   model.addAttribute("nickname", user.getNickname());
+  //   model.addAttribute("prototypes", prototypes);
+  //   return "users/mypage";
+  // }
 }
