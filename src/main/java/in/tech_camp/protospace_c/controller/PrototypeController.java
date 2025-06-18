@@ -37,9 +37,10 @@ public class PrototypeController {
   private final ImageUrl imageUrl;
 
   @GetMapping("/")
-  public String showPrototypes(Model model) {
+  public String showPrototypes(@AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     List<PrototypeEntity> prototypes = prototypeRepository.findAll();
     model.addAttribute("prototypes", prototypes);
+    model.addAttribute("user", currentUser.getUser());
     return "index";
   }
 

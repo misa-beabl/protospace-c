@@ -367,3 +367,20 @@ img {
     max-width: 100%;
     vertical-align: bottom
 }
+
+/* ログアウト */
+
+.logout_btn {
+  display: inline-block;
+  padding: 0.4em 1.6em;
+  font-size: 0.8em;
+  color: #87CEFA;
+  text-decoration: none;
+  user-select: none;
+  border: none;
+  background-color: #f1f8fe;
+}
+
+.logout_btn:hover {
+    opacity: 0.5;
+}
