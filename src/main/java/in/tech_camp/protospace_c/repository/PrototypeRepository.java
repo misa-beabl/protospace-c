@@ -15,11 +15,11 @@ import in.tech_camp.protospace_c.entity.PrototypeEntity;
 
 @Mapper
 public interface PrototypeRepository {
-  @Insert("INSERT INTO prototypes (user_id, name, slogan, concept, image) VALUES (#{userId}, #{name}, #{slogan}, #{concept}, #{image})")
+  @Insert("INSERT INTO prototypes (user_id, name, slogan, concept, image) VALUES (#{user.id}, #{name}, #{slogan}, #{concept}, #{image})")
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void insert(PrototypeEntity prototype);
 
-  @Update("UPDATE prototypes SET user_id = #{userId}, name = #{name}, slogan = #{slogan}, concept = #{concept}, image = #{image} WHERE id = #{id}")
+  @Update("UPDATE prototypes SET user_id = #{user.id}, name = #{name}, slogan = #{slogan}, concept = #{concept}, image = #{image} WHERE id = #{id}")
   void update(PrototypeEntity prototype);
 
   @Select("SELECT * FROM prototypes ORDER BY created_at DESC")
@@ -36,7 +36,7 @@ public interface PrototypeRepository {
   })
   PrototypeEntity findById(Integer id);
 
-  @Select("SELECT * FROM prototypes WHERE user_id = #{userId} ORDER BY created_at DESC")
+  @Select("SELECT * FROM prototypes WHERE user_id = #{user.id} ORDER BY created_at DESC")
   @Results({
     @Result(property = "userId", column = "user_id"),
     @Result(property = "createdAt", column = "created_at")
