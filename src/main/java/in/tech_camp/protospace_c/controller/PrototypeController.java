@@ -28,6 +28,8 @@ import lombok.AllArgsConstructor;
 
 
 
+
+
 @Controller
 @AllArgsConstructor
 public class PrototypeController {
@@ -96,5 +98,13 @@ public class PrototypeController {
 
       return "redirect:/";
   }
+
+  @GetMapping("/")
+  public String showPrototypes(Model model) {
+    List<PrototypeEntity> prototypes = prototypeRepository.findAll();
+    model.addAttribute("prototypes", prototypes);
+      return "index";
+  }
+  
   
 }

@@ -9,30 +9,20 @@
 <div th:insert="~{header :: header}"></div>
 <main class="main">
   <div class="inner">
-    <div class="greeting">こんにちは、<a href="">OOさん!</a><div>
+    <!-- attach the link which jumps to user detail page below-->
+    <div class="greeting">こんにちは、<a th:href="@{#}" th:text="${#}">OOさん!</a><div>
     <div class="card__wrapper">
       <div class="card">
-        <a href="/prototypes/1383"><img class="card__img" src=""></a>
-        <div class="card__body">
-          <a class="card__title" href="/prototypes/1383">mmm</a>
-          <p class="card__summary">mmm</p>
-          <a class="card__user" href="/users/1801">by mmm</a>
-        </div>
-      </div>
-      <div class="card">
-        <a href="/prototypes/1384"><img class="card__img" src=""></a>
-        <div class="card__body">
-          <a class="card__title" href="/prototypes/1384">MMM2</a>
-          <p class="card__summary">mmm</p>
-          <a class="card__user" href="/users/1801">by mmm</a>
-        </div>
-      </div>
-      <div class="card">
-        <a href="/prototypes/1384"><img class="card__img" src=""></a>
-        <div class="card__body">
-          <a class="card__title" href="/prototypes/1384">MMM2</a>
-          <p class="card__summary">mmm</p>
-          <a class="card__user" href="/users/1801">by mmm</a>
+        <div th:each="prototype : ${prototypes}">
+          <!-- attach the link which jumps to prototype detail page below -->
+          <a th:href="@{#}"><img class="card__img" th:src="${prototype.image}"></a>
+          <div class="card__body">
+            <!-- attach the link which jumps to prototype detail page below -->
+            <a class="card__title" th:href="@{#}" th:text="${prototype.slogan}">title</a>
+            <p class="card__summary" th:text="${prototype.concept}">concept</p>
+            <!-- attach the link which jumps to user detail page below-->
+            <a class="card__user" th:href="@{#}" th:text="by + ${prototype.name}">by username</a>
+          </div>
         </div>
       </div>
     </div>
