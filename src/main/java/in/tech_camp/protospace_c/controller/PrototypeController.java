@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,10 +44,21 @@ public class PrototypeController {
       return "prototypes/new";
   }
 
-  // パスは後で変更
-  @GetMapping("/prototype")
-  public String editPrototype() {
-      return "prototypes/edit";
+  @GetMapping("/prototype/{prototypeId}/edit")
+  public String editPrototype(
+    @PathVariable("prototypeId") Integer prototypeId,
+    Model model
+  ) {
+    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+
+    PrototypeForm prototypeForm = new PrototypeForm();
+    prototypeForm.setName(prototype.getName());
+    prototypeForm.setSlogan(prototype.getSlogan());
+    prototypeForm.setConcept(prototype.getConcept());
+
+    model.addAttribute("prototypeForm", prototypeForm);
+    model.addAttribute("prototypeId", prototypeId);
+    return "prototypes/edit";
   }
 
   @PostMapping("/prototype")
