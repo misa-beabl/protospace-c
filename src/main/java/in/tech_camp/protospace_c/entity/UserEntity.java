@@ -1,5 +1,7 @@
 package in.tech_camp.protospace_c.entity;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -11,6 +13,6 @@ public class UserEntity {
   private String profile;
   private String affiliation;
   private String position;
-  // private List<TweetEntity> tweets;
-  // private List<CommentEntity> comments;
+  private List<PrototypeEntity> prototypes;
+  private List<CommentEntity> comments;
 }
