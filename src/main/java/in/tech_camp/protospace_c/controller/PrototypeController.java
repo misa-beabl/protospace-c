@@ -109,7 +109,7 @@ public class PrototypeController {
 
 
   // 編集機能
-  @PostMapping("{/prototypes/{prototypeId}/update")
+  @PostMapping("/prototypes/{prototypeId}/update")
   public String editPrototype(
     @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm,
     BindingResult result,
