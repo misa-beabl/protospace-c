@@ -1,4 +1,4 @@
-package in.tech_camp.protospace_c;
+package in.tech_camp.protospace_c.factory;
 
 import org.springframework.mock.web.MockMultipartFile;
 

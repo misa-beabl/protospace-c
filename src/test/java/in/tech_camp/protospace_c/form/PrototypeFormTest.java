@@ -1,13 +1,13 @@
-package in.tech_camp.protospace_c;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+package in.tech_camp.protospace_c.form;
 
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
-import in.tech_camp.protospace_c.form.PrototypeForm;
+
+import in.tech_camp.protospace_c.factory.PrototypeFactory;
 import in.tech_camp.protospace_c.validation.ValidationPriority1;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
