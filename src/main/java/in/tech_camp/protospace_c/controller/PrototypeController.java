@@ -36,6 +36,13 @@ public class PrototypeController {
   private final PrototypeRepository prototypeRepository;
   private final ImageUrl imageUrl;
 
+  @GetMapping("/")
+  public String showPrototypes(Model model) {
+    List<PrototypeEntity> prototypes = prototypeRepository.findAll();
+    model.addAttribute("prototypes", prototypes);
+    return "index";
+  }
+
   @GetMapping("/prototype/new")
   public String showPrototypeNew(Model model) {
       model.addAttribute("prototypeForm", new PrototypeForm());
@@ -108,7 +115,6 @@ public class PrototypeController {
       return "redirect:/";
   }
 
-
   // 編集機能
   @PostMapping("/prototypes/{prototypeId}/update")
   public String editPrototype(
@@ -169,6 +175,4 @@ public class PrototypeController {
     }
     return "redirect:/";
   }
-  
-  
 }
