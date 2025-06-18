@@ -10,7 +10,7 @@
 <main class="main">
   <div class="inner">
     <!-- attach the link which jumps to user detail page below-->
-    <div class="greeting">こんにちは、<a th:href="@{#}" th:text="${#}">OOさん!</a><div>
+    <div class="greeting" th:if="${#authorization.expression('isAuthenticated()')}">こんにちは、<a th:href="@{#}" th:text="${user.nickname} + さん！">OOさん!</a></div>
     <div class="card__wrapper">
       <div class="card">
         <div th:each="prototype : ${prototypes}">

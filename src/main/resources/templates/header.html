@@ -2,10 +2,16 @@
   <div class="header_bar">
     <div class="nav">
       <div class="nav_left">
-        <a th:href="@{#}"><img class="logo" src="/images/protoSpace-logo.png"></a>
+        <a th:href="@{/}"><img class="logo" src="/images/protoSpace-logo.png"></a>
       </div>
-      <div class="user_nav">
-        <a class="nav_btn" th:href="@{#}">ログイン</a>
+      <div class="user_nav" th:if="${#authorization.expression('isAuthenticated()')}">
+        <form th:action="@{/logout}" method="post" style="display:inline-block">
+          <input class="logout_btn" type="submit" value="ログアウト"/>
+        </form>
+        <a class="nav_btn" th:href="@{/prototype/new}">New Photo</a>
+      </div>
+      <div class="user_nav" th:if="${#authorization.expression('!isAuthenticated()')}">
+        <a class="nav_btn" th:href="@{/login}">ログイン</a>
         <a class="nav_btn" th:href="@{/users/sign_up}">新規登録</a>
       </div>
     </div>
