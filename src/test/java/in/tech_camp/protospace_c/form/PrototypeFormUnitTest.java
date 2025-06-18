@@ -15,7 +15,7 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 
 @ActiveProfiles("test")
-public class PrototypeFormTest {
+public class PrototypeFormUnitTest {
   private PrototypeForm prototypeForm;
   private Validator validator;
 
