@@ -41,7 +41,9 @@ public class PrototypeController {
   public String showPrototypes(@AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     List<PrototypeEntity> prototypes = prototypeRepository.findAll();
     model.addAttribute("prototypes", prototypes);
-    model.addAttribute("user", currentUser.getUser());
+    if (currentUser != null) {
+      model.addAttribute("user", currentUser.getUser());
+    }
     return "index";
   }
 
