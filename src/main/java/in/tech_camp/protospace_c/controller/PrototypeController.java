@@ -29,6 +29,7 @@ import lombok.AllArgsConstructor;
 
 
 
+
 @Controller
 @AllArgsConstructor
 public class PrototypeController {
@@ -45,7 +46,7 @@ public class PrototypeController {
   }
 
   @GetMapping("/prototype/{prototypeId}/edit")
-  public String editPrototype(
+  public String showEditPrototype(
     @PathVariable("prototypeId") Integer prototypeId,
     Model model
   ) {
@@ -108,5 +109,55 @@ public class PrototypeController {
 
       return "redirect:/";
   }
+
+  // 編集機能
+  @PostMapping("{/prototypes/{prototypeId}/update")
+  public String editPrototype(
+    @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm,
+    BindingResult result,
+    @PathVariable("prototypeId") Integer prototypeId,
+    Model model
+  ) {
+    MultipartFile imageFile = prototypeForm.getImage();
+    if (imageFile == null || imageFile.isEmpty()) {
+      result.rejectValue("image", "required", "画像を添付してください");
+    }
+
+    if (result.hasErrors()) {
+      List<String> errorMessages = result.getAllErrors().stream()
+              .map(DefaultMessageSourceResolvable::getDefaultMessage)
+              .collect(Collectors.toList());
+      model.addAttribute("errorMessages", errorMessages);
+
+      model.addAttribute("prototypeForm", prototypeForm);
+      model.addAttribute("prototypeId", prototypeId);
+      return "prototypes/edit";
+    }
+    
+    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    prototype.setName(prototypeForm.getName());
+    prototype.setConcept(prototypeForm.getConcept());
+
+    try {
+      String uploadDir = imageUrl.getImageUrl();
+      String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
+      Path imagePath = Paths.get(uploadDir, fileName);
+      Files.copy(imageFile.getInputStream(), imagePath);
+      prototype.setImage("/uploads/" + fileName);
+    } catch (IOException e) {
+      System.out.println("エラー：" + e);
+      return "prototypes/edit";
+    }
+
+    try {
+      prototypeRepository.insert(prototype);
+    } catch (Exception e) {
+      System.out.println("エラー：" + e);
+      return "prototypes/edit";
+    }
+
+    return "prototypes/detail";
+  }
+  
   
 }
