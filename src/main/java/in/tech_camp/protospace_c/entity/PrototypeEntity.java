@@ -2,9 +2,9 @@ package in.tech_camp.protospace_c.entity;
 
 import java.sql.Timestamp;
 import java.util.List;
-
 import lombok.Data;
 import lombok.ToString;
+
 
 @Data
 public class PrototypeEntity {
