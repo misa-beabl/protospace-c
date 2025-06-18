@@ -26,7 +26,8 @@ public interface PrototypeRepository {
 
   @Select("SELECT * FROM prototypes ORDER BY created_at DESC")
   @Results({
-    @Result(property = "userId", column = "user_id"),
+    @Result(property = "user", column = "user_id",
+    one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
     @Result(property = "createdAt", column = "created_at")
   })
   List<PrototypeEntity> findAll();
@@ -41,9 +42,10 @@ public interface PrototypeRepository {
   })
   PrototypeEntity findById(Integer id);
 
-  @Select("SELECT * FROM prototypes WHERE user_id = #{user.id} ORDER BY created_at DESC")
+  @Select("SELECT * FROM prototypes WHERE user_id = #{userId} ORDER BY created_at DESC")
   @Results({
-    @Result(property = "userId", column = "user_id"),
+    @Result(property = "user", column = "user_id",
+            one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
     @Result(property = "createdAt", column = "created_at")
   })
   List<PrototypeEntity> findByUserId(Integer userId);
