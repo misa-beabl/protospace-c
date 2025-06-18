@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import in.tech_camp.protospace_c.ImageUrl;
 import in.tech_camp.protospace_c.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_c.entity.PrototypeEntity;
+import in.tech_camp.protospace_c.form.CommentForm;
 import in.tech_camp.protospace_c.form.PrototypeForm;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
@@ -174,5 +175,17 @@ public class PrototypeController {
       return "redirect:/";
     }
     return "redirect:/";
+  }
+
+  @GetMapping("/prototypes/{prototypeId}")
+  public String showPrototypeDetail(
+    @PathVariable("prototypeId") Integer prototypeId,
+    Model model
+  ) {
+    PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    model.addAttribute("prototype", prototype);
+    model.addAttribute("commentForm", new CommentForm());
+    model.addAttribute("comments", prototype.getComments());
+    return "prototypes/detail";
   }
 }
