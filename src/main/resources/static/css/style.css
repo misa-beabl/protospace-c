@@ -105,6 +105,8 @@ body {
 
 .card__img {
     margin-bottom: 16px;
+    height: 180px;
+    width: 180px;
 }
 
 .card__title {
