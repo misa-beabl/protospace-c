@@ -110,8 +110,8 @@ body {
 
 .card__img {
     margin-bottom: 16px;
-    height: 180px;
-    width: 180px;
+    height: 230px;
+    width: 230px;
 }
 
 .card__title {
@@ -268,6 +268,7 @@ body {
     border-collapse: collapse;
     margin-bottom: 32px;
     width: 50%;
+    background-color: white;
 }
 
 
@@ -294,6 +295,10 @@ body {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+}
+
+.heading {
+    margin-bottom: 10px;
 }
 
 /* プロトタイプ詳細ページ */
