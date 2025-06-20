@@ -16,7 +16,9 @@
       th:text="'by: ' + ${prototype.user.nickname}"></a>
         <div class="prototype__manage">
           <a class="prototype__btn" th:href="@{/prototype/{prototypeId}/edit(prototypeId=${prototype.id})}">編集する</a>
-          <a class="prototype__btn" rel="nofollow" data-method="delete" th:post="delete" th:href="@{/prototype/{prototypeId}/delete(prototypeId=${prototype.id})}">削除する</a>
+          <form th:action="@{/prototype/{prototypeId}/delete(prototypeId=${prototype.id})}" method="post" style="display:inline;">
+            <button type="submit" class="prototype__btn">削除する</button>
+          </form>
         </div>
       <div class="prototype__image">
         <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
