@@ -19,9 +19,9 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/css/**", "/images/**", "/uploads/**", "/", "/users/sign_up", "/users/login", "/users/{id:[0-9]+}","/prototype/new").permitAll()
+                        .requestMatchers("/css/**", "/images/**", "/uploads/**", "/", "/users/sign_up", "/users/login", "/users/{id:[0-9]+}","/prototypes/{id:[0-9]+}").permitAll()
                         //ここに記述されたGETリクエストは許可されます（ログイン不要です)
-                        .requestMatchers(HttpMethod.POST, "/user", "/prototype").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/user").permitAll()
                         //ここに記述されたPOSTリクエストは許可されます(ログイン不要です)
                         .anyRequest().authenticated())
                         //上記以外のリクエストは認証されたユーザーのみ許可されます(要ログイン)

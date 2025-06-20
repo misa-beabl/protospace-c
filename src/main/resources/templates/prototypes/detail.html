@@ -12,31 +12,33 @@
   <div class="inner">
     <div class="prototype__wrapper">
       <p class="prototype__hedding">title</p>
-      <a class="prototype__user" th:href="@{/users/{userId}(userId=${user.id})}">by username</a>
+      <a class="prototype__user" th:href="@{/users/{userId}(userId=${prototype.user.id})}"
+      th:text="'by: ' + ${prototype.user.nickname}"></a>
         <div class="prototype__manage">
-          <a class="prototype__btn" th:href="@{/prototype}">編集する</a>
+          <a class="prototype__btn" th:href="@{/prototype/{prototypeId}/edit(prototypeId=${prototype.id})}">編集する</a>
           <a class="prototype__btn" rel="nofollow" data-method="delete" th:post="delete" th:href="@{/prototype/{prototypeId}/delete(prototypeId=${prototype.id})}">削除する</a>
         </div>
       <div class="prototype__image">
-        <!-- 仮の画像 -->
-        <img src="https://protospace2020.herokuapp.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcFlGIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--2c27aa56b46c6199c052f227548c55dc61ca87ea/tacos.jpg">
+        <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
       </div>
       <div class="prototype__body">
         <div class="prototype__detail">
           <p class="detail__title">キャッチコピー</p>
-          <p class="detail__message">content of slogan</p>
+          <p class="detail__message" th:text="${prototype.slogan}"></p>
         </div>
         <div class="prototype__detail">
           <p class="detail__title">コンセプト</p>
-          <p class="detail__message">content of slogan</p>
+          <p class="detail__message" th:text="${prototype.concept}"></p>
         </div>
       </div>
-      <div class="prototype__comments">
-        <form action="/prototypes/1402/comments" accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="so+chS5oqh4nXzrItp0a0dSh5LOQaQ3emf8ab5psrp2Tad8Bx2wU+AC5ZJP7LtqHjbF/2yQOm0d8CuPY14CteQ==" autocomplete="off">
+
+      <!-- <div class="prototype__comments">
+        <form th:action="@{/prototypes/{prototypeId}/comment(prototypeId=${prototype.id})}" th:object="${commentForm}" method="post" accept-charset="UTF-8">
+         <input type="hidden" name="authenticity_token" value="so+chS5oqh4nXzrItp0a0dSh5LOQaQ3emf8ab5psrp2Tad8Bx2wU+AC5ZJP7LtqHjbF/2yQOm0d8CuPY14CteQ==" autocomplete="off">
           <div class="field">
             <label for="comment_content">コメント</label>
             <br>
-            <input type="text" name="comment[content]" id="comment_content">
+            <input type="text" th:field="*{text}" id="comment_content">
           </div>
           <div class="action">
             <input type="submit" name="commit" value="送信する" class="form__btn" data-disable-with="送信する">
@@ -44,7 +46,40 @@
         </form>
         <ul class="comments_lists">
         </ul>
+      </div> -->
+
+      <div class="prototype__comments">
+        <div th:if="${#authorization.expression('isAuthenticated()')}">
+          <div th:if="${errorMessages}">
+            <ul>
+              <li th:each="error : ${errorMessages}" th:text="${error.defaultMessage}"></li>
+            </ul>
+          </div>
+          <form th:action="@{/prototypes/{prototypeId}/comment(prototypeId=${prototype.id})}" method="post" th:object="${commentForm}">
+            <textarea id="text" th:field="*{text}" placeholder="コメントする" rows="2"></textarea>
+            <input type="submit" value="SEND">
+          </form>
+        </div>
+      
+        <div th:if="${#authorization.expression('!isAuthenticated()')}">
+          <strong>
+            <p>※※※ コメントの投稿には新規登録/ログインが必要です ※※※</p>
+          </strong>
+        </div>
+        
+        <div class="comments">
+          <h4>＜コメント一覧＞</h4>
+          <div th:each="comment : ${comments}">
+            <p>
+              <strong>
+                <a th:href="@{/users/{userId}(userId=${comment.user.id})}" th:text="${comment.user.nickname}"></a>
+              </strong>
+              <span th:text="${comment.text}"></span>
+            </p>
+          </div>
+        </div>
       </div>
+      
     </div>
   </div>
 </main>

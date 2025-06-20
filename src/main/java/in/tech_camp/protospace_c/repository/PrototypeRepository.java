@@ -34,6 +34,7 @@ public interface PrototypeRepository {
 
   @Select("SELECT * FROM prototypes WHERE id = #{id}")
   @Results(value = {
+    @Result(property = "id", column = "id"),
     @Result(property = "user", column = "user_id",
             one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
     @Result(property = "createdAt", column = "created_at"),
