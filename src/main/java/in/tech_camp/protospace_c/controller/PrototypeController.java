@@ -105,6 +105,10 @@ public class PrototypeController {
         prototype.setImage("/uploads/" + fileName);
       } catch (IOException e) {
         result.rejectValue("image", "upload", "画像の保存に失敗しました");
+        List<String> errorMessages = result.getAllErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList());
+        model.addAttribute("errorMessages", errorMessages);
         model.addAttribute("prototypeForm", prototypeForm);
         return "prototypes/new";
       }
