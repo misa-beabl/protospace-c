@@ -37,4 +37,6 @@ out/
 .vscode/
 
 # アップロード画像
-src/main/resources/static/uploads/**
+# src/main/resources/static/uploads/**
+src/main/resources/static/uploads/*
+!src/main/resources/static/uploads/.gitkeep
