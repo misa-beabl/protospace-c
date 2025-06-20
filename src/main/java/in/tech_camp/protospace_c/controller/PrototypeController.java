@@ -191,4 +191,6 @@ public class PrototypeController {
     model.addAttribute("comments", prototype.getComments());
     return "prototypes/detail";
   }
+
+  
 }
