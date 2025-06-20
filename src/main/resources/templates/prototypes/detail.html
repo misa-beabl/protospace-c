@@ -11,7 +11,7 @@
 <main class="main">
   <div class="inner">
     <div class="prototype__wrapper">
-      <p class="prototype__hedding">title</p>
+      <p class="prototype__hedding"th:text="${prototype.name}">title</p>
       <a class="prototype__user" th:href="@{/users/{userId}(userId=${prototype.user.id})}"
       th:text="'by: ' + ${prototype.user.nickname}"></a>
         <div class="prototype__manage">

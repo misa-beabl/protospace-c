@@ -128,6 +128,7 @@ public class PrototypeController {
   public String editPrototype(
     @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm,
     BindingResult result,
+    @AuthenticationPrincipal CustomUserDetail currentUser,
     @PathVariable("prototypeId") Integer prototypeId,
     Model model
   ) {
@@ -148,7 +149,9 @@ public class PrototypeController {
     }
     
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    prototype.setUser(currentUser.getUser());
     prototype.setName(prototypeForm.getName());
+    prototype.setSlogan(prototypeForm.getSlogan());
     prototype.setConcept(prototypeForm.getConcept());
 
     try {
@@ -163,13 +166,13 @@ public class PrototypeController {
     }
 
     try {
-      prototypeRepository.insert(prototype);
+      prototypeRepository.update(prototype);
     } catch (Exception e) {
       System.out.println("エラー：" + e);
       return "prototypes/edit";
     }
 
-    return "prototypes/detail";
+    return "redirect:/prototypes/" + prototypeId;
   }
 
   // 削除機能
