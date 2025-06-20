@@ -52,4 +52,7 @@ public interface PrototypeRepository {
 
   @Delete("DELETE FROM prototypes WHERE id = #{id}")
   void deleteById(Integer id);
+
+  @Delete("DELETE FROM prototypes")
+  void deleteAll();
 }
