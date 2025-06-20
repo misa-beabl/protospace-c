@@ -187,12 +187,16 @@ public class PrototypeController {
   @GetMapping("/prototypes/{prototypeId}")
   public String showPrototypeDetail(
     @PathVariable("prototypeId") Integer prototypeId,
+    @AuthenticationPrincipal CustomUserDetail currentUser,
     Model model
   ) {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     model.addAttribute("prototype", prototype);
     model.addAttribute("commentForm", new CommentForm());
     model.addAttribute("comments", prototype.getComments());
+    if (currentUser != null) {
+        model.addAttribute("user", currentUser.getUser());
+    }
     return "prototypes/detail";
   }
 
