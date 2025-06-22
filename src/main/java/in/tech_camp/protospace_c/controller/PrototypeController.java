@@ -73,8 +73,8 @@ public class PrototypeController {
   @PostMapping("/prototype")
   public String createPrototypes(
     @ModelAttribute("prototypeForm") @Validated(ValidationOrder.class) PrototypeForm prototypeForm,
-    @AuthenticationPrincipal CustomUserDetail currentUser,
     BindingResult result,
+    @AuthenticationPrincipal CustomUserDetail currentUser,
     Model model) {
       MultipartFile imageFile = prototypeForm.getImage();
       if (imageFile == null || imageFile.isEmpty()) {
@@ -126,7 +126,7 @@ public class PrototypeController {
   // 編集機能
   @PostMapping("/prototypes/{prototypeId}/update")
   public String editPrototype(
-    @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm,
+    @ModelAttribute("prototypeForm") @Validated(ValidationOrder.class) PrototypeForm prototypeForm,
     BindingResult result,
     @AuthenticationPrincipal CustomUserDetail currentUser,
     @PathVariable("prototypeId") Integer prototypeId,
