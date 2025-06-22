@@ -126,7 +126,7 @@ public class PrototypeController {
   // 編集機能
   @PostMapping("/prototypes/{prototypeId}/update")
   public String editPrototype(
-    @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm,
+    @ModelAttribute("prototypeForm") @Validated(ValidationOrder.class) PrototypeForm prototypeForm,
     BindingResult result,
     @AuthenticationPrincipal CustomUserDetail currentUser,
     @PathVariable("prototypeId") Integer prototypeId,

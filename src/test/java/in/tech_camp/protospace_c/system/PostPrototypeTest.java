@@ -94,7 +94,7 @@ public class PostPrototypeTest {
         List<PrototypeEntity> after = prototypeRepository.findAll();
         assertThat(after).hasSize(before.size() + 1);
 
-        // 登録内容が正しいか一部カラムで検証
+        // 登録内容が正しいか検証
         PrototypeEntity last = after.get(0);
         assertThat(last.getName()).isEqualTo(prototypeForm.getName());
         assertThat(last.getSlogan()).isEqualTo(prototypeForm.getSlogan());
