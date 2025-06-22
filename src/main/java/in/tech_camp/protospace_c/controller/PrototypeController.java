@@ -73,8 +73,8 @@ public class PrototypeController {
   @PostMapping("/prototype")
   public String createPrototypes(
     @ModelAttribute("prototypeForm") @Validated(ValidationOrder.class) PrototypeForm prototypeForm,
-    @AuthenticationPrincipal CustomUserDetail currentUser,
     BindingResult result,
+    @AuthenticationPrincipal CustomUserDetail currentUser,
     Model model) {
       MultipartFile imageFile = prototypeForm.getImage();
       if (imageFile == null || imageFile.isEmpty()) {

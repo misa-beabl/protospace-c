@@ -241,4 +241,37 @@ public class PutPrototypeTest {
         assertThat(updated.getConcept()).isEqualTo(prototype.getConcept());
         assertThat(updated.getImage()).isNotNull();
     }
+
+    @Test
+    @WithUserDetails(
+        value = TEST_EMAIL,
+        userDetailsServiceBeanName = "userAuthenticationService",
+        setupBefore = TestExecutionEvent.TEST_EXECUTION
+    )
+    void imageが未添付だと編集画面に戻りエラーメッセージが表示される() throws Exception {
+        List<PrototypeEntity> before = prototypeRepository.findAll();
+
+        Integer prototypeId = prototype.getId();
+
+        // 画像添付なし
+        mockMvc.perform(multipart("/prototypes/" + prototypeId + "/update")
+                .param("name", prototypeForm.getName())
+                .param("slogan", prototypeForm.getSlogan())
+                .param("concept", prototypeForm.getConcept())
+                .with(csrf()))
+            .andExpect(status().isOk())
+            .andExpect(view().name("prototypes/edit"))
+            .andExpect(model().attributeHasFieldErrors("prototypeForm", "image"));
+
+        // カラム数に変化がないか検証
+        List<PrototypeEntity> after = prototypeRepository.findAll();
+        assertThat(after).hasSize(before.size());
+
+        // 登録内容に変化がないか検証
+        PrototypeEntity updated = prototypeRepository.findById(prototypeId);
+        assertThat(updated.getName()).isEqualTo(prototype.getName());
+        assertThat(updated.getSlogan()).isEqualTo(prototypeForm.getSlogan());
+        assertThat(updated.getConcept()).isEqualTo(prototypeForm.getConcept());
+        assertThat(updated.getImage()).isNotNull();
+    }
 }
