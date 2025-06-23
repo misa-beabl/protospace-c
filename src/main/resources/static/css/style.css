@@ -151,6 +151,8 @@ body {
     width: 35vw;
     font-size: 15px;
     padding-left: 5px;
+    border-radius: 10px;
+    border: solid 0.5px rgb(118, 118, 118);
 }
 
 .text_form {
@@ -159,6 +161,7 @@ body {
     font-size: 15px;
     height: 75px;
     padding: 10px;
+    border-radius: 10px;
 }
 
 .action {
@@ -195,6 +198,9 @@ body {
 
 .form__text {
   width: 50%;
+  height: 80px;
+  border-radius: 10px;
+  border: solid 0.5px rgb(118, 118, 118);
 }
 
 .actions {
@@ -220,6 +226,7 @@ body {
   cursor: pointer;
 }
 
+/* レスポンシブデザイン */
 
 @media (max-width: 1024px) {
   .inner {
@@ -237,13 +244,31 @@ body {
   }
 }
 
-@media (max-width: 599px) {
+@media (max-width: 500px) {
   .logo {
       width:120px;
   }
 
   .page-heading {
       font-size: 20px;
+  }
+
+  .form_field{
+    height: 70px;
+    margin-bottom: 30px;
+  }
+
+  .userprimaryinfo {
+    width: 80vw;
+  }
+
+  .text_form{
+    width: 90vw;
+    margin-bottom: 10px;
+  }
+
+  .form_btn{
+    margin-top: 10px;
   }
 }
 
