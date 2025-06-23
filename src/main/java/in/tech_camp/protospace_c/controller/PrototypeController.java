@@ -99,6 +99,10 @@ public class PrototypeController {
 
       try {
         String uploadDir = imageUrl.getImageUrl();
+        Path uploadDirPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadDirPath)) {
+          Files.createDirectories(uploadDirPath);
+        }
         String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
         Path imagePath = Paths.get(uploadDir, fileName);
         Files.copy(imageFile.getInputStream(), imagePath);
@@ -156,6 +160,10 @@ public class PrototypeController {
 
     try {
       String uploadDir = imageUrl.getImageUrl();
+      Path uploadDirPath = Paths.get(uploadDir);
+      if (!Files.exists(uploadDirPath)) {
+        Files.createDirectories(uploadDirPath);
+      }
       String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
       Path imagePath = Paths.get(uploadDir, fileName);
       Files.copy(imageFile.getInputStream(), imagePath);
