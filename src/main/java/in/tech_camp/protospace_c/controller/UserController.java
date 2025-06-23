@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,14 @@ public class UserController {
 
   private final UserService userService;
   private final HttpServletRequest request;
+
+  @ModelAttribute("user")
+  public UserEntity addUserToModel(@AuthenticationPrincipal CustomUserDetail currentUser) {
+    if (currentUser != null) {
+      return currentUser.getUser();
+    }
+    return null;
+  }
 
   @GetMapping("/users/sign_up")
   public String showSignUp(Model model){

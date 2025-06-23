@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import in.tech_camp.protospace_c.ImageUrl;
 import in.tech_camp.protospace_c.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_c.entity.PrototypeEntity;
+import in.tech_camp.protospace_c.entity.UserEntity;
 import in.tech_camp.protospace_c.form.CommentForm;
 import in.tech_camp.protospace_c.form.PrototypeForm;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
@@ -36,6 +37,14 @@ import lombok.AllArgsConstructor;
 public class PrototypeController {
   private final PrototypeRepository prototypeRepository;
   private final ImageUrl imageUrl;
+
+  @ModelAttribute("user")
+  public UserEntity addUserToModel(@AuthenticationPrincipal CustomUserDetail currentUser) {
+    if (currentUser != null) {
+      return currentUser.getUser();
+    }
+    return null;
+  }
 
   @GetMapping("/")
   public String showPrototypes(@AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
