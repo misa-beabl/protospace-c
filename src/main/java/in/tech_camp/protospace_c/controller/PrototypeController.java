@@ -73,8 +73,8 @@ public class PrototypeController {
   @PostMapping("/prototype")
   public String createPrototypes(
     @ModelAttribute("prototypeForm") @Validated(ValidationOrder.class) PrototypeForm prototypeForm,
-    @AuthenticationPrincipal CustomUserDetail currentUser,
     BindingResult result,
+    @AuthenticationPrincipal CustomUserDetail currentUser,
     Model model) {
       MultipartFile imageFile = prototypeForm.getImage();
       if (imageFile == null || imageFile.isEmpty()) {
@@ -126,8 +126,9 @@ public class PrototypeController {
   // 編集機能
   @PostMapping("/prototypes/{prototypeId}/update")
   public String editPrototype(
-    @ModelAttribute("prototypeForm") @Validated PrototypeForm prototypeForm,
+    @ModelAttribute("prototypeForm") @Validated(ValidationOrder.class) PrototypeForm prototypeForm,
     BindingResult result,
+    @AuthenticationPrincipal CustomUserDetail currentUser,
     @PathVariable("prototypeId") Integer prototypeId,
     Model model
   ) {
@@ -148,7 +149,9 @@ public class PrototypeController {
     }
     
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    prototype.setUser(currentUser.getUser());
     prototype.setName(prototypeForm.getName());
+    prototype.setSlogan(prototypeForm.getSlogan());
     prototype.setConcept(prototypeForm.getConcept());
 
     try {
@@ -163,13 +166,13 @@ public class PrototypeController {
     }
 
     try {
-      prototypeRepository.insert(prototype);
+      prototypeRepository.update(prototype);
     } catch (Exception e) {
       System.out.println("エラー：" + e);
       return "prototypes/edit";
     }
 
-    return "prototypes/detail";
+    return "redirect:/prototypes/" + prototypeId;
   }
 
   // 削除機能
