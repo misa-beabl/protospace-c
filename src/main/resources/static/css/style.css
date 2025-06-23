@@ -375,13 +375,14 @@ body {
     display: block;
     padding: 0.4em 1.6em;
     font-size: 0.4em;
-    color: #999;
+    color: white;
     text-decoration: none;
     user-select: none;
     border: 1px #999 solid;
     border-radius: 3px;
     transition: 0.4s ease;
     margin: 0 4px;
+    background-color: rgb(135, 135, 223);
 }
 
 .prototype__btn:hover {
