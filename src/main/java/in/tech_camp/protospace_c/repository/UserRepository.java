@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import in.tech_camp.protospace_c.entity.UserEntity;
 
@@ -44,4 +45,7 @@ public interface UserRepository {
 
   @Delete("DELETE FROM users")
   void deleteAll();
+
+  @Update("UPDATE users SET nickname=#{nickname}, email=#{email}, password=#{password}, profile=#{profile}, affiliation=#{affiliation}, position=#{position} WHERE id=#{id}")
+  void update(UserEntity user);
 }

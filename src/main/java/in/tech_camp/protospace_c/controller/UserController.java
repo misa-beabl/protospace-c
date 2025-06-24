@@ -29,6 +29,7 @@ import in.tech_camp.protospace_c.validation.ValidationOrder;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
+
 @Controller
 @AllArgsConstructor
 public class UserController {
@@ -134,4 +135,62 @@ public class UserController {
     model.addAttribute("prototypes", prototypes);
     return "users/detail";
   }
+
+  @GetMapping("/users/{userId}/edit")
+  public String showEditUser(@PathVariable("userId") Integer userId, Model model) {
+      UserEntity user = userRepository.findById(userId);
+
+      UserForm userForm = new UserForm();
+
+      userForm.setNickname(user.getNickname());
+      userForm.setEmail(user.getEmail());
+      userForm.setProfile(user.getProfile());
+      userForm.setAffiliation(user.getAffiliation());
+      userForm.setPosition(user.getPosition());
+      userForm.setPassword(user.getPassword());
+
+      model.addAttribute("userForm", userForm);
+      model.addAttribute("userId", userId);
+    
+    return "users/edit";
+  }
+
+  @PostMapping("/users/{userId}/update")
+  public String editUser(@ModelAttribute("userForm") @Validated(ValidationOrder.class) UserForm userForm,
+  BindingResult result,
+  @AuthenticationPrincipal CustomUserDetail currentUser,
+  @PathVariable("userId") Integer userId,
+  Model model
+  ) {
+
+    if (result.hasErrors()) {
+      List<String> errorMessages = result.getAllErrors().stream()
+              .map(DefaultMessageSourceResolvable::getDefaultMessage)
+              .collect(Collectors.toList());
+      model.addAttribute("errorMessages", errorMessages);
+
+      model.addAttribute("userForm", userForm);
+      model.addAttribute("userId", userId);
+      return "users/edit";
+    }
+
+    UserEntity user = userRepository.findById(userId);
+    user.setNickname(userForm.getNickname());
+    user.setEmail(userForm.getEmail());
+    user.setProfile(userForm.getProfile());
+    user.setAffiliation(userForm.getAffiliation());
+    user.setPosition(userForm.getPosition());
+    user.setPassword(userForm.getPassword());
+
+      try {
+      userRepository.update(user);
+    } catch (Exception e) {
+      System.out.println("エラー：" + e);
+      return "users/edit";
+    }
+      
+      return "redirect:/users/" + userId;
+  }
+  
+  
 }
