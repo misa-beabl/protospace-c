@@ -65,9 +65,13 @@ public class PrototypeController {
   @GetMapping("/prototype/{prototypeId}/edit")
   public String showEditPrototype(
     @PathVariable("prototypeId") Integer prototypeId,
+    @AuthenticationPrincipal CustomUserDetail currentUser,
     Model model
   ) {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    if (!currentUser.getUser().equals(prototype.getUser())) {
+        return "redirect:/";
+    }
 
     PrototypeForm prototypeForm = new PrototypeForm();
     prototypeForm.setName(prototype.getName());
