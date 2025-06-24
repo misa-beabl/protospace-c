@@ -9,7 +9,7 @@
           <input class="logout_btn" type="submit" value="ログアウト"/>
         </form>
         <a class="nav_btn" th:href="@{/users/{userId}(userId=${user.id})}">My Page</a>
-        <a class="nav_btn" th:href="@{/prototype/new}">New Photo</a>
+        <a class="nav_btn" th:href="@{/prototype/new}">New Proto</a>
       </div>
       <div class="user_nav" th:if="${#authorization.expression('!isAuthenticated()')}">
         <a class="nav_btn" th:href="@{/login}">ログイン</a>
