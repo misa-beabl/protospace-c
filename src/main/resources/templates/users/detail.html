@@ -12,6 +12,7 @@
   <div class="inner">
     <div class="user_wrapper">
       <h2 class="heading" th:text="${user.nickname} + 'さんの情報'">OOOさんの情報</h2>
+      <a th:href="@{/users/{userId}/edit(userId=${user.id})}">ユーザー編集</a>
       <table class="table">
         <tbody>
           <tr>

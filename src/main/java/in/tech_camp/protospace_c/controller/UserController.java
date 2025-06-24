@@ -148,6 +148,7 @@ public class UserController {
       userForm.setAffiliation(user.getAffiliation());
       userForm.setPosition(user.getPosition());
       userForm.setPassword(user.getPassword());
+      userForm.setPasswordConfirmation(user.getPassword());
 
       model.addAttribute("userForm", userForm);
       model.addAttribute("userId", userId);
@@ -183,7 +184,7 @@ public class UserController {
     user.setPassword(userForm.getPassword());
 
       try {
-      userRepository.update(user);
+      userService.updateUserWithEncryptedPassword(user);
     } catch (Exception e) {
       System.out.println("エラー：" + e);
       return "users/edit";
