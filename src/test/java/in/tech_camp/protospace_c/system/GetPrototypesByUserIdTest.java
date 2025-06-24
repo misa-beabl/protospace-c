@@ -34,7 +34,7 @@ import in.tech_camp.protospace_c.repository.UserRepository;
 @ActiveProfiles("test")
 @SpringBootTest(classes = ProtospaceCApplication.class)
 @AutoConfigureMockMvc
-public class GetPrototypesTest {
+public class GetPrototypesByUserIdTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -49,6 +49,8 @@ public class GetPrototypesTest {
 
     private List<PrototypeEntity> prototypeEntities;
 
+    private UserEntity user;
+
     private static final String TEST_EMAIL = "testuser@example.com";
 
     @BeforeEach
@@ -56,7 +58,7 @@ public class GetPrototypesTest {
         UserForm userForm = UserFormFactory.createUser();
 
         // ユーザーエンティティに変換し暗号化してinsert
-        UserEntity user = new UserEntity();
+        user = new UserEntity();
         user.setEmail(TEST_EMAIL);
         user.setNickname(userForm.getNickname());
         user.setPassword(passwordEncoder.encode(userForm.getPassword()));
@@ -91,17 +93,16 @@ public class GetPrototypesTest {
     userDetailsServiceBeanName = "userAuthenticationService",
     setupBefore = TestExecutionEvent.TEST_EXECUTION
 )
-    void トップページにプロトタイプ一覧が表示される() throws Exception {
-        List<PrototypeEntity> dbPrototypes = prototypeRepository.findAll();
+    void ユーザー詳細ページにプロトタイプ一覧が表示される() throws Exception {
+        List<PrototypeEntity> dbPrototypes = prototypeRepository.findByUserId(user.getId());
 
         assertThat(dbPrototypes).isNotEmpty();
 
-        mockMvc.perform(get("/"))
+        mockMvc.perform(get("/users/" + user.getId()))
             .andExpect(status().isOk())
-            .andExpect(view().name("index"))
-            // プロトタイプ一覧がmodelに乗っているかを検証
+            .andExpect(view().name("users/detail"))
+            .andExpect(model().attributeExists("user"))
             .andExpect(model().attributeExists("prototypes"))
-            // prototypeEntitiesの件数と一致するか検証
             .andExpect(model().attribute("prototypes", org.hamcrest.Matchers.hasSize(dbPrototypes.size())));
     }
 
@@ -111,17 +112,17 @@ public class GetPrototypesTest {
         userDetailsServiceBeanName = "userAuthenticationService",
         setupBefore = TestExecutionEvent.TEST_EXECUTION
     )
-    void プロトタイプが存在しない場合でもトップページが正しく表示される() throws Exception {
+    void プロトタイプが存在しない場合でもユーザー詳細ページが正しく表示される() throws Exception {
         // プロトタイプを全削除
         prototypeRepository.deleteAll();
 
-        List<PrototypeEntity> dbPrototypes = prototypeRepository.findAll();
+        List<PrototypeEntity> dbPrototypes = prototypeRepository.findByUserId(user.getId());
         assertThat(dbPrototypes).isEmpty();
 
-        mockMvc.perform(get("/"))
+        mockMvc.perform(get("/users/" + user.getId()))
             .andExpect(status().isOk())
-            .andExpect(view().name("index"))
-            // プロトタイプ一覧がmodelに存在し、サイズ0であること
+            .andExpect(view().name("users/detail"))
+            .andExpect(model().attributeExists("user"))
             .andExpect(model().attributeExists("prototypes"))
             .andExpect(model().attribute("prototypes", org.hamcrest.Matchers.hasSize(0)));
     }
