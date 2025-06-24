@@ -141,7 +141,7 @@ public class PrototypeController {
   }
 
   // 編集機能
-  @PostMapping("/prototypes/{prototypeId}/update")
+  @PostMapping("/prototype/{prototypeId}/update")
   public String editPrototype(
     @ModelAttribute("prototypeForm") @Validated(ValidationOrder.class) PrototypeForm prototypeForm,
     BindingResult result,
@@ -208,7 +208,7 @@ public class PrototypeController {
     return "redirect:/";
   }
 
-  @GetMapping("/prototypes/{prototypeId}")
+  @GetMapping("/prototype/{prototypeId}")
   public String showPrototypeDetail(
     @PathVariable("prototypeId") Integer prototypeId,
     @AuthenticationPrincipal CustomUserDetail currentUser,

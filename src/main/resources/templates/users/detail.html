@@ -35,7 +35,7 @@
       <h2 class="heading" th:text="${user.nickname} + 'さんのプロトタイプ'">OOOさんのプロトタイプ</h2>
       <div class="user__card">
           <div th:each="prototype : ${prototypes}" class="card">
-            <a th:href="@{/prototypes/{prototypeId}(prototypeId=${prototype.id})}">
+            <a th:href="@{/prototype/{prototypeId}(prototypeId=${prototype.id})}">
               <img class="card__img" th:src="@{${prototype.image}}">
             </a>
             <div class="card__body">
