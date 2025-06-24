@@ -43,6 +43,13 @@
               <a class="card__title" th:href="@{/prototypes/{prototypeId}(prototypeId=${prototype.id})}" th:text="${prototype.name}">title</a>
               <p class="card__summary" th:text="${prototype.slogan}">summary</p>
               <a class="card__user" th:href="@{/users/{userId}(userId=${user.id})}" th:text="'by ' + ${user.nickname}">by username</a>
+              <div class="card__like">
+                <div th:if="${#authorization.expression('isAuthenticated()')}">
+                  <form th:action="@{/prototype/{prototypeId}/like-from-u-detail(prototypeId=${prototype.id})}" method="post" style="display:inline;">
+                    <button type="submit" class="like-btn">♥</button>
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
       </div>

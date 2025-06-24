@@ -25,6 +25,14 @@
       <div class="prototype__image">
         <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
       </div>
+      <div class="prototype__like">
+        <div th:if="${#authorization.expression('isAuthenticated()')}">
+          <form th:action="@{/prototype/{prototypeId}/like-from-p-detail(prototypeId=${prototype.id})}"
+                method="post" style="display:inline;">
+            <button type="submit" class="like-btn">♥</button>
+          </form>
+        </div>
+      </div>
       <div class="prototype__body">
         <div class="prototype__detail">
           <p class="detail__title">キャッチコピー</p>
