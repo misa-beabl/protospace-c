@@ -70,7 +70,7 @@ public class PrototypeController {
   ) {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     if (!currentUser.getUser().equals(prototype.getUser())) {
-        return "redirect:/";
+        return "redirect:/prototype/" + prototypeId;
     }
 
     PrototypeForm prototypeForm = new PrototypeForm();
@@ -193,7 +193,7 @@ public class PrototypeController {
       return "prototypes/edit";
     }
 
-    return "redirect:/prototypes/" + prototypeId;
+    return "redirect:/prototype/" + prototypeId;
   }
 
   // 削除機能
