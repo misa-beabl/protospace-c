@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import in.tech_camp.protospace_c.entity.UserEntity;
 import in.tech_camp.protospace_c.repository.UserRepository;
-
 import lombok.AllArgsConstructor;
 
 @Service
@@ -20,6 +19,12 @@ public class UserService {
     String encodedPassword = encodePassword(userEntity.getPassword());
     userEntity.setPassword(encodedPassword);
     userRepository.insert(userEntity);
+  }
+
+  public void updateUserWithEncryptedPassword(UserEntity userEntity) {
+    String encodedPassword = encodePassword(userEntity.getPassword());
+    userEntity.setPassword(encodedPassword);
+    userRepository.update(userEntity);
   }
 
   // 将用户的密码加密
