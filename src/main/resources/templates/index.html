@@ -16,7 +16,7 @@
     <div class="greeting" th:if="${#authorization.expression('isAuthenticated()')}">こんにちは、<a th:href="@{/users/{userId}(userId=${user.id})}" th:text="${user.nickname} + さん！">OOさん!</a></div>
     <div class="card__wrapper">
       <div class="card" th:each="prototype : ${prototypes}">
-          <a th:href="@{/prototypes/{prototypeId}(prototypeId=${prototype.id})}"><img class="card__img" th:src="${prototype.image}"></a>
+          <a th:href="@{/prototype/{prototypeId}(prototypeId=${prototype.id})}"><img class="card__img" th:src="${prototype.image}"></a>
           <div class="card__body">
             <a class="card__title" th:href="@{/prototypes/{prototypeId}(prototypeId=${prototype.id})}" th:text="${prototype.slogan}">title</a>
             <p class="card__summary" th:text="${prototype.concept}">concept</p>

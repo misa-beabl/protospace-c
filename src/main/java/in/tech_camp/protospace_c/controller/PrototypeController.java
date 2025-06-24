@@ -65,9 +65,13 @@ public class PrototypeController {
   @GetMapping("/prototype/{prototypeId}/edit")
   public String showEditPrototype(
     @PathVariable("prototypeId") Integer prototypeId,
+    @AuthenticationPrincipal CustomUserDetail currentUser,
     Model model
   ) {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+    if (!currentUser.getUser().equals(prototype.getUser())) {
+        return "redirect:/prototype/" + prototypeId;
+    }
 
     PrototypeForm prototypeForm = new PrototypeForm();
     prototypeForm.setName(prototype.getName());
@@ -137,7 +141,7 @@ public class PrototypeController {
   }
 
   // 編集機能
-  @PostMapping("/prototypes/{prototypeId}/update")
+  @PostMapping("/prototype/{prototypeId}/update")
   public String editPrototype(
     @ModelAttribute("prototypeForm") @Validated(ValidationOrder.class) PrototypeForm prototypeForm,
     BindingResult result,
@@ -189,7 +193,7 @@ public class PrototypeController {
       return "prototypes/edit";
     }
 
-    return "redirect:/prototypes/" + prototypeId;
+    return "redirect:/prototype/" + prototypeId;
   }
 
   // 削除機能
@@ -204,7 +208,7 @@ public class PrototypeController {
     return "redirect:/";
   }
 
-  @GetMapping("/prototypes/{prototypeId}")
+  @GetMapping("/prototype/{prototypeId}")
   public String showPrototypeDetail(
     @PathVariable("prototypeId") Integer prototypeId,
     @AuthenticationPrincipal CustomUserDetail currentUser,
