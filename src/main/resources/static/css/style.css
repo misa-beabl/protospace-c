@@ -482,3 +482,8 @@ img {
 .like-btn.liked {
     color: #e25555;
 }
+.heart-icon {
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 0.3em;
+}

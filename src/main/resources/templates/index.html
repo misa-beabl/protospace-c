@@ -24,16 +24,21 @@
               <div th:if="${#authorization.expression('isAuthenticated()')}">
                 <form th:action="@{/prototype/{prototypeId}/like-from-index(prototypeId=${prototype.id})}"
                       method="post" style="display:inline;">
-                    <button type="submit" 
-                            class="like-btn" 
-                            th:classappend="${likedIds != null and likedIds.contains(prototype.id)} ? 'liked' : ''"
-                            th:text="'♥ ' + ${prototype.likeCount}">♥ 0</button>
+                      <button type="submit"
+                              class="like-btn"
+                              th:classappend="${likedIds != null and likedIds.contains(prototype.id)} ? 'liked' : ''">
+                                <img th:src="@{${likedIds != null and likedIds.contains(prototype.id)} ? '/images/like_btn_liked.png' : '/images/like_btn.png'}"
+                                      alt="いいね"
+                                      class="heart-icon" />
+                                <span th:text="${prototype.likeCount}">0</span>
+                        </button>
                 </form>
               </div>
               <div th:if="${#authorization.expression('!isAuthenticated()')}">
-                <button class="like-btn" disabled
-                        th:classappend="${likedIds != null and likedIds.contains(prototype.id)} ? 'liked' : ''"
-                        th:text="'♥ ' + ${prototype.likeCount}">♥ 0</button>
+                <button class="like-btn" disabled>
+                  <img th:src="@{/images/like_btn.png}" alt="いいね" class="heart-icon" />
+                  <span th:text="${prototype.likeCount}">0</span>
+                </button>
               </div>
             </div>
             <a class="card__user" th:href="@{/users/{userId}(userId=${prototype.user.id})}" th:text="'by ' + ${prototype.user.nickname}">by username</a>
