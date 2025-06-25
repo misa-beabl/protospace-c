@@ -62,6 +62,6 @@ public class CommentController {
       return "prototypes/detail";
     }
 
-    return "redirect:/prototypes/" + prototypeId;
+    return "redirect:/prototype/" + prototypeId;
   }
 }
