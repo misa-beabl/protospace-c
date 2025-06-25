@@ -7,13 +7,8 @@
 </head>
 <body>
 <div th:insert="~{header :: header}"></div>
-<div class="banner">
-    <div class="banner-title">Welcome to Protospace!</div>
-    <div class="banner-subtitle">Share your PROTOTYPE</div>
-</div>
 <main class="main">
   <div class="inner">
-    <div class="greeting" th:if="${#authorization.expression('isAuthenticated()')}">こんにちは、<a th:href="@{/users/{userId}(userId=${user.id})}" th:text="${user.nickname} + さん！">OOさん!</a></div>
     <form th:action="@{/prototype/search}" method="get" th:object="${searchForm}" class="search-form">
       <input type="text" th:field="*{text}" name="text" placeholder="投稿を検索する" class="search-input" />
       <input type="submit" class="search-btn" value="検索" />
