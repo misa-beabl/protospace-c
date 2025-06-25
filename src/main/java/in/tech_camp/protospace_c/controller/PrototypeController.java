@@ -28,6 +28,7 @@ import in.tech_camp.protospace_c.entity.UserEntity;
 import in.tech_camp.protospace_c.form.CommentForm;
 import in.tech_camp.protospace_c.form.PrototypeForm;
 import in.tech_camp.protospace_c.repository.LikesRepository;
+import in.tech_camp.protospace_c.form.SearchForm;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
@@ -51,7 +52,9 @@ public class PrototypeController {
   @GetMapping("/")
   public String showPrototypes(@AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     List<PrototypeEntity> prototypes = prototypeRepository.findAll();
+    SearchForm searchForm = new SearchForm();
     model.addAttribute("prototypes", prototypes);
+    model.addAttribute("searchForm", searchForm);
     if (currentUser != null) {
       model.addAttribute("user", currentUser.getUser());
 
@@ -59,6 +62,15 @@ public class PrototypeController {
       model.addAttribute("likedIds", likedIds);
     }
     return "index";
+  }
+
+  @GetMapping("/prototype/search")
+  public String searchTweets(@ModelAttribute("searchForm") SearchForm searchForm, Model model) {
+    List<PrototypeEntity> prototypes = prototypeRepository.findByTextContaining(searchForm.getText());
+    model.addAttribute("prototypes", prototypes);
+    // 这里边表示，在展示搜索结果的页面中，搜索栏仍旧应当存在
+    model.addAttribute("searchForm", searchForm);
+    return "prototypes/search";
   }
 
   @GetMapping("/prototype/new")

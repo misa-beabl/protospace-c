@@ -17,6 +17,21 @@ import in.tech_camp.protospace_c.entity.PrototypeEntity;
 
 @Mapper
 public interface PrototypeRepository {
+
+  @Select("SELECT * FROM prototypes WHERE name LIKE CONCAT('%', #{text}, '%') "
+      + "or slogan LIKE CONCAT('%', #{text}, '%') "
+      + "or concept LIKE CONCAT('%', #{text}, '%')")
+  @Results(value = {
+    @Result(property = "id", column = "id"),
+    @Result(property = "user", column = "user_id",
+            one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
+    @Result(property = "createdAt", column = "created_at"),
+    @Result(property = "comments", column = "id", 
+            many = @Many(select = "in.tech_camp.protospace_c.repository.CommentRepository.findByPrototypeId"))
+  })
+  List<PrototypeEntity> findByTextContaining(String text);
+
+
   @Insert("INSERT INTO prototypes (user_id, name, slogan, concept, image) VALUES (#{user.id}, #{name}, #{slogan}, #{concept}, #{image})")
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void insert(PrototypeEntity prototype);
