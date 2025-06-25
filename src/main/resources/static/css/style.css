@@ -461,6 +461,15 @@ img {
     margin-bottom: 10px;
 }
 
+.prototype__like {
+    text-align: center;
+}
+
+.prototype_detail_btn {
+    width: 70%;
+    text-align: right;
+}
+
 .like-btn {
     color: #888;
     background: none;
