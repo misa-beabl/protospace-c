@@ -456,12 +456,17 @@ img {
 }
 
 /* いいねボタン */
+.card__like {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
 .like-btn {
     color: #888;
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 1.2em;
+    font-size: 1.5em;
     transition: color 0.2s;
 }
 .like-btn.liked {
