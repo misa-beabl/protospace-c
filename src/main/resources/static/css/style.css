@@ -482,3 +482,182 @@ img {
     width: 100%;
     height: 100%;
 }
+
+.search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px auto;
+    max-width: 500px;
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(60, 64, 67, 0.08);
+    gap: 12px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 12px 14px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+    outline: none;
+    background: #f5f5f8;
+}
+.search-input:focus {
+    border-color: #3181f7;
+    background: #fff;
+}
+
+.search-btn {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #44acf6, #3181f7);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(49, 129, 247, 0.08);
+}
+.search-btn:hover {
+    background: linear-gradient(90deg, #3181f7, #44acf6);
+    box-shadow: 0 4px 12px rgba(49, 129, 247, 0.12);
+}
+
+@media (max-width: 600px) {
+    .search-form {
+        flex-direction: column;
+        max-width: 95vw;
+        gap: 8px;
+        padding: 16px;
+    }
+    .search-input, .search-btn {
+        width: 100%;
+        font-size: 1rem;
+    }
+}
+
+.prototype__comments {
+    background: #fafbfc;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(100, 117, 136, 0.10);
+    padding: 32px 24px 24px 24px;
+    margin: 32px auto;
+    max-width: 700px;
+  }
+  
+  .prototype__comments strong p {
+    background: #fbe4e1;
+    padding: 10px 0 10px 0;
+    border-radius: 5px;
+    color: #aa2727;
+    text-align: center;
+    margin-bottom: 18px;
+    font-size: 1rem;
+    font-weight: normal;
+  }
+  
+  .prototype__comments form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 8px 0 20px 0;
+  }
+  
+  .prototype__comments textarea {
+    resize: none;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    min-height: 60px;
+    padding: 10px 12px;
+    background: #fff;
+    font-size: 1rem;
+    color: #444;
+    transition: border-color 0.2s;
+  }
+  
+  .prototype__comments textarea:focus {
+    border-color: #3181f7;
+    outline: none;
+    background: #f7fbff;
+  }
+  
+  .prototype__comments ul {
+    padding-left: 18px;
+    margin-bottom: 10px;
+  }
+  .prototype__comments li {
+    color: #d0464a;
+    font-size: 0.98rem;
+  }
+  
+  .prototype__comments input[type="submit"] {
+    align-self: flex-end;
+    padding: 8px 28px;
+    background: linear-gradient(90deg,#44acf6,#3181f7);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(49,129,247,0.08);
+    cursor: pointer;
+    transition: background 0.22s, box-shadow 0.22s;
+    margin-top: 4px;
+  }
+  
+  .prototype__comments input[type="submit"]:hover {
+    background: linear-gradient(90deg,#289ae5,#256ed1);
+    box-shadow: 0 3px 12px rgba(49,129,247,0.16);
+  }
+  
+  .prototype__comments .comments {
+    margin-top: 18px;
+  }
+  
+  .prototype__comments .comments h4 {
+    margin-bottom: 8px;
+    font-size: 1.08rem;
+    color: #3560ad;
+    font-weight: bold;
+    border-left: 4px solid #3181f7;
+    padding-left: 8px;
+  }
+  
+  .prototype__comments .comments p {
+    background: #fff;
+    border-radius: 7px;
+    padding: 8px 14px 7px 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 6px rgba(90, 120, 130, 0.07);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+  }
+  
+  .prototype__comments .comments strong a {
+    color: #3181f7;
+    font-size: 1rem;
+    text-decoration: none;
+    margin-right: 7px;
+  }
+  .prototype__comments .comments strong a:hover {
+    text-decoration: underline;
+  }
+  
+  .prototype__comments .comments span {
+    color: #444;
+  }
+  
+  @media (max-width: 700px) {
+    .prototype__comments {
+      max-width: 96vw;
+      padding: 16px 6vw;
+    }
+  }
+  
