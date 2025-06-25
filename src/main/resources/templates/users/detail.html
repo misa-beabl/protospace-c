@@ -40,7 +40,7 @@
               <img class="card__img" th:src="@{${prototype.image}}">
             </a>
             <div class="card__body">
-              <a class="card__title" th:href="@{/prototypes/{prototypeId}(prototypeId=${prototype.id})}" th:text="${prototype.name}">title</a>
+              <a class="card__title" th:href="@{/prototype/{prototypeId}(prototypeId=${prototype.id})}" th:text="${prototype.name}">title</a>
               <p class="card__summary" th:text="${prototype.slogan}">summary</p>
               <div class="card__like">
                 <div th:if="${#authorization.expression('isAuthenticated()')}">
