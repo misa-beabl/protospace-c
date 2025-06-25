@@ -35,6 +35,11 @@
                 th:text="'♥ ' + ${prototype.likeCount}">♥ 0</button>
           </form>
         </div>
+        <div th:if="${#authorization.expression('!isAuthenticated()')}" class="prototype_detail_btn">
+          <button class="like-btn" disabled
+                  th:classappend="${likedIds != null and likedIds.contains(prototype.id)} ? 'liked' : ''"
+                  th:text="'♥ ' + ${prototype.likeCount}">♥ 0</button>
+        </div>
       </div>
       <div class="prototype__body">
         <div class="prototype__detail">

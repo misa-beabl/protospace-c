@@ -51,6 +51,11 @@
                             th:text="'♥ ' + ${prototype.likeCount}">♥ 0</button>
                   </form>
                 </div>
+                <div th:if="${#authorization.expression('!isAuthenticated()')}">
+                  <button class="like-btn" disabled
+                          th:classappend="${likedIds != null and likedIds.contains(prototype.id)} ? 'liked' : ''"
+                          th:text="'♥ ' + ${prototype.likeCount}">♥ 0</button>
+                </div>
               </div>
               <a class="card__user" th:href="@{/users/{userId}(userId=${user.id})}" th:text="'by ' + ${user.nickname}">by username</a>
             </div>
