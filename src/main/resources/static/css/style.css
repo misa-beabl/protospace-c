@@ -89,7 +89,14 @@ body {
 
 .greeting {
     margin-bottom: 20px;
-    font-family: ;
+    font-family: 'ヒラギノ角ゴシック';
+    text-align: center;
+    font-size: medium;
+    font-weight: 300;
+}
+
+.user_san {
+    text-decoration: none;
 }
 
 .greeting__link {
