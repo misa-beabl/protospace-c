@@ -436,7 +436,7 @@ img {
 
 /* 追加機能(バナー) */
 .banner {
-    height: 25vh;
+    height: 50vh;
     width: 100%;
     background-color: rgb(237, 224, 218);
     display: flex;
@@ -453,4 +453,32 @@ img {
 
 .banner-subtitle{
     font-size: medium;    
+}
+
+.slideshow-fade {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.slideshow-fade li{
+    opacity: 0;
+}
+
+.slideshow-fade li:first-child {
+    opacity: 1;
+    transition: 2s;
+}
+
+.slideshow-fade li:last-child {
+    opacity: 1;
+    transition: 2s ease-out;
+}
+
+.banner-img{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
 }
