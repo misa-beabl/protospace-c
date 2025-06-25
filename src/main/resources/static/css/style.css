@@ -89,6 +89,7 @@ body {
 
 .greeting {
     margin-bottom: 20px;
+    font-family: ;
 }
 
 .greeting__link {
@@ -383,6 +384,7 @@ body {
     transition: 0.4s ease;
     margin: 0 4px;
     background-color: rgb(135, 135, 223);
+    height: 25px;
 }
 
 .prototype__btn:hover {
@@ -693,3 +695,27 @@ img {
       padding: 16px 6vw;
     }
   }
+
+  .user_title {
+    display: flex;
+    align-items: center;
+  }
+
+  .user_edit {
+    padding: 0.4em 1.6em;
+    font-size: 0.4em;
+    color: white;
+    text-decoration: none;
+    user-select: none;
+    border: 1px #999 solid;
+    border-radius: 3px;
+    transition: 0.4s ease;
+    margin-left: 20px;
+    background-color: rgb(135, 135, 223);
+    height: 25px;
+}
+
+.user_edit:hover {
+    color: #fff;
+    background: #999;
+}
