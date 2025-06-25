@@ -1,0 +1,1 @@
+ALTER TABLE prototypes ADD COLUMN like_count INTEGER DEFAULT 0 NOT NULL;

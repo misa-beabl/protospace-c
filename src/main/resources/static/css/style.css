@@ -89,6 +89,7 @@ body {
 
 .greeting {
     margin-bottom: 20px;
+    font-family: ;
 }
 
 .greeting__link {
@@ -383,6 +384,7 @@ body {
     transition: 0.4s ease;
     margin: 0 4px;
     background-color: rgb(135, 135, 223);
+    height: 25px;
 }
 
 .prototype__btn:hover {
@@ -436,7 +438,7 @@ img {
 
 /* 追加機能(バナー) */
 .banner {
-    height: 25vh;
+    height: 50vh;
     width: 100%;
     background-color: rgb(237, 224, 218);
     display: flex;
@@ -453,6 +455,67 @@ img {
 
 .banner-subtitle{
     font-size: medium;    
+}
+
+/* いいねボタン */
+.card__like {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.prototype__like {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.prototype_detail_btn {
+    width: 70%;
+    text-align: right;
+}
+
+.like-btn {
+    color: #888;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5em;
+    transition: color 0.2s;
+}
+.like-btn.liked {
+    color: #e25555;
+}
+.heart-icon {
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 0.3em;
+}
+
+.slideshow-fade {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.slideshow-fade li{
+    opacity: 0;
+}
+
+.slideshow-fade li:first-child {
+    opacity: 1;
+    transition: 2s;
+}
+
+.slideshow-fade li:last-child {
+    opacity: 1;
+    transition: 2s ease-out;
+}
+
+.banner-img{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .search-form {
@@ -684,3 +747,34 @@ color: #444;
   #delete-modal button#cancel-delete:hover {
     background: #ccc;
   }
+
+  @media (max-width: 700px) {
+    .prototype__comments {
+      max-width: 96vw;
+      padding: 16px 6vw;
+    }
+  }
+
+  .user_title {
+    display: flex;
+    align-items: center;
+  }
+
+  .user_edit {
+    padding: 0.4em 1.6em;
+    font-size: 0.4em;
+    color: white;
+    text-decoration: none;
+    user-select: none;
+    border: 1px #999 solid;
+    border-radius: 3px;
+    transition: 0.4s ease;
+    margin-left: 20px;
+    background-color: rgb(135, 135, 223);
+    height: 25px;
+}
+
+.user_edit:hover {
+    color: #fff;
+    background: #999;
+}
