@@ -35,9 +35,11 @@ public class LikesController {
     if (alreadyLiked) {
       // 解除（delete）
       likesRepository.delete(userId, prototypeId);
+      prototypeRepository.decrementLikeCount(prototypeId); // いいね数を減らす
     } else {
       // 登録（insert）
       likesRepository.insert(userId, prototypeId);
+      prototypeRepository.incrementLikeCount(prototypeId); // いいね数を増やす
     }
   }
 

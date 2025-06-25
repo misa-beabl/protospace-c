@@ -2,6 +2,7 @@ package in.tech_camp.protospace_c.entity;
 
 import java.sql.Timestamp;
 import java.util.List;
+
 import lombok.Data;
 import lombok.ToString;
 
@@ -14,7 +15,7 @@ public class PrototypeEntity {
   private String concept;
   private String image;
   private Timestamp createdAt;
-  // toString 方法中不包含打了ToString.Exclude 标签的属性
+  private Integer likeCount;
   @ToString.Exclude
   private UserEntity user;
   @ToString.Exclude

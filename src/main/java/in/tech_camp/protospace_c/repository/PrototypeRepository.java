@@ -28,7 +28,8 @@ public interface PrototypeRepository {
   @Results({
     @Result(property = "user", column = "user_id",
     one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
-    @Result(property = "createdAt", column = "created_at")
+    @Result(property = "createdAt", column = "created_at"),
+    @Result(property = "likeCount", column = "like_count")
   })
   List<PrototypeEntity> findAll();
 
@@ -38,6 +39,7 @@ public interface PrototypeRepository {
     @Result(property = "user", column = "user_id",
             one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
     @Result(property = "createdAt", column = "created_at"),
+    @Result(property = "likeCount", column = "like_count"),
     @Result(property = "comments", column = "id", 
             many = @Many(select = "in.tech_camp.protospace_c.repository.CommentRepository.findByPrototypeId"))
   })
@@ -47,7 +49,8 @@ public interface PrototypeRepository {
   @Results({
     @Result(property = "user", column = "user_id",
             one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
-    @Result(property = "createdAt", column = "created_at")
+    @Result(property = "createdAt", column = "created_at"),
+    @Result(property = "likeCount", column = "like_count")
   })
   List<PrototypeEntity> findByUserId(Integer userId);
 
@@ -56,4 +59,12 @@ public interface PrototypeRepository {
 
   @Delete("DELETE FROM prototypes")
   void deleteAll();
+
+  /** いいね数 +1 */
+  @Update("UPDATE prototypes SET like_count = like_count + 1 WHERE id = #{prototypeId}")
+  void incrementLikeCount(Integer prototypeId);
+
+  /** いいね数 -1（0未満にならないようにする場合は注意） */
+  @Update("UPDATE prototypes SET like_count = like_count - 1 WHERE id = #{prototypeId} AND like_count > 0")
+  void decrementLikeCount(Integer prototypeId);
 }
