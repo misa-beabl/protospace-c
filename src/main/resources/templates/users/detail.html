@@ -46,7 +46,10 @@
               <div class="card__like">
                 <div th:if="${#authorization.expression('isAuthenticated()')}">
                   <form th:action="@{/prototype/{prototypeId}/like-from-u-detail(prototypeId=${prototype.id})}" method="post" style="display:inline;">
-                    <button type="submit" class="like-btn" th:text="'♥ ' + ${prototype.likeCount}">♥ 0</button>
+                    <button type="submit" 
+                            class="like-btn" 
+                            th:classappend="${likedIds != null and likedIds.contains(prototype.id)} ? 'liked' : ''"
+                            th:text="'♥ ' + ${prototype.likeCount}">♥ 0</button>
                   </form>
                 </div>
               </div>

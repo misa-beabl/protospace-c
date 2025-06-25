@@ -18,6 +18,9 @@ public interface LikesRepository {
   @Select("SELECT * FROM likes WHERE user_id = #{userId}")
   List<Integer> findByUserId(Integer userId);
 
+  @Select("SELECT prototype_id FROM likes WHERE user_id = #{userId}")
+  List<Integer> findLikedPrototypeIdsByUserId(Integer userId);
+
   @Select("SELECT EXISTS(SELECT 1 FROM likes WHERE user_id = #{userId} AND prototype_id = #{prototypeId})")
   Boolean exists(Integer userId, Integer prototypeId);
 
