@@ -22,6 +22,7 @@ import in.tech_camp.protospace_c.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_c.entity.PrototypeEntity;
 import in.tech_camp.protospace_c.entity.UserEntity;
 import in.tech_camp.protospace_c.form.UserForm;
+import in.tech_camp.protospace_c.repository.LikesRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.repository.UserRepository;
 import in.tech_camp.protospace_c.service.UserService;
@@ -35,6 +36,7 @@ import lombok.AllArgsConstructor;
 public class UserController {
   private final UserRepository userRepository;
   private final PrototypeRepository prototypeRepository;
+  private final LikesRepository likesRepository;
 
   private final UserService userService;
   private final HttpServletRequest request;
@@ -127,12 +129,18 @@ public class UserController {
   }
 
   @GetMapping("/users/{userId}")
-  public String showMypage(@PathVariable("userId") Integer userId, Model model) {
+  public String showMypage(
+    @PathVariable("userId") Integer userId, 
+    @AuthenticationPrincipal CustomUserDetail currentUser,
+    Model model) {
     UserEntity user = userRepository.findById(userId);
     List<PrototypeEntity> prototypes = prototypeRepository.findByUserId(userId);
 
     model.addAttribute("user", user);
     model.addAttribute("prototypes", prototypes);
+
+    List<Integer> likedIds = likesRepository.findLikedPrototypeIdsByUserId(currentUser.getUser().getId());
+    model.addAttribute("likedIds", likedIds);
     return "users/detail";
   }
 

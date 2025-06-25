@@ -25,6 +25,27 @@
       <div class="prototype__image">
         <img th:src="@{${prototype.image}}" alt="プロトタイプ画像">
       </div>
+      <div class="prototype__like">
+        <div th:if="${#authorization.expression('isAuthenticated()')}" class="prototype_detail_btn">
+          <form th:action="@{/prototype/{prototypeId}/like-from-p-detail(prototypeId=${prototype.id})}"
+                method="post" style="display:inline;">
+                <button type="submit"
+                        class="like-btn"
+                        th:classappend="${likedIds != null and likedIds.contains(prototype.id)} ? 'liked' : ''">
+                          <img th:src="@{${likedIds != null and likedIds.contains(prototype.id)} ? '/images/like_btn_liked.png' : '/images/like_btn.png'}"
+                                alt="いいね"
+                                class="heart-icon" />
+                          <span th:text="${prototype.likeCount}">0</span>
+                </button>
+          </form>
+        </div>
+        <div th:if="${#authorization.expression('!isAuthenticated()')}" class="prototype_detail_btn">
+          <button class="like-btn" disabled>
+            <img th:src="@{/images/like_btn.png}" alt="いいね" class="heart-icon" />
+            <span th:text="${prototype.likeCount}">0</span>
+          </button>
+        </div>
+      </div>
       <div class="prototype__body">
         <div class="prototype__detail">
           <p class="detail__title">キャッチコピー</p>

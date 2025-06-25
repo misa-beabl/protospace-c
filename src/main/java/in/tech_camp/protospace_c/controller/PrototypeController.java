@@ -27,6 +27,7 @@ import in.tech_camp.protospace_c.entity.PrototypeEntity;
 import in.tech_camp.protospace_c.entity.UserEntity;
 import in.tech_camp.protospace_c.form.CommentForm;
 import in.tech_camp.protospace_c.form.PrototypeForm;
+import in.tech_camp.protospace_c.repository.LikesRepository;
 import in.tech_camp.protospace_c.form.SearchForm;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
@@ -38,6 +39,7 @@ import lombok.AllArgsConstructor;
 public class PrototypeController {
   private final PrototypeRepository prototypeRepository;
   private final ImageUrl imageUrl;
+  private final LikesRepository likesRepository;
 
   @ModelAttribute("user")
   public UserEntity addUserToModel(@AuthenticationPrincipal CustomUserDetail currentUser) {
@@ -55,6 +57,9 @@ public class PrototypeController {
     model.addAttribute("searchForm", searchForm);
     if (currentUser != null) {
       model.addAttribute("user", currentUser.getUser());
+
+      List<Integer> likedIds = likesRepository.findLikedPrototypeIdsByUserId(currentUser.getUser().getId());
+      model.addAttribute("likedIds", likedIds);
     }
     return "index";
   }
@@ -232,9 +237,10 @@ public class PrototypeController {
     model.addAttribute("comments", prototype.getComments());
     if (currentUser != null) {
         model.addAttribute("user", currentUser.getUser());
+
+        List<Integer> likedIds = likesRepository.findLikedPrototypeIdsByUserId(currentUser.getUser().getId());
+        model.addAttribute("likedIds", likedIds);
     }
     return "prototypes/detail";
   }
-
-  
 }
