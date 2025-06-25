@@ -27,8 +27,8 @@ import in.tech_camp.protospace_c.entity.PrototypeEntity;
 import in.tech_camp.protospace_c.entity.UserEntity;
 import in.tech_camp.protospace_c.form.CommentForm;
 import in.tech_camp.protospace_c.form.PrototypeForm;
-import in.tech_camp.protospace_c.repository.LikesRepository;
 import in.tech_camp.protospace_c.form.SearchForm;
+import in.tech_camp.protospace_c.repository.LikesRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
@@ -86,7 +86,7 @@ public class PrototypeController {
     Model model
   ) {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
-    if (!currentUser.getUser().equals(prototype.getUser())) {
+    if (!currentUser.getUser().getId().equals(prototype.getUser().getId())) {
         return "redirect:/prototype/" + prototypeId;
     }
 
