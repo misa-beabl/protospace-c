@@ -325,9 +325,22 @@ body {
 
 .user__card {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 100px;
+    width: calc((100% - 50px) / 3);
+    /* justify-content: space-between; */
+    /* align-items: center; */
+    padding-bottom: 20px;
+}
+
+.my_prototype {
+    width: 100%;
+    padding-bottom: 50px;
+}
+
+.prototype_card {
+    flex: 0 0 320px;
 }
 
 .heading {

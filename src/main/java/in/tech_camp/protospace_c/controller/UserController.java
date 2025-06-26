@@ -132,15 +132,31 @@ public class UserController {
   public String showMypage(
     @PathVariable("userId") Integer userId, 
     @AuthenticationPrincipal CustomUserDetail currentUser,
+    @RequestParam(value = "tab", defaultValue = "own") String tab,
     Model model) {
     UserEntity user = userRepository.findById(userId);
+    boolean isOwnPage = (currentUser != null && currentUser.getUser() != null
+        && user.getId().equals(currentUser.getUser().getId()));
+    model.addAttribute("isOwnPage", isOwnPage);
+
     List<PrototypeEntity> prototypes = prototypeRepository.findByUserId(userId);
+
+    // いいね欄（タブ切り替え用）
+    List<PrototypeEntity> likedPrototypes = List.of();
+    List<Integer> likedIds = List.of();
+    if (currentUser != null && user.getId().equals(currentUser.getUser().getId())) {
+        likedIds = likesRepository.findLikedPrototypeIdsByUserId(userId);
+        likedPrototypes = likedIds.stream()
+            .map(prototypeRepository::findById)
+            .filter(java.util.Objects::nonNull)
+            .collect(Collectors.toList());
+    }
 
     model.addAttribute("user", user);
     model.addAttribute("prototypes", prototypes);
-
-    List<Integer> likedIds = likesRepository.findLikedPrototypeIdsByUserId(currentUser.getUser().getId());
+    model.addAttribute("likedPrototypes", likedPrototypes);
     model.addAttribute("likedIds", likedIds);
+    model.addAttribute("tab", tab);
     return "users/detail";
   }
 
