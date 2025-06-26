@@ -13,6 +13,7 @@ public class UserEntity {
   private String profile;
   private String affiliation;
   private String position;
+  private String avatar;
   private List<PrototypeEntity> prototypes;
   private List<CommentEntity> comments;
 }

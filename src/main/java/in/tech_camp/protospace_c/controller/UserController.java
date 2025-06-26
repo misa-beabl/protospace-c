@@ -1,5 +1,11 @@
 package in.tech_camp.protospace_c.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +23,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import in.tech_camp.protospace_c.ImageUrl;
 import in.tech_camp.protospace_c.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_c.entity.PrototypeEntity;
 import in.tech_camp.protospace_c.entity.UserEntity;
@@ -40,6 +48,7 @@ public class UserController {
 
   private final UserService userService;
   private final HttpServletRequest request;
+  private final ImageUrl imageUrl;
 
   @ModelAttribute("user")
   public UserEntity addUserToModel(@AuthenticationPrincipal CustomUserDetail currentUser) {
@@ -80,6 +89,36 @@ public class UserController {
     userEntity.setAffiliation(userForm.getAffiliation());
     userEntity.setProfile(userForm.getProfile());
     userEntity.setPosition(userForm.getPosition());
+
+    MultipartFile avatarFile = userForm.getAvatar();
+    String avatarPath = null;
+    if (avatarFile != null && !avatarFile.isEmpty()) {
+        try {
+            // 路径获取和文件名处理
+            String uploadDir = imageUrl.getUserAvatarUrl();
+            Path uploadDirPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadDirPath)) {
+                Files.createDirectories(uploadDirPath);
+            }
+            String fileName = LocalDateTime.now()
+                                .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + avatarFile.getOriginalFilename();
+            Path imagePath = uploadDirPath.resolve(fileName);
+            Files.copy(avatarFile.getInputStream(), imagePath);
+            avatarPath = "/user_avatars/" + fileName; 
+        } catch (IOException e) {
+            result.rejectValue("avatar", "upload", "アイコン画像の保存に失敗しました");
+            List<String> errorMessages = result.getAllErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList());
+            model.addAttribute("errorMessages", errorMessages);
+            model.addAttribute("userForm", userForm);
+            return "users/signUp";
+        }
+    } else {
+        avatarPath = "/images/default_avatar.png";
+    }
+    userEntity.setAvatar(avatarPath);
 
     try {
       userService.createUserWithEncryptedPassword(userEntity);
