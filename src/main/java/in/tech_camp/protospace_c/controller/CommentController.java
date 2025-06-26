@@ -77,6 +77,7 @@ public class CommentController {
         commentRepository.deleteById(commentId);
       } catch (Exception e) {
         System.out.println("エラー：" + e);
+        return "redirect:/prototype/" + prototypeId;
       }   
       return "redirect:/prototype/" + prototypeId;
   }
