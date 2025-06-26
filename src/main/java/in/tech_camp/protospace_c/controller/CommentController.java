@@ -43,6 +43,10 @@ public class CommentController {
         model.addAttribute("errorMessages", result.getAllErrors());
         model.addAttribute("prototype", prototype);
         model.addAttribute("commentForm", commentForm);
+        model.addAttribute("comments", prototype.getComments());
+        if (currentUser != null) {
+          model.addAttribute("user", currentUser.getUser());
+        }
         return "prototypes/detail";
     }
 
@@ -59,7 +63,8 @@ public class CommentController {
       model.addAttribute("errorMessages", errorMessages);
       model.addAttribute("prototype", prototype);
       model.addAttribute("commentForm", commentForm);
-      System.out.println("エラー：" + e);
+      model.addAttribute("comments", prototype.getComments());
+      model.addAttribute("user", currentUser.getUser());
       return "prototypes/detail";
     }
 

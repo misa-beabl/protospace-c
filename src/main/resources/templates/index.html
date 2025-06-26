@@ -2,9 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta name="_csrf" th:content="${_csrf.token}">
+  <meta name="_csrf_header" th:content="${_csrf.headerName}">
   <title>ProtoSpace</title>
   <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
   <script th:src="@{/js/banner.js}" defer></script>
+  <script th:src="@{/js/like_button.js}" defer></script>
 </head>
 <body>
 <div th:insert="~{header :: header}"></div>
@@ -31,17 +34,18 @@
             <p class="card__summary" th:text="${prototype.concept}">concept</p>
             <div class="card__like">
               <div th:if="${#authorization.expression('isAuthenticated()')}">
-                <form th:action="@{/prototype/{prototypeId}/like-from-index(prototypeId=${prototype.id})}"
-                      method="post" style="display:inline;">
-                      <button type="submit"
+                <!-- <form th:action="@{/prototype/{prototypeId}/like-from-index(prototypeId=${prototype.id})}"
+                      method="post" style="display:inline;"> -->
+                      <button type="button"
                               class="like-btn"
+                              th:attr="data-prototype-id=${prototype.id}"
                               th:classappend="${likedIds != null and likedIds.contains(prototype.id)} ? 'liked' : ''">
                                 <img th:src="@{${likedIds != null and likedIds.contains(prototype.id)} ? '/images/like_btn_liked.png' : '/images/like_btn.png'}"
                                       alt="いいね"
                                       class="heart-icon" />
-                                <span th:text="${prototype.likeCount}">0</span>
+                                <span th:text="${prototype.likeCount}" class="like-count">0</span>
                         </button>
-                </form>
+                <!-- </form> -->
               </div>
               <div th:if="${#authorization.expression('!isAuthenticated()')}">
                 <button class="like-btn" disabled>
