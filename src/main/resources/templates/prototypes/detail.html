@@ -6,7 +6,11 @@
   <meta name="_csrf_header" th:content="${_csrf.headerName}">
   <title>ProtoSpace</title>
   <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+<<<<<<< コメント削除機能
+  <!-- <script th:src="@{/js/comment.js}"></script> -->
+=======
   <script th:src="@{/js/like_button.js}" defer></script>
+>>>>>>> main
 </head>
 <body>
 <div th:insert="~{header :: header}"></div>
@@ -90,9 +94,9 @@
               <li th:each="error : ${errorMessages}" th:text="${error.defaultMessage}"></li>
             </ul>
           </div>
-          <form th:action="@{/prototypes/{prototypeId}/comment(prototypeId=${prototype.id})}" method="post" th:object="${commentForm}">
+          <form id="form" th:action="@{/prototypes/{prototypeId}/comment(prototypeId=${prototype.id})}" method="post" th:object="${commentForm}">
             <textarea id="text" th:field="*{text}" placeholder="コメントする" rows="2"></textarea>
-            <input type="submit" value="SEND">
+            <input type="submit" value="SEND" id="send">
           </form>
         </div>
       
@@ -105,12 +109,19 @@
         <div class="comments">
           <h4>＜コメント一覧＞</h4>
           <div th:each="comment : ${comments}">
-            <p>
-              <strong>
-                <a th:href="@{/users/{userId}(userId=${comment.user.id})}" th:text="${comment.user.nickname}"></a>
-              </strong>
-              <span th:text="${comment.text}"></span>
-            </p>
+            <div class="one_line">
+              <p>
+                <strong>
+                  <a th:href="@{/users/{userId}(userId=${comment.user.id})}" th:text="${comment.user.nickname}"></a>
+                </strong>
+                <span th:text="${comment.text}"></span>
+              </p>
+              <div th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == prototype.user.id or #authentication?.principal.getId() == comment.user.id}">
+                <form th:action="@{'/prototype/' + ${prototypeId} + '/comments/' + ${comment.id} + '/delete'}" method="post" style="display:inline;">
+                  <button type="submit" class="comment_delete">削除する</button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>

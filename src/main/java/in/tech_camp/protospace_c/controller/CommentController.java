@@ -21,6 +21,7 @@ import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
 
+
 @Controller
 @AllArgsConstructor
 public class CommentController {
@@ -69,4 +70,21 @@ public class CommentController {
 
     return "redirect:/prototype/" + prototypeId;
   }
+
+  @PostMapping("/prototype/{prototypeId}/comments/{commentId}/delete")
+  public String deleteComment(@PathVariable("commentId") Integer commentId,
+    @PathVariable("prototypeId") Integer prototypeId,
+    Model model){
+
+      model.addAttribute("commentId", commentId);
+
+      try {
+        commentRepository.deleteById(commentId);
+      } catch (Exception e) {
+        System.out.println("エラー：" + e);
+        return "redirect:/prototype/" + prototypeId;
+      }   
+      return "redirect:/prototype/" + prototypeId;
+  }
+  
 }
