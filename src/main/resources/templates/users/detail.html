@@ -52,7 +52,6 @@
               <p class="card__summary" th:text="${prototype.slogan}">summary</p>
               <div class="card__like">
                 <div th:if="${#authorization.expression('isAuthenticated()')}">
-                  <!-- <form th:action="@{/prototype/{prototypeId}/like-from-u-detail(prototypeId=${prototype.id})}" method="post" style="display:inline;"> -->
                     <button type="button"
                             class="like-btn"
                             th:attr="data-prototype-id=${prototype.id}"
@@ -63,7 +62,6 @@
                                     class="heart-icon" />
                               <span th:text="${prototype.likeCount}"class="like-count">0</span>
                     </button>
-                  <!-- </form> -->
                 </div>
                 <div th:if="${#authorization.expression('!isAuthenticated()')}">
                   <button class="like-btn" disabled>
@@ -92,7 +90,6 @@
                 <p class="card__summary" th:text="${prototype.slogan}">summary</p>
                 <div class="card__like">
                   <div th:if="${#authorization.expression('isAuthenticated()')}">
-                    <!-- <form th:action="@{/prototype/{prototypeId}/like-from-u-detail(prototypeId=${prototype.id})}" method="post" style="display:inline;"> -->
                       <button type="button"
                               class="like-btn"
                               th:attr="data-prototype-id=${prototype.id}"
@@ -103,7 +100,6 @@
                                       class="heart-icon" />
                                 <span th:text="${prototype.likeCount}" class="like-count">0</span>
                       </button>
-                    <!-- </form> -->
                   </div>
                   <div th:if="${#authorization.expression('!isAuthenticated()')}">
                     <button class="like-btn" disabled>
