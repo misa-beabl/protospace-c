@@ -24,9 +24,6 @@
       <div th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == prototype.user.id}">
         <div class="prototype__manage">
           <a class="prototype__btn" th:href="@{/prototype/{prototypeId}/edit(prototypeId=${prototype.id})}">編集する</a>
-          <!-- <form th:action="@{/prototype/{prototypeId}/delete(prototypeId=${prototype.id})}" method="post" style="display:inline;">
-            <button type="submit" class="prototype__btn">削除する</button>
-          </form> -->
           <button
             type="button"
             class="prototype__btn delete-btn"
@@ -39,8 +36,6 @@
       </div>
       <div class="prototype__like">
         <div th:if="${#authorization.expression('isAuthenticated()')}" class="prototype_detail_btn">
-          <!-- <form th:action="@{/prototype/{prototypeId}/like-from-p-detail(prototypeId=${prototype.id})}"
-                method="post" style="display:inline;"> -->
                 <button type="button"
                         class="like-btn"
                         th:attr="data-prototype-id=${prototype.id}"
@@ -51,7 +46,6 @@
                                 class="heart-icon" />
                           <span th:text="${prototype.likeCount}" class="like-count">0</span>
                 </button>
-          <!-- </form> -->
         </div>
         <div th:if="${#authorization.expression('!isAuthenticated()')}" class="prototype_detail_btn">
           <button class="like-btn" disabled>

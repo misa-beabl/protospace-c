@@ -39,7 +39,7 @@
         </tbody>
       </table>
       <h2 class="heading" th:text="${user.nickname} + 'さんのプロトタイプ'">OOOさんのプロトタイプ</h2>
-      <div class="user__card my_prototype">
+      <div class="user__card my_prototype" id="my-prototype-list">
           <div th:if="${#lists.isEmpty(prototypes)}">
             <p>まだプロトタイプを投稿していません。</p>
           </div>
@@ -52,7 +52,6 @@
               <p class="card__summary" th:text="${prototype.slogan}">summary</p>
               <div class="card__like">
                 <div th:if="${#authorization.expression('isAuthenticated()')}">
-                  <!-- <form th:action="@{/prototype/{prototypeId}/like-from-u-detail(prototypeId=${prototype.id})}" method="post" style="display:inline;"> -->
                     <button type="button"
                             class="like-btn"
                             th:attr="data-prototype-id=${prototype.id}"
@@ -63,7 +62,6 @@
                                     class="heart-icon" />
                               <span th:text="${prototype.likeCount}"class="like-count">0</span>
                     </button>
-                  <!-- </form> -->
                 </div>
                 <div th:if="${#authorization.expression('!isAuthenticated()')}">
                   <button class="like-btn" disabled>
@@ -78,8 +76,8 @@
       </div>
 
       <div th:if="${isOwnPage}">
-        <h2 class="heading" th:text="${user.nickname} + 'さんのいいね'">OOOさんのいいね</h2>
-        <div class="user__card">
+        <h2 class="heading like_heading" th:text="${user.nickname} + 'さんのいいね'">OOOさんのいいね</h2>
+        <div class="user__card liked_prototype_mypage" id="liked-list">
             <div th:if="${#lists.isEmpty(likedPrototypes)}">
               <p>まだいいねしていません。</p>
             </div>
@@ -92,7 +90,6 @@
                 <p class="card__summary" th:text="${prototype.slogan}">summary</p>
                 <div class="card__like">
                   <div th:if="${#authorization.expression('isAuthenticated()')}">
-                    <!-- <form th:action="@{/prototype/{prototypeId}/like-from-u-detail(prototypeId=${prototype.id})}" method="post" style="display:inline;"> -->
                       <button type="button"
                               class="like-btn"
                               th:attr="data-prototype-id=${prototype.id}"
@@ -103,7 +100,6 @@
                                       class="heart-icon" />
                                 <span th:text="${prototype.likeCount}" class="like-count">0</span>
                       </button>
-                    <!-- </form> -->
                   </div>
                   <div th:if="${#authorization.expression('!isAuthenticated()')}">
                     <button class="like-btn" disabled>
@@ -112,7 +108,7 @@
                     </button>
                   </div>
                 </div>
-                <a class="card__user" th:href="@{/users/{userId}(userId=${user.id})}" th:text="'by ' + ${user.nickname}">by username</a>
+                <a class="card__user" th:href="@{/users/{userId}(userId=${prototype.user.id})}" th:text="'by ' + ${prototype.user.nickname}">by username</a>
               </div>
             </div>
         </div>

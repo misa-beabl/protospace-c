@@ -1,21 +1,29 @@
 package in.tech_camp.protospace_c.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import in.tech_camp.protospace_c.custom_user.CustomUserDetail;
+import in.tech_camp.protospace_c.entity.PrototypeEntity;
 import in.tech_camp.protospace_c.entity.UserEntity;
 import in.tech_camp.protospace_c.repository.LikesRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import lombok.AllArgsConstructor;
+
 
 
 @Controller
@@ -92,5 +100,37 @@ public class LikesController {
     Integer userId = currentUser.getUser().getId();
     Map<String, Object> result = toggleLike(userId, prototypeId);
     return result;
+  }
+
+  @GetMapping("/prototype/liked-prototypes")
+  @ResponseBody
+  public List<Map<String, Object>> getLikedPrototypes(
+      @AuthenticationPrincipal CustomUserDetail currentUser
+  ) {
+      if (currentUser == null) {
+          // 未ログインの場合は400や401など適切なエラーを返す
+          throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "ログインが必要です");
+      }
+      List<Integer> likedIds = likesRepository.findLikedPrototypeIdsByUserId(currentUser.getUser().getId());
+
+      List<Map<String, Object>> result = likedIds.stream()
+          .map(pid -> {
+              PrototypeEntity p = prototypeRepository.findById(pid);
+              if (p == null) return null;
+              Map<String, Object> map = new HashMap<>();
+              map.put("id", p.getId());
+              map.put("name", p.getName());
+              map.put("slogan", p.getSlogan());
+              map.put("image", p.getImage());
+              map.put("likeCount", p.getLikeCount());
+              map.put("user", Map.of(
+                  "id", p.getUser().getId(),
+                  "nickname", p.getUser().getNickname()
+              ));
+              return map;
+          })
+          .filter(Objects::nonNull)
+          .collect(Collectors.toList());
+      return result;
   }
 }

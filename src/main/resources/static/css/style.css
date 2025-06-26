@@ -83,7 +83,8 @@ body {
 }
 
 .inner {
-    width: 1024px;
+    /* width: 1024px; */
+    width: 1200px;
     margin: 0 auto;
 }
 
@@ -112,7 +113,7 @@ body {
 }
 
 .card {
-    width: calc((100% - 50px) / 3);
+    width: calc((100% - 150px) / 3);
     margin-bottom: 40px;
 }
 
@@ -154,6 +155,10 @@ body {
     min-height: 30px;
 }
 
+.form_field label {
+    font-weight: bold;
+}
+
 .userprimaryinfo {
     height: 50px;
     width: 35vw;
@@ -179,7 +184,8 @@ body {
 .form_btn {
     display: inline-block;
     padding: 0.4em 1.6em;
-    font-size: 0.8em;
+    font-size: 1.0em;
+    font-weight: bold;
     color: #fff;
     text-decoration: none;
     user-select: none;
@@ -188,6 +194,12 @@ body {
     border-radius: 3px;
     box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14),0 1px 2px 0 rgba(0,0,0,0.12);
     transition: 0.2s ease
+}
+
+.form_btn:hover {
+    border: 1px #87CEFA solid;
+    background: #fff;
+    color: #87CEFA;
 }
 
 /* 追加分 （style.cssに追記してください）*/
@@ -202,6 +214,10 @@ body {
 
 .field {
   margin: 10px 0;
+}
+
+.field label {
+    font-weight: bold;
 }
 
 .form__text {
@@ -299,6 +315,7 @@ body {
 
 .table {
     border-collapse: collapse;
+    margin-top: 15px;
     margin-bottom: 32px;
     width: 50%;
     background-color: white;
@@ -336,7 +353,13 @@ body {
 
 .my_prototype {
     width: 100%;
-    padding-bottom: 50px;
+    padding-bottom: 20px;
+}
+
+.liked_prototype_mypage {
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .prototype_card {
@@ -344,7 +367,12 @@ body {
 }
 
 .heading {
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
+    font-size: 2.0em;
+}
+
+.like_heading {
+    padding-top: 50px;
 }
 
 /* プロトタイプ詳細ページ */
@@ -372,6 +400,7 @@ body {
     width: 40%;
     margin: 0 auto;
     padding: 16px 0;
+    text-align: center;
 }
 
 .prototype__detail {
@@ -782,16 +811,19 @@ color: #444;
 
   .user_edit {
     padding: 0.4em 1.6em;
-    font-size: 0.4em;
+    font-size: 0.8em;
+    font-weight: bold;
     color: white;
     text-decoration: none;
     user-select: none;
     border: 1px #999 solid;
-    border-radius: 3px;
+    border-radius: 5px;
     transition: 0.4s ease;
     margin-left: 20px;
     background-color: rgb(135, 135, 223);
-    height: 25px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center; 
 }
 
 .user_edit:hover {
