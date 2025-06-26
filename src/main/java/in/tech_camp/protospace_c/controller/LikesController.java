@@ -70,27 +70,27 @@ public class LikesController {
 
   // ユーザー詳細ページ用
   @PostMapping("/prototype/{prototypeId}/like-from-u-detail")
-  public String LikeFromUserDetail(
+  @ResponseBody
+  public Map<String, Object> LikeFromUserDetail(
     @PathVariable("prototypeId") Integer prototypeId,
     @AuthenticationPrincipal CustomUserDetail currentUser,
     RedirectAttributes redirectAttributes
   ) {
     Integer userId = currentUser.getUser().getId();
-    toggleLike(userId, prototypeId);
-
-    Integer pageUserId = prototypeRepository.findById(prototypeId).getUser().getId();
-    return "redirect:/users/" + pageUserId;
+    Map<String, Object> result = toggleLike(userId, prototypeId);
+    return result;
   }
 
   // プロトタイプ詳細ページ用
   @PostMapping("/prototype/{prototypeId}/like-from-p-detail")
-  public String LikeFromPrototypeDetail(
+  @ResponseBody
+  public Map<String, Object> LikeFromPrototypeDetail(
     @PathVariable("prototypeId") Integer prototypeId,
     @AuthenticationPrincipal CustomUserDetail currentUser,
     RedirectAttributes redirectAttributes
   ) {
     Integer userId = currentUser.getUser().getId();
-    toggleLike(userId, prototypeId);
-    return "redirect:/prototype/" + prototypeId;
+    Map<String, Object> result = toggleLike(userId, prototypeId);
+    return result;
   }
 }

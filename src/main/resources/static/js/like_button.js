@@ -4,8 +4,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.querySelectorAll('.like-btn').forEach(function(btn) {
     btn.addEventListener('click', function (e) {
-      const prototypeId = btn.getAttribute('data-prototype-id');
-      fetch(`/prototype/${prototypeId}/like-from-index`, {
+      const endpoint = btn.getAttribute('data-action') ||
+        `/prototype/${btn.getAttribute('data-prototype-id')}/like-from-index`;
+
+      fetch(endpoint, {
         method: 'POST',
         headers: {
           'X-Requested-With': 'XMLHttpRequest',
