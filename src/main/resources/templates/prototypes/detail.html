@@ -2,9 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta name="_csrf" th:content="${_csrf.token}">
+  <meta name="_csrf_header" th:content="${_csrf.headerName}">
   <title>ProtoSpace</title>
   <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+<<<<<<< コメント削除機能
   <!-- <script th:src="@{/js/comment.js}"></script> -->
+=======
+  <script th:src="@{/js/like_button.js}" defer></script>
+>>>>>>> main
 </head>
 <body>
 <div th:insert="~{header :: header}"></div>
@@ -18,9 +24,14 @@
       <div th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == prototype.user.id}">
         <div class="prototype__manage">
           <a class="prototype__btn" th:href="@{/prototype/{prototypeId}/edit(prototypeId=${prototype.id})}">編集する</a>
-          <form th:action="@{/prototype/{prototypeId}/delete(prototypeId=${prototype.id})}" method="post" style="display:inline;">
+          <!-- <form th:action="@{/prototype/{prototypeId}/delete(prototypeId=${prototype.id})}" method="post" style="display:inline;">
             <button type="submit" class="prototype__btn">削除する</button>
-          </form>
+          </form> -->
+          <button
+            type="button"
+            class="prototype__btn delete-btn"
+            th:attr="data-action=@{/prototype/{prototypeId}/delete(prototypeId=${prototype.id})}"
+          >削除する</button>
         </div>
       </div>
       <div class="prototype__image">
@@ -28,17 +39,19 @@
       </div>
       <div class="prototype__like">
         <div th:if="${#authorization.expression('isAuthenticated()')}" class="prototype_detail_btn">
-          <form th:action="@{/prototype/{prototypeId}/like-from-p-detail(prototypeId=${prototype.id})}"
-                method="post" style="display:inline;">
-                <button type="submit"
+          <!-- <form th:action="@{/prototype/{prototypeId}/like-from-p-detail(prototypeId=${prototype.id})}"
+                method="post" style="display:inline;"> -->
+                <button type="button"
                         class="like-btn"
+                        th:attr="data-prototype-id=${prototype.id}"
+                        th:data-action="@{/prototype/{prototypeId}/like-from-p-detail(prototypeId=${prototype.id})}"
                         th:classappend="${likedIds != null and likedIds.contains(prototype.id)} ? 'liked' : ''">
                           <img th:src="@{${likedIds != null and likedIds.contains(prototype.id)} ? '/images/like_btn_liked.png' : '/images/like_btn.png'}"
                                 alt="いいね"
                                 class="heart-icon" />
-                          <span th:text="${prototype.likeCount}">0</span>
+                          <span th:text="${prototype.likeCount}" class="like-count">0</span>
                 </button>
-          </form>
+          <!-- </form> -->
         </div>
         <div th:if="${#authorization.expression('!isAuthenticated()')}" class="prototype_detail_btn">
           <button class="like-btn" disabled>
@@ -116,6 +129,14 @@
     </div>
   </div>
 </main>
+
+<div id="modal-mask"></div>
+<div id="delete-modal">
+  <p>本当に削除しますか？</p>
+  <button id="cancel-delete">キャンセル</button>
+  <button id="confirm-delete">削除</button>
+</div>
+<script src="/js/delete_popup.js"></script>
 
 <div th:insert="~{footer :: footer}"></div>
 </body>
