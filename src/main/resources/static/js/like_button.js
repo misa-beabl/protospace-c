@@ -68,6 +68,16 @@ document.addEventListener('DOMContentLoaded', function() {
           const img = btn.querySelector('img');
           img.src = data.liked ? '/images/like_btn_liked.png' : '/images/like_btn.png';
           btn.querySelector('.like-count').textContent = data.likeCount;
+
+          // 2. 同じprototypeIdの他ボタンもUIを同期
+          const prototypeId = btn.getAttribute('data-prototype-id');
+          document.querySelectorAll(`.like-btn[data-prototype-id="${prototypeId}"]`).forEach(otherBtn => {
+            // ボタン自身以外も同じ値で更新
+            otherBtn.classList.toggle('liked', data.liked);
+            otherBtn.querySelector('img').src =
+              data.liked ? '/images/like_btn_liked.png' : '/images/like_btn.png';
+            otherBtn.querySelector('.like-count').textContent = data.likeCount;
+          });
           
           // 追加 いいねリストも更新
           fetch('/prototype/liked-prototypes', {
