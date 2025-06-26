@@ -726,3 +726,19 @@ img {
     color: #fff;
     background: #999;
 }
+
+.comment_delete {
+    position: absolute;
+    right: 0;
+    background-color: #87CEFA;
+    border-radius: 5px;
+    color: #f7fbff;
+    border: 1px solid #fbe4e1;
+    padding: 3px 15px;
+    font-size: 10px;
+}
+
+.one_line {
+    display: flex;
+    position: relative;
+}

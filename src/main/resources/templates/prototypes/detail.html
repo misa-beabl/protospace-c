@@ -96,17 +96,19 @@
         <div class="comments">
           <h4>＜コメント一覧＞</h4>
           <div th:each="comment : ${comments}">
-            <p>
-              <strong>
-                <a th:href="@{/users/{userId}(userId=${comment.user.id})}" th:text="${comment.user.nickname}"></a>
-              </strong>
-              <span th:text="${comment.text}"></span>
+            <div class="one_line">
+              <p>
+                <strong>
+                  <a th:href="@{/users/{userId}(userId=${comment.user.id})}" th:text="${comment.user.nickname}"></a>
+                </strong>
+                <span th:text="${comment.text}"></span>
+              </p>
               <div th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == prototype.user.id or #authentication?.principal.getId() == comment.user.id}">
                 <form th:action="@{'/prototype/' + ${prototypeId} + '/comments/' + ${comment.id} + '/delete'}" method="post" style="display:inline;">
                   <button type="submit" class="comment_delete">削除する</button>
                 </form>
               </div>
-            </p>
+            </div>
           </div>
         </div>
       </div>
