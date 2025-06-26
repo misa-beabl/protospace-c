@@ -7,6 +7,7 @@
   <title>ProtoSpace</title>
   <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
   <script th:src="@{/js/like_button.js}" defer></script>
+  <script th:src="@{/js/liked_prototype.js}" defer></script>
 </head>
 <body>
 <div th:insert="~{header :: header}"></div>
@@ -39,7 +40,7 @@
         </tbody>
       </table>
       <h2 class="heading" th:text="${user.nickname} + 'さんのプロトタイプ'">OOOさんのプロトタイプ</h2>
-      <div class="user__card my_prototype">
+      <div class="user__card my_prototype" id="my-prototype-list">
           <div th:if="${#lists.isEmpty(prototypes)}">
             <p>まだプロトタイプを投稿していません。</p>
           </div>
@@ -78,8 +79,8 @@
       </div>
 
       <div th:if="${isOwnPage}">
-        <h2 class="heading" th:text="${user.nickname} + 'さんのいいね'">OOOさんのいいね</h2>
-        <div class="user__card">
+        <h2 class="heading like_heading" th:text="${user.nickname} + 'さんのいいね'">OOOさんのいいね</h2>
+        <div class="user__card liked_prototype_mypage" id="liked-list">
             <div th:if="${#lists.isEmpty(likedPrototypes)}">
               <p>まだいいねしていません。</p>
             </div>
@@ -112,7 +113,7 @@
                     </button>
                   </div>
                 </div>
-                <a class="card__user" th:href="@{/users/{userId}(userId=${user.id})}" th:text="'by ' + ${user.nickname}">by username</a>
+                <a class="card__user" th:href="@{/users/{userId}(userId=${prototype.user.id})}" th:text="'by ' + ${prototype.user.nickname}">by username</a>
               </div>
             </div>
         </div>

@@ -336,7 +336,13 @@ body {
 
 .my_prototype {
     width: 100%;
-    padding-bottom: 50px;
+    padding-bottom: 20px;
+}
+
+.liked_prototype_mypage {
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .prototype_card {
@@ -345,6 +351,10 @@ body {
 
 .heading {
     margin-bottom: 10px;
+}
+
+.like_heading {
+    padding-top: 50px;
 }
 
 /* プロトタイプ詳細ページ */
