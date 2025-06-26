@@ -116,7 +116,7 @@ public class UserController {
             return "users/signUp";
         }
     } else {
-        avatarPath = "/images/default_avatar.png";
+        avatarPath = "/user_avatars/default_avatar.png";
     }
     userEntity.setAvatar(avatarPath);
 
