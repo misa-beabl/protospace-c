@@ -46,7 +46,6 @@ public class CommentController {
         if (currentUser != null) {
           model.addAttribute("user", currentUser.getUser());
         }
-        return "fragments/commentItem :: commentItemFragment";
     }
 
     CommentEntity comment = new CommentEntity();
@@ -58,6 +57,7 @@ public class CommentController {
       commentRepository.insert(comment);
       CommentEntity savedComment = commentRepository.findById(comment.getId());
       model.addAttribute("comment", savedComment);
+      model.addAttribute("prototype", savedComment.getPrototype());
       return "fragments/commentItem :: commentItemFragment";
     } catch (Exception e) {
       List<String> errorMessages = new ArrayList<>();
@@ -67,7 +67,6 @@ public class CommentController {
       model.addAttribute("commentForm", commentForm);
       model.addAttribute("comments", prototype.getComments());
       model.addAttribute("user", currentUser.getUser());
-      return "fragments/commentItem :: commentItemFragment";
     }
   }
 
