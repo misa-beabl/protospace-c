@@ -54,7 +54,18 @@ body {
 .nav_btn:hover {
     color: #fff;
     background: #87CEFA;
-} 
+}
+
+.header__user-icon {
+    width: 1.4em;
+    height: 1.4em;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #eee;
+    border: 1px solid #ddd;
+    margin-right: 7px;
+    display: inline-block;
+}
 
  .nav_logout {
     display: inline-block;
