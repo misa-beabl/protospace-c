@@ -313,6 +313,12 @@ body {
     min-height: calc(100vh - 161px);
 }
 
+.user-detail-area {
+    display: flex;
+    align-items: flex-start;
+    gap: 100px;
+}
+
 .table {
     border-collapse: collapse;
     margin-top: 15px;
@@ -320,7 +326,6 @@ body {
     width: 50%;
     background-color: white;
 }
-
 
 .table_column1 {
     text-align: left;
@@ -340,12 +345,6 @@ body {
     padding: 16px 8px;
 }
 
-.user-detail-area {
-    display: flex;
-    align-items: flex-start;
-    gap: 100px;
-}
-
 .user-icon-area {
     margin-top: 15px;
     display: flex;
@@ -353,8 +352,8 @@ body {
 }
 
 .user-icon-img {
-    width: 70%;
-    height: 70%;
+    width: 230px;
+    height: 230px;
     object-fit: cover;
     border-radius: 50%;
     background: #eee;
