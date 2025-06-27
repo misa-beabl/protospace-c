@@ -30,7 +30,6 @@ public class CommentController {
 
   private final PrototypeRepository prototypeRepository;
 
-  // 评论投稿的post处理
   @PostMapping("/prototypes/{prototypeId}/comment")
   public String createComment(@PathVariable("prototypeId") Integer prototypeId, 
                             @ModelAttribute("commentForm") @Validated(ValidationOrder.class) CommentForm commentForm,
@@ -47,7 +46,6 @@ public class CommentController {
         if (currentUser != null) {
           model.addAttribute("user", currentUser.getUser());
         }
-        return "prototypes/detail";
     }
 
     CommentEntity comment = new CommentEntity();
@@ -57,6 +55,10 @@ public class CommentController {
 
     try {
       commentRepository.insert(comment);
+      CommentEntity savedComment = commentRepository.findById(comment.getId());
+      model.addAttribute("comment", savedComment);
+      model.addAttribute("prototype", savedComment.getPrototype());
+      return "fragments/commentItem :: commentItemFragment";
     } catch (Exception e) {
       List<String> errorMessages = new ArrayList<>();
       errorMessages.add("コメントの保存に失敗しました");
@@ -65,10 +67,7 @@ public class CommentController {
       model.addAttribute("commentForm", commentForm);
       model.addAttribute("comments", prototype.getComments());
       model.addAttribute("user", currentUser.getUser());
-      return "prototypes/detail";
     }
-
-    return "redirect:/prototype/" + prototypeId;
   }
 
   @PostMapping("/prototype/{prototypeId}/comments/{commentId}/delete")
@@ -82,9 +81,9 @@ public class CommentController {
         commentRepository.deleteById(commentId);
       } catch (Exception e) {
         System.out.println("エラー：" + e);
-        return "redirect:/prototype/" + prototypeId;
+        return "fragments/commentItem :: commentItemFragment";
       }   
-      return "redirect:/prototype/" + prototypeId;
+      return "fragments/commentItem :: commentItemFragment";
   }
   
 }
