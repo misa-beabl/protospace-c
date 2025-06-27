@@ -36,7 +36,10 @@ out/
 ### VS Code ###
 .vscode/
 
-# アップロード画像
+# プロトタイプ画像（コミット除外）
 # src/main/resources/static/uploads/**
 src/main/resources/static/uploads/*
 !src/main/resources/static/uploads/.gitkeep
+
+# ユーザーアバター画像（コミット除外）
+src/main/resources/static/user_avatars/*
