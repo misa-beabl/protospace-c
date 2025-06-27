@@ -26,7 +26,8 @@ public interface CommentRepository {
     })
     List<CommentEntity> findByPrototypeId(Integer prototypeId);
 
-    @Insert("INSERT INTO comments (text, user_id, prototype_id) VALUES (#{text}, #{user.id}, #{prototype.id})")
+    @Insert("INSERT INTO comments (text, user_id, prototype_id, image) " + 
+    "VALUES (#{text}, #{user.id}, #{prototype.id}, #{image})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(CommentEntity comment);
 

@@ -1,5 +1,11 @@
 package in.tech_camp.protospace_c.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,11 +13,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import in.tech_camp.protospace_c.ImageUrl;
 import in.tech_camp.protospace_c.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_c.entity.CommentEntity;
 import in.tech_camp.protospace_c.entity.PrototypeEntity;
@@ -29,6 +38,8 @@ public class CommentController {
   private final CommentRepository commentRepository;
 
   private final PrototypeRepository prototypeRepository;
+
+  private final ImageUrl imageUrl;
 
   @PostMapping("/prototypes/{prototypeId}/comment")
   public String createComment(@PathVariable("prototypeId") Integer prototypeId, 
@@ -52,6 +63,31 @@ public class CommentController {
     comment.setText(commentForm.getText());
     comment.setPrototype(prototype);
     comment.setUser(currentUser.getUser());
+    
+    MultipartFile commentImage = commentForm.getImage();
+    if (commentImage != null && !commentImage.isEmpty()) {
+      try {
+        String commentImageUrl = imageUrl.getCommentImageUrl();
+        Path commentImageDir = Paths.get(commentImageUrl);
+        if (!Files.exists(commentImageDir)) {
+          Files.createDirectories(commentImageDir);
+        }
+        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + commentImage.getOriginalFilename();
+        Path commentImagePath = Paths.get(commentImageUrl, fileName);
+        Files.copy(commentImage.getInputStream(), commentImagePath);
+        comment.setImage("/comment_images/" + fileName);
+      } catch (IOException e) {
+        result.rejectValue("image", "upload", "画像の保存に失敗しました");
+        List<ObjectError> errorMessages = new ArrayList<>();
+        errorMessages.add(new ObjectError("globalError", "コメントの保存に失敗しました"));
+        model.addAttribute("errorMessages", errorMessages);
+        model.addAttribute("prototype", prototype);
+        model.addAttribute("commentForm", commentForm);
+        model.addAttribute("comments", prototype.getComments());
+        model.addAttribute("user", currentUser.getUser());
+        return "prototypes/detail";
+      }
+    }
 
     try {
       commentRepository.insert(comment);
@@ -67,6 +103,7 @@ public class CommentController {
       model.addAttribute("commentForm", commentForm);
       model.addAttribute("comments", prototype.getComments());
       model.addAttribute("user", currentUser.getUser());
+      return "prototypes/detail";
     }
   }
 

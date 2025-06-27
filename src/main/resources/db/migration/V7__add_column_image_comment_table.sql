@@ -1,0 +1,1 @@
+ALTER TABLE comments ADD image VARCHAR(255);
