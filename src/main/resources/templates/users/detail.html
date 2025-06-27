@@ -78,7 +78,10 @@
                   </button>
                 </div>
               </div>
-              <a class="card__user" th:href="@{/users/{userId}(userId=${user.id})}" th:text="'by ' + ${user.nickname}">by username</a>
+              <a class="card__user" th:href="@{/users/{userId}(userId=${prototype.user.id})}">
+                <img class="card__user-icon" th:src="@{${prototype.user.avatar}}" >
+                <span th:text="'by ' + ${prototype.user.nickname}">by username</span>
+              </a>
             </div>
           </div>
       </div>
@@ -116,7 +119,10 @@
                     </button>
                   </div>
                 </div>
-                <a class="card__user" th:href="@{/users/{userId}(userId=${prototype.user.id})}" th:text="'by ' + ${prototype.user.nickname}">by username</a>
+                <a class="card__user" th:href="@{/users/{userId}(userId=${prototype.user.id})}">
+                  <img class="card__user-icon" th:src="@{${prototype.user.avatar}}" >
+                  <span th:text="'by ' + ${prototype.user.nickname}">by username</span>
+                </a>
               </div>
             </div>
         </div>
