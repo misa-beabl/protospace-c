@@ -23,11 +23,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import in.tech_camp.protospace_c.ImageUrl;
 import in.tech_camp.protospace_c.custom_user.CustomUserDetail;
+import in.tech_camp.protospace_c.entity.GenreEntity;
 import in.tech_camp.protospace_c.entity.PrototypeEntity;
 import in.tech_camp.protospace_c.entity.UserEntity;
 import in.tech_camp.protospace_c.form.CommentForm;
 import in.tech_camp.protospace_c.form.PrototypeForm;
 import in.tech_camp.protospace_c.form.SearchForm;
+import in.tech_camp.protospace_c.repository.GenreRepository;
 import in.tech_camp.protospace_c.repository.LikesRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
@@ -40,6 +42,7 @@ public class PrototypeController {
   private final PrototypeRepository prototypeRepository;
   private final ImageUrl imageUrl;
   private final LikesRepository likesRepository;
+  private final GenreRepository genreRepository;
 
   @ModelAttribute("user")
   public UserEntity addUserToModel(@AuthenticationPrincipal CustomUserDetail currentUser) {
@@ -75,6 +78,8 @@ public class PrototypeController {
 
   @GetMapping("/prototype/new")
   public String showPrototypeNew(Model model) {
+      List<GenreEntity> genres = genreRepository.findAll();
+      model.addAttribute("genres", genres);
       model.addAttribute("prototypeForm", new PrototypeForm());
       return "prototypes/new";
   }
@@ -94,6 +99,7 @@ public class PrototypeController {
     prototypeForm.setName(prototype.getName());
     prototypeForm.setSlogan(prototype.getSlogan());
     prototypeForm.setConcept(prototype.getConcept());
+    prototypeForm.setGenre(prototype.getGenre());
 
     model.addAttribute("prototypeForm", prototypeForm);
     model.addAttribute("prototypeId", prototypeId);
@@ -126,6 +132,7 @@ public class PrototypeController {
       prototype.setName(prototypeForm.getName());
       prototype.setSlogan(prototypeForm.getSlogan());
       prototype.setConcept(prototypeForm.getConcept());
+      prototype.setGenre(prototypeForm.getGenre());
 
       try {
         String uploadDir = imageUrl.getImageUrl();
@@ -187,6 +194,7 @@ public class PrototypeController {
     prototype.setName(prototypeForm.getName());
     prototype.setSlogan(prototypeForm.getSlogan());
     prototype.setConcept(prototypeForm.getConcept());
+    prototype.setGenre(prototypeForm.getGenre());
 
     try {
       String uploadDir = imageUrl.getImageUrl();

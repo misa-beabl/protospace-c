@@ -20,4 +20,5 @@ public class PrototypeEntity {
   private UserEntity user;
   @ToString.Exclude
   private List<CommentEntity> comments;
+  private GenreEntity genre;
 }

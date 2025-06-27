@@ -2,6 +2,7 @@ package in.tech_camp.protospace_c.form;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import in.tech_camp.protospace_c.entity.GenreEntity;
 import in.tech_camp.protospace_c.validation.ValidationPriority1;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +18,9 @@ public class PrototypeForm {
 
   @NotBlank(message = "Concept can't be blank",groups = ValidationPriority1.class)
   private String concept;
+
+  @NotBlank(message = "Genre must be selected", groups = ValidationPriority1.class)
+  private GenreEntity genre;
 
   @NotNull(message = "Image can't be blank",groups = ValidationPriority1.class)
   private MultipartFile image;
