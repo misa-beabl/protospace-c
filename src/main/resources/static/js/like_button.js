@@ -32,7 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
               <span class="like-count">${prototype.likeCount}</span>
             </button>
           </div>
-          <a class="card__user" href="/users/${prototype.user.id}">by ${prototype.user.nickname}</a>
+          <a class="card__user" href="/users/${prototype.user.id}">
+            <img class="card__user-icon" src="${prototype.user.avatar}" alt="ユーザーアイコン"/>
+            <span>by ${prototype.user.nickname}</span>
+          </a>
         </div>
       `;
       list.appendChild(el);
