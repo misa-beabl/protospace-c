@@ -33,6 +33,16 @@
           </div>
 
           <div class="field">
+            <label for="prototype_genre">ジャンル選択</label><br>
+            <select id="prototype_genre" th:field="*{genre}" required>
+              <option th:each="genre : ${genres}" 
+                      th:value="${genre.id}" 
+                      th:text="${genre.genreName}">
+              </option>
+            </select>
+          </div>
+
+          <div class="field">
             <label for="prototype_image">プロトタイプの画像</label><br>
             <input type="file" id="prototype_image" th:field="*{image}" required>
           </div>
