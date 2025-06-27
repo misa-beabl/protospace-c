@@ -18,26 +18,34 @@
         <h2 class="heading" th:text="${user.nickname} + 'さんの情報'">OOOさんの情報</h2>
         <a th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == user.id}" class="user_edit" th:href="@{/users/{userId}/edit(userId=${user.id})}">ユーザー編集</a>
       </div>
-      <table class="table">
-        <tbody>
-          <tr>
-            <th class="table_column1">名前</th>
-            <td class="table_column2" th:text="${user.nickname}">OOO</td>
-          </tr>
-          <tr>
-            <th class="table_column1">プロフィール</th>
-            <td class="table_column2" th:text="${user.profile}">OOO</td>
-          </tr>
-          <tr>
-            <th class="table_column1">所属</th>
-            <td class="table_column2" th:text="${user.affiliation}">OOO</td>
-          </tr>
-          <tr>
-            <th class="table_column1">役職</th>
-            <td class="table_column2" th:text="${user.position}">OOO</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="user-detail-area">
+        <div class="user-icon-area">
+          <img class="user-icon-img"
+                th:src="@{${user.avatar}}" 
+                alt="ユーザーアイコン">
+        </div>
+        <table class="table">
+          <tbody>
+            <tr>
+              <th class="table_column1">名前</th>
+              <td class="table_column2" th:text="${user.nickname}">OOO</td>
+            </tr>
+            <tr>
+              <th class="table_column1">プロフィール</th>
+              <td class="table_column2" th:text="${user.profile}">OOO</td>
+            </tr>
+            <tr>
+              <th class="table_column1">所属</th>
+              <td class="table_column2" th:text="${user.affiliation}">OOO</td>
+            </tr>
+            <tr>
+              <th class="table_column1">役職</th>
+              <td class="table_column2" th:text="${user.position}">OOO</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <h2 class="heading" th:text="${user.nickname} + 'さんのプロトタイプ'">OOOさんのプロトタイプ</h2>
       <div class="user__card my_prototype" id="my-prototype-list">
           <div th:if="${#lists.isEmpty(prototypes)}">
