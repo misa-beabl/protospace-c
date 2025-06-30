@@ -27,7 +27,9 @@ public interface PrototypeRepository {
             one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
     @Result(property = "createdAt", column = "created_at"),
     @Result(property = "comments", column = "id", 
-            many = @Many(select = "in.tech_camp.protospace_c.repository.CommentRepository.findByPrototypeId"))
+            many = @Many(select = "in.tech_camp.protospace_c.repository.CommentRepository.findByPrototypeId")),
+    @Result(property = "genre", column = "genre_id",
+            one = @One(select = "in.tech_camp.protospace_c.repository.GenreRepository.findById"))
   })
   List<PrototypeEntity> findByTextContaining(String text);
 
@@ -44,7 +46,9 @@ public interface PrototypeRepository {
     @Result(property = "user", column = "user_id",
     one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
     @Result(property = "createdAt", column = "created_at"),
-    @Result(property = "likeCount", column = "like_count")
+    @Result(property = "likeCount", column = "like_count"),
+    @Result(property = "genre", column = "genre_id",
+            one = @One(select = "in.tech_camp.protospace_c.repository.GenreRepository.findById"))
   })
   List<PrototypeEntity> findAll();
 
@@ -56,7 +60,9 @@ public interface PrototypeRepository {
     @Result(property = "createdAt", column = "created_at"),
     @Result(property = "likeCount", column = "like_count"),
     @Result(property = "comments", column = "id", 
-            many = @Many(select = "in.tech_camp.protospace_c.repository.CommentRepository.findByPrototypeId"))
+            many = @Many(select = "in.tech_camp.protospace_c.repository.CommentRepository.findByPrototypeId")),
+    @Result(property = "genre", column = "genre_id",
+            one = @One(select = "in.tech_camp.protospace_c.repository.GenreRepository.findById"))            
   })
   PrototypeEntity findById(Integer id);
 
@@ -65,7 +71,9 @@ public interface PrototypeRepository {
     @Result(property = "user", column = "user_id",
             one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
     @Result(property = "createdAt", column = "created_at"),
-    @Result(property = "likeCount", column = "like_count")
+    @Result(property = "likeCount", column = "like_count"),
+    @Result(property = "genre", column = "genre_id",
+            one = @One(select = "in.tech_camp.protospace_c.repository.GenreRepository.findById"))
   })
   List<PrototypeEntity> findByUserId(Integer userId);
 

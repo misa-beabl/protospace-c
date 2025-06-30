@@ -95,12 +95,17 @@ public class PrototypeController {
         return "redirect:/prototype/" + prototypeId;
     }
 
+    Integer id = prototype.getGenre().getId();
+
     PrototypeForm prototypeForm = new PrototypeForm();
     prototypeForm.setName(prototype.getName());
     prototypeForm.setSlogan(prototype.getSlogan());
     prototypeForm.setConcept(prototype.getConcept());
-    prototypeForm.setGenre(prototype.getGenre());
+    prototypeForm.setGenreId(id);
 
+    List<GenreEntity> genres = genreRepository.findAll();
+     
+    model.addAttribute("genres", genres);
     model.addAttribute("prototypeForm", prototypeForm);
     model.addAttribute("prototypeId", prototypeId);
     return "prototypes/edit";
@@ -126,13 +131,16 @@ public class PrototypeController {
       return "prototypes/new";
       }
 
+      GenreEntity genre = genreRepository.findById(prototypeForm.getGenreId());
+
       PrototypeEntity prototype = new PrototypeEntity();
       // userが存在するか確認する（UserRepositoryにメソッド追加）
       prototype.setUser(currentUser.getUser());
       prototype.setName(prototypeForm.getName());
       prototype.setSlogan(prototypeForm.getSlogan());
       prototype.setConcept(prototypeForm.getConcept());
-      prototype.setGenre(prototypeForm.getGenre());
+      prototype.setGenre(genre);    
+     
 
       try {
         String uploadDir = imageUrl.getImageUrl();
@@ -188,13 +196,15 @@ public class PrototypeController {
       model.addAttribute("prototypeId", prototypeId);
       return "prototypes/edit";
     }
+
+    GenreEntity genre = genreRepository.findById(prototypeForm.getGenreId());
     
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
     prototype.setUser(currentUser.getUser());
     prototype.setName(prototypeForm.getName());
     prototype.setSlogan(prototypeForm.getSlogan());
     prototype.setConcept(prototypeForm.getConcept());
-    prototype.setGenre(prototypeForm.getGenre());
+    prototype.setGenre(genre);
 
     try {
       String uploadDir = imageUrl.getImageUrl();

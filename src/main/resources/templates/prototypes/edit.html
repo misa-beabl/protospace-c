@@ -12,7 +12,7 @@
   <div class="inner">
     <div class="form__wrapper">
       <h2 class="page-heading">プロトタイプ編集</h2>
-        <form enctype="multipart/form-data" th:action="@{/prototypes/{prototypeId}/update(prototypeId=${prototypeId})}" accept-charset="UTF-8" th:method="post" th:object="${prototypeForm}">
+        <form enctype="multipart/form-data" th:action="@{/prototype/{prototypeId}/update(prototypeId=${prototypeId})}" accept-charset="UTF-8" th:method="post" th:object="${prototypeForm}">
           <div th:if="${errorMessages}" th:each="error : ${errorMessages}">
             <div th:text="${error}"></div>
           </div>
@@ -34,7 +34,7 @@
 
           <div class="field">
             <label for="prototype_genre">ジャンル選択</label><br>
-            <select id="prototype_genre" th:field="*{genre}" required>
+            <select id="prototype_genre" th:field="*{genreId}" required>
               <option th:each="genre : ${genres}" 
                       th:value="${genre.id}" 
                       th:text="${genre.genreName}">
