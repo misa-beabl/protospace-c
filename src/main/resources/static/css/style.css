@@ -556,6 +556,9 @@ img {
     flex-direction: column;
     align-items: center;
     font-style: oblique;
+
+    /* position: relative;
+    aspect-ratio: 16 / 9; */
 }
 
 .banner-title {
@@ -626,6 +629,9 @@ img {
     top: 0;
     width: 100%;
     height: 100%;
+
+    /* object-fit: cover;
+    aspect-ratio: 16 / 9; */
 }
 
 .search-form {
