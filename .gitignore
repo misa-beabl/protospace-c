@@ -46,3 +46,4 @@ src/main/resources/static/user_avatars/*
 
 # コメント画像（コミット除外）
 src/main/resources/static/comment_images/*
+!src/main/resources/static/comment_images/.gitkeep
