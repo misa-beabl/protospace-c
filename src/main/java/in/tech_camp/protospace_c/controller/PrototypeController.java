@@ -35,6 +35,7 @@ import in.tech_camp.protospace_c.form.SearchForm;
 import in.tech_camp.protospace_c.repository.GenreRepository;
 import in.tech_camp.protospace_c.repository.LikesRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
+import in.tech_camp.protospace_c.repository.UserRepository;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
 
@@ -43,6 +44,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PrototypeController {
   private final PrototypeRepository prototypeRepository;
+  private final UserRepository userRepository;
   private final ImageUrl imageUrl;
   private final LikesRepository likesRepository;
   private final GenreRepository genreRepository;
@@ -50,7 +52,7 @@ public class PrototypeController {
   @ModelAttribute("user")
   public UserEntity addUserToModel(@AuthenticationPrincipal CustomUserDetail currentUser) {
     if (currentUser != null) {
-      return currentUser.getUser();
+      return userRepository.findById(currentUser.getUser().getId());
     }
     return null;
   }
@@ -62,7 +64,9 @@ public class PrototypeController {
     model.addAttribute("prototypes", prototypes);
     model.addAttribute("searchForm", searchForm);
     if (currentUser != null) {
-      model.addAttribute("user", currentUser.getUser());
+      UserEntity user = userRepository.findById(currentUser.getUser().getId());
+      // model.addAttribute("user", currentUser.getUser());
+      model.addAttribute("user", user);
 
       List<Integer> likedIds = likesRepository.findLikedPrototypeIdsByUserId(currentUser.getUser().getId());
       model.addAttribute("likedIds", likedIds);
@@ -261,7 +265,9 @@ public class PrototypeController {
     model.addAttribute("commentForm", new CommentForm());
     model.addAttribute("comments", prototype.getComments());
     if (currentUser != null) {
-        model.addAttribute("user", currentUser.getUser());
+        UserEntity user = userRepository.findById(currentUser.getUser().getId());
+        // model.addAttribute("user", currentUser.getUser());
+        model.addAttribute("user", user);
 
         List<Integer> likedIds = likesRepository.findLikedPrototypeIdsByUserId(currentUser.getUser().getId());
         model.addAttribute("likedIds", likedIds);

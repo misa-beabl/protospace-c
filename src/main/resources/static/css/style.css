@@ -333,6 +333,22 @@ body {
     transition: 0.4s ease;
 }
 
+.mypage-banner {
+    width: 100%;
+    background-color:#98cdff55;
+    padding: 22px 0 18px 0;
+    margin-bottom: 28px;
+    border-radius: 12px;
+}
+
+.mypage-banner-title {
+    font-size: 2.1em;
+    text-align: center;
+    letter-spacing: 0.13em;
+    font-weight: bold;
+    margin: 0;
+}
+
 .user_wrapper {
     min-height: calc(100vh - 161px);
 }
@@ -540,6 +556,9 @@ img {
     flex-direction: column;
     align-items: center;
     font-style: oblique;
+
+    /* position: relative;
+    aspect-ratio: 16 / 9; */
 }
 
 .banner-title {
@@ -610,6 +629,9 @@ img {
     top: 0;
     width: 100%;
     height: 100%;
+
+    /* object-fit: cover;
+    aspect-ratio: 16 / 9; */
 }
 
 .search-form {

@@ -53,7 +53,7 @@ public class UserController {
   @ModelAttribute("user")
   public UserEntity addUserToModel(@AuthenticationPrincipal CustomUserDetail currentUser) {
     if (currentUser != null) {
-      return currentUser.getUser();
+      return userRepository.findById(currentUser.getUser().getId());
     }
     return null;
   }
@@ -190,7 +190,7 @@ public class UserController {
             .collect(Collectors.toList());
     }
 
-    model.addAttribute("user", user);
+    model.addAttribute("thisUser", user);
     model.addAttribute("prototypes", prototypes);
     model.addAttribute("likedPrototypes", likedPrototypes);
     model.addAttribute("likedIds", likedIds);
