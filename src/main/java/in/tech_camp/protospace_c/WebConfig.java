@@ -11,8 +11,8 @@ public class WebConfig implements WebMvcConfigurer {
     // プロトタイプ画像アップロード用
     registry.addResourceHandler("/uploads/**")
             .addResourceLocations("file:src/main/resources/static/uploads/");
-
-    // ユーザーアイコン画像アップロード用
+    registry.addResourceHandler("/comment_images/**")
+            .addResourceLocations("file:src/main/resources/static/comment_images/");
     registry.addResourceHandler("/user_avatars/**")
             .addResourceLocations("file:src/main/resources/static/user_avatars/");
   }
