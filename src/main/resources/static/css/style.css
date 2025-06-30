@@ -333,6 +333,22 @@ body {
     transition: 0.4s ease;
 }
 
+.mypage-banner {
+    width: 100%;
+    background-color:#98cdff55;
+    padding: 22px 0 18px 0;
+    margin-bottom: 28px;
+    border-radius: 12px;
+}
+
+.mypage-banner-title {
+    font-size: 2.1em;
+    text-align: center;
+    letter-spacing: 0.13em;
+    font-weight: bold;
+    margin: 0;
+}
+
 .user_wrapper {
     min-height: calc(100vh - 161px);
 }

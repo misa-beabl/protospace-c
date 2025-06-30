@@ -13,6 +13,11 @@
 
 <main class="main">
   <div class="inner">
+    <!-- マイページバナー(自分だけ) -->
+    <div th:if="${user != null and user.id == thisUser.id}" class="mypage-banner">
+      <h1 class="mypage-banner-title" th:text="${user.nickname} + ' さんのマイページ'">My Page</h1>
+    </div>
+    <!--  -->
     <div class="user_wrapper">
       <div class="user_title">
         <h2 class="heading" th:text="${thisUser.nickname} + 'さんの情報'">OOOさんの情報</h2>
