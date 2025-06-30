@@ -22,6 +22,7 @@ import in.tech_camp.protospace_c.entity.PrototypeEntity;
 import in.tech_camp.protospace_c.entity.UserEntity;
 import in.tech_camp.protospace_c.repository.LikesRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
+import in.tech_camp.protospace_c.repository.UserRepository;
 import lombok.AllArgsConstructor;
 
 
@@ -29,13 +30,14 @@ import lombok.AllArgsConstructor;
 @Controller
 @AllArgsConstructor
 public class LikesController {
+  private final UserRepository userRepository;
   private final LikesRepository likesRepository;
   private final PrototypeRepository prototypeRepository;
 
   @ModelAttribute("user")
   public UserEntity addUserToModel(@AuthenticationPrincipal CustomUserDetail currentUser) {
     if (currentUser != null) {
-      return currentUser.getUser();
+      return userRepository.findById(currentUser.getUser().getId());
     }
     return null;
   }
@@ -125,7 +127,8 @@ public class LikesController {
               map.put("likeCount", p.getLikeCount());
               map.put("user", Map.of(
                   "id", p.getUser().getId(),
-                  "nickname", p.getUser().getNickname()
+                  "nickname", p.getUser().getNickname(),
+                  "avatar", p.getUser().getAvatar()
               ));
               return map;
           })
