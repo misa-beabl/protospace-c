@@ -94,7 +94,6 @@ public class UserController {
     String avatarPath = null;
     if (avatarFile != null && !avatarFile.isEmpty()) {
         try {
-            // 路径获取和文件名处理
             String uploadDir = imageUrl.getUserAvatarUrl();
             Path uploadDirPath = Paths.get(uploadDir);
 
@@ -246,6 +245,36 @@ public class UserController {
     user.setPosition(userForm.getPosition());
     user.setPassword(userForm.getPassword());
 
+    MultipartFile avatarFile = userForm.getAvatar();
+    String avatarPath = null;
+    if (avatarFile != null && !avatarFile.isEmpty()) {
+        try {
+            String uploadDir = imageUrl.getUserAvatarUrl();
+            Path uploadDirPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadDirPath)) {
+                Files.createDirectories(uploadDirPath);
+            }
+            String fileName = LocalDateTime.now()
+                                .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + avatarFile.getOriginalFilename();
+            Path imagePath = uploadDirPath.resolve(fileName);
+            Files.copy(avatarFile.getInputStream(), imagePath);
+            avatarPath = "/user_avatars/" + fileName; 
+        } catch (IOException e) {
+            result.rejectValue("avatar", "upload", "アイコン画像の保存に失敗しました");
+            List<String> errorMessages = result.getAllErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList());
+            model.addAttribute("errorMessages", errorMessages);
+            model.addAttribute("userForm", userForm);
+            model.addAttribute("userId", userId);
+            return "users/edit";
+        }
+    } else {
+        avatarPath = user.getAvatar();
+    }
+    user.setAvatar(avatarPath);
+
       try {
       userService.updateUserWithEncryptedPassword(user);
     } catch (Exception e) {
@@ -255,6 +284,4 @@ public class UserController {
       
       return "redirect:/users/" + userId;
   }
-  
-  
 }

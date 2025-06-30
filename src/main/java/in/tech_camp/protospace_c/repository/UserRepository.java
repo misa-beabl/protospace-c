@@ -43,6 +43,6 @@ public interface UserRepository {
   @Delete("DELETE FROM users")
   void deleteAll();
 
-  @Update("UPDATE users SET nickname=#{nickname}, email=#{email}, password=#{password}, profile=#{profile}, affiliation=#{affiliation}, position=#{position} WHERE id=#{id}")
+  @Update("UPDATE users SET nickname=#{nickname}, email=#{email}, password=#{password}, profile=#{profile}, affiliation=#{affiliation}, position=#{position}, avatar=#{avatar} WHERE id=#{id}")
   void update(UserEntity user);
 }

@@ -14,11 +14,18 @@ public class ImageUrl {
   @Value("${user.avatar.url}")
   private String userAvatarUrl;
 
+  @Value("${comment.image.url}")
+  private String commentImageUrl;
+
   public String getImageUrl(){
     return url;
   }
 
   public String getUserAvatarUrl(){
     return userAvatarUrl;
+  }
+
+  public String getCommentImageUrl(){
+    return commentImageUrl;
   }
 }
