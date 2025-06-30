@@ -7,7 +7,9 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import in.tech_camp.protospace_c.ImageUrl;
@@ -107,20 +110,24 @@ public class CommentController {
     }
   }
 
+
+
   @PostMapping("/prototype/{prototypeId}/comments/{commentId}/delete")
-  public String deleteComment(@PathVariable("commentId") Integer commentId,
-    @PathVariable("prototypeId") Integer prototypeId,
-    Model model){
-
-      model.addAttribute("commentId", commentId);
-
+  @ResponseBody
+  public Map<String, Object> deleteComment(
+      @PathVariable("commentId") Integer commentId,
+      @PathVariable("prototypeId") Integer prototypeId
+  ) {
+      Map<String, Object> res = new HashMap<>();
       try {
-        commentRepository.deleteById(commentId);
+          commentRepository.deleteById(commentId);
+          res.put("success", true);
+          res.put("commentId", commentId);
       } catch (Exception e) {
-        System.out.println("エラー：" + e);
-        return "fragments/commentItem :: commentItemFragment";
-      }   
-      return "fragments/commentItem :: commentItemFragment";
+          res.put("success", false);
+          res.put("error", e.getMessage());
+      }
+      return res;
   }
   
 }
