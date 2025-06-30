@@ -1,5 +1,5 @@
 <div th:fragment="commentItemFragment">
-  <div class="comment-item">
+  <div class="comment-item" th:attr="id=${'comment-' + comment.id}">
     <div class="comment-content">
       <strong class="comment-user">
         <a th:href="@{/users/{userId}(userId=${comment.user.id})}" th:text="${comment.user.nickname}"></a>
@@ -10,8 +10,9 @@
       </div>
     </div>
     <div th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == prototype.user.id or #authentication?.principal.getId() == comment.user.id}" class="comment-actions">
-      <form th:action="@{'/prototype/' + ${prototypeId} + '/comments/' + ${comment.id} + '/delete'}" method="post" style="display:inline;">
-        <button type="submit" class="comment-delete">削除する</button>
+      <form class="delete-comment-form"
+      th:attr="data-comment-id=${comment.id}, data-prototype-id=${prototypeId}" style="display:inline;">
+        <button type="button" class="comment-delete">削除する</button>
       </form>
     </div>
   </div>
