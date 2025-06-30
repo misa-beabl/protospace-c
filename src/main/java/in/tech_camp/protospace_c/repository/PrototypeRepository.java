@@ -32,11 +32,11 @@ public interface PrototypeRepository {
   List<PrototypeEntity> findByTextContaining(String text);
 
 
-  @Insert("INSERT INTO prototypes (user_id, name, slogan, concept, image) VALUES (#{user.id}, #{name}, #{slogan}, #{concept}, #{image})")
+  @Insert("INSERT INTO prototypes (user_id, name, slogan, concept, image, genre_id) VALUES (#{user.id}, #{name}, #{slogan}, #{concept}, #{image}, #{genre.id})")
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void insert(PrototypeEntity prototype);
 
-  @Update("UPDATE prototypes SET user_id = #{user.id}, name = #{name}, slogan = #{slogan}, concept = #{concept}, image = #{image} WHERE id = #{id}")
+  @Update("UPDATE prototypes SET user_id = #{user.id}, name = #{name}, slogan = #{slogan}, concept = #{concept}, image = #{image}, genre_id = #{genre.id} WHERE id = #{id}")
   void update(PrototypeEntity prototype);
 
   @Select("SELECT * FROM prototypes ORDER BY created_at DESC")

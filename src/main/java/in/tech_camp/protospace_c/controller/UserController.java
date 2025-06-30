@@ -234,7 +234,6 @@ public class UserController {
 
       model.addAttribute("userForm", userForm);
       model.addAttribute("userId", userId);
-      model.addAttribute("userId", userId);
       return "users/edit";
     }
 
