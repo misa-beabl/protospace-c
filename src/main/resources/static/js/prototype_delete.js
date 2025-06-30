@@ -27,10 +27,10 @@ document.addEventListener('DOMContentLoaded', function () {
       if (res.success && res.redirectUrl) {
         window.location.href = res.redirectUrl;
       } else {
-        alert("删除失败：" + (res.error || "未知错误"));
+        alert("削除失敗：" + (res.error || "unknown error"));
       }
     })
-    .catch(err => alert("删除异常：" + err))
+    .catch(err => alert("削除異常：" + err))
     .finally(() => {
       document.getElementById('delete-modal').style.display = 'none';
       document.getElementById('modal-mask').style.display = 'none';
