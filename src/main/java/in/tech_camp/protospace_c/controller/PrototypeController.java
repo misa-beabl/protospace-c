@@ -6,7 +6,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import in.tech_camp.protospace_c.ImageUrl;
@@ -233,14 +236,18 @@ public class PrototypeController {
 
   // 削除機能
   @PostMapping("/prototype/{prototypeId}/delete")
-  public String deletePrototype(@PathVariable("prototypeId") Integer prototypeId) {
+  @ResponseBody
+  public Map<String, Object> deletePrototype(@PathVariable("prototypeId") Integer prototypeId) {
+    Map<String, Object> res = new HashMap<>();
     try {
       prototypeRepository.deleteById(prototypeId);
+      res.put("success", true);
+      res.put("redirectUrl", "/");
     } catch (Exception e) {
-      System.out.println("エラー：" + e);
-      return "redirect:/";
+      res.put("success", false);
+      res.put("error", e.getMessage());
     }
-    return "redirect:/";
+    return res;
   }
 
   @GetMapping("/prototype/{prototypeId}")
