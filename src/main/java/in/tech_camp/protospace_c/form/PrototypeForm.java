@@ -18,8 +18,8 @@ public class PrototypeForm {
   @NotBlank(message = "Concept can't be blank",groups = ValidationPriority1.class)
   private String concept;
 
-  @NotBlank(message = "Genre must be selected", groups = ValidationPriority1.class)
-  private Integer genre;
+  @NotNull(message = "Genre must be selected", groups = ValidationPriority1.class)
+  private Integer genreId;
 
   @NotNull(message = "Image can't be blank",groups = ValidationPriority1.class)
   private MultipartFile image;

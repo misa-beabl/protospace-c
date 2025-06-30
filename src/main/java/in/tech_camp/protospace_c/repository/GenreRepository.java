@@ -15,4 +15,9 @@ public interface GenreRepository {
   @Results(value = {
     @Result(property="genreName", column="genre_name")})
   List<GenreEntity> findAll();
+
+  @Select("SELECT * FROM genres WHERE id = #{id}")
+   @Results(value = {
+    @Result(property="genreName", column="genre_name")})
+  GenreEntity findById(Integer id);
 }

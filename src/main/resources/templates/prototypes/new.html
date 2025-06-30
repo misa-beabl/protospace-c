@@ -34,7 +34,8 @@
 
           <div class="field">
             <label for="prototype_genre">ジャンル選択</label><br>
-            <select id="prototype_genre" th:field="*{genre}" required>
+            <select id="prototype_genre" th:field="*{genreId}" required>
+              <option value="-1" selected>選択してください</option>
               <option th:each="genre : ${genres}" 
                       th:value="${genre.id}" 
                       th:text="${genre.genreName}">
