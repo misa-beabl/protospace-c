@@ -26,7 +26,7 @@
             th:object="${userIconForm}" 
             method="post" 
             enctype="multipart/form-data">
-        <div class="form_field">
+        <div class="field">
           <label for="avatar">新しいアイコン画像を選択</label>
           <br>
           <input type="file" id="avatar" th:field="*{avatar}" required>
@@ -37,7 +37,7 @@
         </div>
       </form>
 
-      <div>
+      <div class="action">
         <a th:href="@{/users/{userId}(userId=${userId})}" class="nav_btn">マイページへ戻る</a>
       </div>
     </div>

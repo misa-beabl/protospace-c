@@ -354,7 +354,7 @@ public class UserController {
     user.setAvatar(avatarPath);
 
     try {
-      userService.updateUserWithEncryptedPassword(user);
+      userRepository.updateIcon(userId, avatarPath);
   } catch (Exception e) {
       model.addAttribute("errorMessage", "保存時にエラーが発生しました：" + e.getMessage());
       model.addAttribute("user", user);
