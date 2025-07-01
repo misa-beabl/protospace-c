@@ -64,6 +64,11 @@
           <textarea class="text_form" id="position" name="position" th:field="*{position}"></textarea>
         </div>
 
+        <div class="user-icon-preview-area">
+          <h2>現在のアイコン</h2>
+          <img th:src="@{${user.avatar}}" alt="現在のアイコン" class="user-icon-preview">
+        </div>
+
         <div class="field">
           <label for="prototype_image">アイコンの画像</label><br>
           <input type="file" id="avatar_image" th:field="*{avatar}">

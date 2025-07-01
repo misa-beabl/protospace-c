@@ -13,12 +13,11 @@
   <div class="inner">
     <div class="form_cover">
       <h2 class="heading">ユーザーアイコン編集画面</h2>
-      <br>
-      <br>
 
       <!-- 現在のアイコン -->
-      <div>
-        <img th:src="@{${user.avatar}}" alt="現在のアイコン">
+      <div class="user-icon-preview-area">
+        <h2>現在のアイコン</h2>
+        <img th:src="@{${user.avatar}}" alt="現在のアイコン" class="user-icon-preview">
       </div>
 
       <!-- アップロードフォーム -->

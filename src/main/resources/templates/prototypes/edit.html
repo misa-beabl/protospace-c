@@ -42,6 +42,11 @@
             </select>
           </div>
 
+          <div class="prototype-image-preview-area">
+            <h2>現在の画像</h2>
+            <img th:src="@{${prototype.image}}" alt="現在の画像" class="prototype-image-preview">
+          </div>
+
           <div class="field">
             <label for="prototype_image">プロトタイプの画像</label><br>
             <input type="file" id="prototype_image" th:field="*{image}" required>
