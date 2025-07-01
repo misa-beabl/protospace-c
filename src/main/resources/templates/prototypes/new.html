@@ -17,24 +17,24 @@
             <div th:text="${error}"></div>
           </div>
 
-          <div class="field">
+          <div class="form_field">
             <label for="prototype_name">プロトタイプの名称</label><br>
-            <input type="text" id="prototype_name" th:field="*{name}" required>
+            <input type="text" id="prototype_name" th:field="*{name}" class="userprimaryinfo" required>
           </div>
 
-          <div class="field">
+          <div class="form_field">
             <label for="prototype_slogan">キャッチコピー</label><br>
-            <textarea class="form__text" id="prototype_slogan" th:field="*{slogan}" required></textarea>
+            <textarea class="text_form" id="prototype_slogan" th:field="*{slogan}" required></textarea>
           </div>
 
-          <div class="field">
+          <div class="form_field">
             <label for="prototype_concept">コンセプト</label><br>
-            <textarea class="form__text" id="prototype_concept" th:field="*{concept}" required></textarea>
+            <textarea class="text_form" id="prototype_concept" th:field="*{concept}" required></textarea>
           </div>
 
-          <div class="field">
+          <div class="form_field select-box-genre">
             <label for="prototype_genre">ジャンル選択</label><br>
-            <select id="prototype_genre" th:field="*{genreId}" required>
+            <select id="prototype_genre" class="genre-select-input" th:field="*{genreId}" required>
               <option value="-1" selected>選択してください</option>
               <option th:each="genre : ${genres}" 
                       th:value="${genre.id}" 
@@ -43,7 +43,7 @@
             </select>
           </div>
 
-          <div class="field">
+          <div class="form_field">
             <label for="prototype_image">プロトタイプの画像</label><br>
             <input type="file" id="prototype_image" th:field="*{image}" required>
           </div>
