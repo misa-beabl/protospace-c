@@ -72,7 +72,12 @@
 
         <div class="field">
           <label for="prototype_image">アイコンの画像</label><br>
-          <input type="file" id="avatar_image" th:field="*{avatar}">
+          <input type="file" id="avatar" th:field="*{avatar}">
+        </div>
+
+        <div class="register-icon-preview-area">
+          <h2>アイコンプレビュー</h2>
+          <img id="preview-avatar" src="" alt="アップロード画像" class="register-icon-preview-img" style="display:none;">
         </div>
 
         <div class="action">
@@ -83,7 +88,7 @@
   </div>
 </main>
 
-
+<script src="/js/avatar_preview.js"></script>
 <div th:insert="~{footer :: footer}"></div>
 </body>
 </html>
