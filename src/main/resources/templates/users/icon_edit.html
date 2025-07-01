@@ -23,7 +23,7 @@
 
       <!-- アップロードフォーム -->
       <form th:action="@{/users/{userId}/icon-update(userId=${userId})}" 
-            th:object="${userForm}" 
+            th:object="${userIconForm}" 
             method="post" 
             enctype="multipart/form-data">
         <div class="form_field">

@@ -30,6 +30,7 @@ import in.tech_camp.protospace_c.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_c.entity.PrototypeEntity;
 import in.tech_camp.protospace_c.entity.UserEntity;
 import in.tech_camp.protospace_c.form.UserForm;
+import in.tech_camp.protospace_c.form.UserIconForm;
 import in.tech_camp.protospace_c.repository.LikesRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.repository.UserRepository;
@@ -37,6 +38,7 @@ import in.tech_camp.protospace_c.service.UserService;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+
 
 
 @Controller
@@ -292,19 +294,76 @@ public class UserController {
     @AuthenticationPrincipal CustomUserDetail currentUser) {
       UserEntity user = userRepository.findById(userId);
 
-      UserForm userForm = new UserForm();
-
-      userForm.setNickname(user.getNickname());
-      userForm.setEmail(user.getEmail());
-      userForm.setProfile(user.getProfile());
-      userForm.setAffiliation(user.getAffiliation());
-      userForm.setPosition(user.getPosition());
-      userForm.setPassword(user.getPassword());
-      userForm.setPasswordConfirmation(user.getPassword());
+      UserIconForm userIconForm = new UserIconForm();
 
       model.addAttribute("user", user);
-      model.addAttribute("userForm", userForm);
+      model.addAttribute("userIconForm", userIconForm);
       model.addAttribute("userId", userId);
     return "users/icon_edit";
+  }
+
+  @PostMapping("/users/{userId}/icon-update")
+  public String updateUserIcon(
+    @PathVariable("userId") Integer userId,
+    @ModelAttribute("userIconForm") UserIconForm userIconForm,
+    BindingResult result,
+    @AuthenticationPrincipal CustomUserDetail currentUser,
+    Model model
+  ) {
+    if (result.hasErrors()) {
+      List<String> errorMessages = result.getAllErrors().stream()
+              .map(DefaultMessageSourceResolvable::getDefaultMessage)
+              .collect(Collectors.toList());
+      model.addAttribute("errorMessages", errorMessages);
+
+      model.addAttribute("userIconForm", userIconForm);
+      model.addAttribute("userId", userId);
+      return "users/icon_edit";
+    }
+
+    UserEntity user = userRepository.findById(userId);
+    
+    MultipartFile avatarFile = userIconForm.getAvatar();
+    String avatarPath = null;
+    if (avatarFile != null && !avatarFile.isEmpty()) {
+        try {
+            String uploadDir = imageUrl.getUserAvatarUrl();
+            Path uploadDirPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadDirPath)) {
+                Files.createDirectories(uploadDirPath);
+            }
+            String fileName = LocalDateTime.now()
+                                .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + avatarFile.getOriginalFilename();
+            Path imagePath = uploadDirPath.resolve(fileName);
+            Files.copy(avatarFile.getInputStream(), imagePath);
+            avatarPath = "/user_avatars/" + fileName; 
+        } catch (IOException e) {
+            result.rejectValue("avatar", "upload", "アイコン画像の保存に失敗しました");
+            List<String> errorMessages = result.getAllErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList());
+            model.addAttribute("errorMessages", errorMessages);
+            model.addAttribute("userIconForm", userIconForm);
+            model.addAttribute("userId", userId);
+            return "users/icon_edit";
+        }
+    } else {
+        avatarPath = user.getAvatar();
+    }
+    user.setAvatar(avatarPath);
+
+    try {
+      userService.updateUserWithEncryptedPassword(user);
+  } catch (Exception e) {
+      model.addAttribute("errorMessage", "保存時にエラーが発生しました：" + e.getMessage());
+      model.addAttribute("user", user);
+      model.addAttribute("userIconForm", userIconForm);
+      model.addAttribute("userId", userId);
+      return "users/icon_edit";
+  }
+
+  // 完了後はマイページへリダイレクト
+  return "redirect:/users/" + userId;
   }
 }
