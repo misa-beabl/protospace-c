@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProtoSpace</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<main class="main">
+  <div class="inner">
+    <div class="form_cover">
+      <h2 class="heading">ユーザーアイコン編集画面</h2>
+      <br>
+      <br>
+
+      <!-- 現在のアイコン -->
+      <div>
+        <img th:src="@{${user.avatar}}" alt="現在のアイコン">
+      </div>
+
+      <!-- アップロードフォーム -->
+      <form th:action="@{/users/{userId}/icon-update(userId=${userId})}" 
+            th:object="${userForm}" 
+            method="post" 
+            enctype="multipart/form-data">
+        <div class="form_field">
+          <label for="avatar">新しいアイコン画像を選択</label>
+          <br>
+          <input type="file" id="avatar" th:field="*{avatar}" required>
+        </div>
+
+        <div class="action">
+          <input class="form_btn" type="submit" value="アイコンを変更"/>
+        </div>
+      </form>
+
+      <div>
+        <a th:href="@{/users/{userId}(userId=${userId})}" class="nav_btn">マイページへ戻る</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>

@@ -302,6 +302,7 @@ public class UserController {
       userForm.setPassword(user.getPassword());
       userForm.setPasswordConfirmation(user.getPassword());
 
+      model.addAttribute("user", user);
       model.addAttribute("userForm", userForm);
       model.addAttribute("userId", userId);
     return "users/icon_edit";
