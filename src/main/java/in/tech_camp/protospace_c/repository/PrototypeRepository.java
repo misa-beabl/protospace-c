@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Many;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.One;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
@@ -90,4 +91,29 @@ public interface PrototypeRepository {
   /** いいね数 -1（0未満にならないようにする場合は注意） */
   @Update("UPDATE prototypes SET like_count = like_count - 1 WHERE id = #{prototypeId} AND like_count > 0")
   void decrementLikeCount(Integer prototypeId);
+
+  @Select({
+        "<script>", // SQLが動的であることをMyBatisに伝える
+        "SELECT * FROM prototypes",
+        "<where>", // WHERE句を動的に制御
+                " <if test='genreIds != null and !genreIds.isEmpty()'>", // genreIdsが空でない場合のみ条件を追加
+                        " genre_id IN", // IN 句を開始
+                        " <foreach item='id' collection='genreIds' open='(' separator=',' close=')'>", // リストをループして展開
+                                " #{id}", // 各ジャンルIDをSQLに埋め込む
+                        " </foreach>",
+                " </if>",
+        "</where>",
+        "</script>"
+})
+  @Results(value = {
+    @Result(property = "id", column = "id"),
+    @Result(property = "user", column = "user_id",
+            one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
+    @Result(property = "createdAt", column = "created_at"),
+    @Result(property = "comments", column = "id", 
+            many = @Many(select = "in.tech_camp.protospace_c.repository.CommentRepository.findByPrototypeId")),
+    @Result(property = "genre", column = "genre_id",
+            one = @One(select = "in.tech_camp.protospace_c.repository.GenreRepository.findById"))
+  })
+  List<PrototypeEntity> findByGenreIdIn(@Param("genreIds") List<Long> genreIds);
 }

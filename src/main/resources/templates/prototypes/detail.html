@@ -63,6 +63,10 @@
           <p class="detail__title">コンセプト</p>
           <p class="detail__message" th:text="${prototype.concept}"></p>
         </div>
+        <div class="prototype__detail">
+          <p class="detail__title">ジャンル</p>
+          <p class="detail__message" th:text="${prototype.genre.genreName}"></p>
+        </div>
       </div>
 
       <div class="prototype__comments">

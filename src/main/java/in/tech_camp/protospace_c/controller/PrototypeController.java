@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import in.tech_camp.protospace_c.ImageUrl;
@@ -34,6 +36,7 @@ import in.tech_camp.protospace_c.repository.LikesRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
+
 
 
 @Controller
@@ -58,6 +61,8 @@ public class PrototypeController {
     SearchForm searchForm = new SearchForm();
     model.addAttribute("prototypes", prototypes);
     model.addAttribute("searchForm", searchForm);
+    List<GenreEntity> genres = genreRepository.findAll();
+    model.addAttribute("genres", genres);
     if (currentUser != null) {
       model.addAttribute("user", currentUser.getUser());
 
@@ -75,6 +80,25 @@ public class PrototypeController {
     model.addAttribute("searchForm", searchForm);
     return "prototypes/search";
   }
+
+  // ジャンル別のプロトタイプ検索
+  @GetMapping("/prototype/genre")
+  public String searchByGenre(@RequestParam(value = "genreId", required = false) List<Long> genreIds, Model model) {
+    List<PrototypeEntity> prototypes;
+     if (genreIds == null || genreIds.isEmpty()) {
+        prototypes = prototypeRepository.findAll();//選択されてないときは全プロトタイプの表示
+    } else {
+      prototypes = prototypeRepository.findByGenreIdIn(genreIds);//選択されたプロトタイプの表示
+    }
+
+    List<GenreEntity> genres = genreRepository.findAll();
+
+    model.addAttribute("prototypes", prototypes);
+    model.addAttribute("genres", genres);//検索語もチェックボックスの表示
+    model.addAttribute("selectedGenreIds", genreIds != null ? genreIds : new ArrayList<Long>());
+    return "prototypes/genre";
+  }
+  
 
   @GetMapping("/prototype/new")
   public String showPrototypeNew(Model model) {
