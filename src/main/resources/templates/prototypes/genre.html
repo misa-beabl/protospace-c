@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ProtoSpace</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+<main class="main">
+  <div class="inner">
+    <form th:action="@{/prototype/genre}" method="get" class="genre-search" id="genreFilterForm">
+      <ul class="genre-list">
+        <li th:each="genre : ${genres}">
+          <input type="checkbox"
+                  th:id="${genre.id}"
+                  th:value="${genre.id}"
+                  name="genreId"
+                  th:checked="${selectedGenreIds != null and selectedGenreIds.contains(genre.id)}" />
+          <label th:for="${genre.id}"
+                  th:text="${genre.genreName}"></label>
+        </li>
+      <button type="submit" class="genre-serch-btn">選択したジャンルで検索</button>
+    </form>
+    <div class="card__wrapper">
+      <div class="card" th:each="prototype : ${prototypes}">
+          <a th:href="@{/prototype/{prototypeId}(prototypeId=${prototype.id})}"><img class="card__img" th:src="${prototype.image}"></a>
+          <div class="card__body">
+            <a class="card__title" th:href="@{/prototypes/{prototypeId}(prototypeId=${prototype.id})}" th:text="${prototype.slogan}">title</a>
+            <p class="card__summary" th:text="${prototype.concept}">concept</p>
+            <a class="card__user" th:href="@{/users/{userId}(userId=${prototype.user.id})}" th:text="'by ' + ${prototype.user.nickname}">by username</a>
+          </div>
+      </div>
+    </div>
+  </div>
+</main>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>
