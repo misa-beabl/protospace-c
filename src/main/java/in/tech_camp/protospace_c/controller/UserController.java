@@ -284,4 +284,26 @@ public class UserController {
       
       return "redirect:/users/" + userId;
   }
+
+  @GetMapping("/users/{userId}/icon-edit")
+  public String showUserIconEdit(
+    @PathVariable("userId") Integer userId, 
+    Model model,
+    @AuthenticationPrincipal CustomUserDetail currentUser) {
+      UserEntity user = userRepository.findById(userId);
+
+      UserForm userForm = new UserForm();
+
+      userForm.setNickname(user.getNickname());
+      userForm.setEmail(user.getEmail());
+      userForm.setProfile(user.getProfile());
+      userForm.setAffiliation(user.getAffiliation());
+      userForm.setPosition(user.getPosition());
+      userForm.setPassword(user.getPassword());
+      userForm.setPasswordConfirmation(user.getPassword());
+
+      model.addAttribute("userForm", userForm);
+      model.addAttribute("userId", userId);
+    return "users/icon_edit";
+  }
 }
