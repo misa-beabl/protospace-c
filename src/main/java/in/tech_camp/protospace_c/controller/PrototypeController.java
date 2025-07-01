@@ -113,6 +113,7 @@ public class PrototypeController {
     List<GenreEntity> genres = genreRepository.findAll();
      
     model.addAttribute("genres", genres);
+    model.addAttribute("prototype", prototype);
     model.addAttribute("prototypeForm", prototypeForm);
     model.addAttribute("prototypeId", prototypeId);
     return "prototypes/edit";

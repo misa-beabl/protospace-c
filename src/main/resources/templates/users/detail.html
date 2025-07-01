@@ -25,9 +25,19 @@
       </div>
       <div class="user-detail-area">
         <div class="user-icon-area">
-          <img class="user-icon-img"
-                th:src="@{${thisUser.avatar}}" 
-                alt="ユーザーアイコン">
+          <!-- マイページの場合: 画像に編集ページリンクをつける -->
+          <a th:if="${user != null and thisUser.id == user.id}"
+          th:href="@{/users/{userId}/icon-edit(userId=${user.id})}"
+          class="user-icon-edit-link">
+            <img class="user-icon-img"
+                  th:src="@{${thisUser.avatar}}"
+                  alt="ユーザーアイコン（編集リンク付き）">
+          </a>
+          <!-- 他人のページはリンクなし -->
+          <img th:if="${user == null or thisUser.id != user.id}"
+              class="user-icon-img"
+              th:src="@{${thisUser.avatar}}"
+              alt="ユーザーアイコン">
         </div>
         <table class="table">
           <tbody>
