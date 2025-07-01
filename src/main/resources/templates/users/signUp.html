@@ -32,35 +32,30 @@
         <div class="form_field">
           <label for="password">パスワード (6文字以上)</label>
           <br>
-
           <input type="password" id="password" name="password" th:field="*{password}" class="userprimaryinfo" placeholder="パスワードを入力してください。">
 
         </div>
         <div class="form_field">
           <label for="passwordConfirmation">パスワード（確認用）</label>
           <br>
-
           <input type="password" id="passwordConfirmation" name="passwordConfirmation" class="userprimaryinfo" th:field="*{passwordConfirmation}" placeholder="パスワードを入力してください。">
 
         </div>
         <div class="form_field">
           <label for="nickname">ユーザー名</label>
           <br>
-
           <input type="text" id="nickname" name="nickname" th:field="*{nickname}" class="userprimaryinfo" placeholder="ユーザー名を入力してください。">
 
         </div>
         <div class="form_field">
           <label for="profile">プロフィール</label>
           <br>
-
           <textarea class="text_form" id="profile" name="profile" th:field="*{profile}"></textarea>
 
         </div>
         <div class="form_field">
           <label for="affiliation">所属</label>
           <br>
-
           <textarea class="text_form" id="affiliation" name="affiliation" th:field="*{affiliation}"></textarea>
 
         </div>
@@ -70,7 +65,7 @@
           <textarea class="text_form" id="position" name="position" th:field="*{position}"></textarea>
         </div>
 
-        <div class="field">
+        <div class="form_field">
           <label for="prototype_image">アイコンの画像</label><br>
           <input type="file" id="avatar" th:field="*{avatar}">
         </div>
