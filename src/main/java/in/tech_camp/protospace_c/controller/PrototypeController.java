@@ -6,8 +6,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import in.tech_camp.protospace_c.ImageUrl;
@@ -34,6 +38,7 @@ import in.tech_camp.protospace_c.form.SearchForm;
 import in.tech_camp.protospace_c.repository.GenreRepository;
 import in.tech_camp.protospace_c.repository.LikesRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
+import in.tech_camp.protospace_c.repository.UserRepository;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
 
@@ -43,6 +48,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PrototypeController {
   private final PrototypeRepository prototypeRepository;
+  private final UserRepository userRepository;
   private final ImageUrl imageUrl;
   private final LikesRepository likesRepository;
   private final GenreRepository genreRepository;
@@ -50,7 +56,7 @@ public class PrototypeController {
   @ModelAttribute("user")
   public UserEntity addUserToModel(@AuthenticationPrincipal CustomUserDetail currentUser) {
     if (currentUser != null) {
-      return currentUser.getUser();
+      return userRepository.findById(currentUser.getUser().getId());
     }
     return null;
   }
@@ -64,7 +70,9 @@ public class PrototypeController {
     List<GenreEntity> genres = genreRepository.findAll();
     model.addAttribute("genres", genres);
     if (currentUser != null) {
-      model.addAttribute("user", currentUser.getUser());
+      UserEntity user = userRepository.findById(currentUser.getUser().getId());
+      // model.addAttribute("user", currentUser.getUser());
+      model.addAttribute("user", user);
 
       List<Integer> likedIds = likesRepository.findLikedPrototypeIdsByUserId(currentUser.getUser().getId());
       model.addAttribute("likedIds", likedIds);
@@ -130,6 +138,7 @@ public class PrototypeController {
     List<GenreEntity> genres = genreRepository.findAll();
      
     model.addAttribute("genres", genres);
+    model.addAttribute("prototype", prototype);
     model.addAttribute("prototypeForm", prototypeForm);
     model.addAttribute("prototypeId", prototypeId);
     return "prototypes/edit";
@@ -257,14 +266,18 @@ public class PrototypeController {
 
   // 削除機能
   @PostMapping("/prototype/{prototypeId}/delete")
-  public String deletePrototype(@PathVariable("prototypeId") Integer prototypeId) {
+  @ResponseBody
+  public Map<String, Object> deletePrototype(@PathVariable("prototypeId") Integer prototypeId) {
+    Map<String, Object> res = new HashMap<>();
     try {
       prototypeRepository.deleteById(prototypeId);
+      res.put("success", true);
+      res.put("redirectUrl", "/");
     } catch (Exception e) {
-      System.out.println("エラー：" + e);
-      return "redirect:/";
+      res.put("success", false);
+      res.put("error", e.getMessage());
     }
-    return "redirect:/";
+    return res;
   }
 
   @GetMapping("/prototype/{prototypeId}")
@@ -278,7 +291,9 @@ public class PrototypeController {
     model.addAttribute("commentForm", new CommentForm());
     model.addAttribute("comments", prototype.getComments());
     if (currentUser != null) {
-        model.addAttribute("user", currentUser.getUser());
+        UserEntity user = userRepository.findById(currentUser.getUser().getId());
+        // model.addAttribute("user", currentUser.getUser());
+        model.addAttribute("user", user);
 
         List<Integer> likedIds = likesRepository.findLikedPrototypeIdsByUserId(currentUser.getUser().getId());
         model.addAttribute("likedIds", likedIds);

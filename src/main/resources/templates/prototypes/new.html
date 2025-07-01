@@ -48,6 +48,11 @@
             <input type="file" id="prototype_image" th:field="*{image}" required>
           </div>
 
+          <div class="prototype-image-preview-area">
+            <h2>アップロード画像プレビュー</h2>
+            <img id="prototype-preview-image" src="" alt="アップロード画像" class="prototype-image-preview" style="display: none;">
+          </div>
+
           <div class="actions">
             <input type="submit" name="commit" value="保存する" class="form__btn" data-disable-with="保存する">
           </div>
@@ -56,6 +61,7 @@
   </div>
 </main>
 
+<script src="/js/prototype_preview.js"></script>
 <div th:insert="~{footer :: footer}"></div>
 </body>
 </html>

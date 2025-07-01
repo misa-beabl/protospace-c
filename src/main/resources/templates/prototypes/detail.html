@@ -15,8 +15,6 @@
   <div class="inner">
     <div class="prototype__wrapper">
       <p class="prototype__hedding"th:text="${prototype.name}">title</p>
-      <!-- <a class="prototype__user" th:href="@{/users/{userId}(userId=${prototype.user.id})}"
-      th:text="'by: ' + ${prototype.user.nickname}"></a> -->
       <a class="prototype__user" th:href="@{/users/{userId}(userId=${prototype.user.id})}">
         <img class="card__user-icon" th:src="@{${prototype.user.avatar}}" >
         <span th:text="'by ' + ${prototype.user.nickname}">by username</span>
@@ -24,11 +22,11 @@
       <div th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == prototype.user.id}">
         <div class="prototype__manage">
           <a class="prototype__btn" th:href="@{/prototype/{prototypeId}/edit(prototypeId=${prototype.id})}">編集する</a>
-          <button
-            type="button"
-            class="prototype__btn delete-btn"
-            th:attr="data-action=@{/prototype/{prototypeId}/delete(prototypeId=${prototype.id})}"
-          >削除する</button>
+          <button type="button"
+              class="prototype__btn delete-btn"
+              th:attr="data-prototype-id=${prototype.id}">
+            削除する
+          </button>
         </div>
       </div>
       <div class="prototype__image">
@@ -114,6 +112,7 @@
 </div>
 <script src="/js/delete_popup.js"></script>
 <script src="/js/comment.js"></script>
+<script src="/js/prototype_delete.js"></script>
 <div th:insert="~{footer :: footer}"></div>
 </body>
 </html>

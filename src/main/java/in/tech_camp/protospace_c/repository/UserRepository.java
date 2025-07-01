@@ -45,4 +45,7 @@ public interface UserRepository {
 
   @Update("UPDATE users SET nickname=#{nickname}, email=#{email}, password=#{password}, profile=#{profile}, affiliation=#{affiliation}, position=#{position}, avatar=#{avatar} WHERE id=#{id}")
   void update(UserEntity user);
+
+  @Update("UPDATE users SET avatar=#{avatar} WHERE id=#{id}")
+  void updateIcon(Integer id, String avatar);
 }

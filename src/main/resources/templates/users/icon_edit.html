@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProtoSpace</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<main class="main">
+  <div class="inner">
+    <div class="form_cover">
+      <h2 class="heading">ユーザーアイコン編集画面</h2>
+
+      <div class="user-icon-preview-area">
+        <!-- 現在のアイコン -->
+        <div class="icon-block">
+          <h2>現在のアイコン</h2>
+          <img th:src="@{${user.avatar}}" alt="現在のアイコン" class="user-icon-preview">
+        </div>
+        <div class="icon-block">
+          <h2>アップロード画像</h2>
+          <img id="preview-avatar" src="" alt="アップロード画像" class="user-icon-preview" style="display:none;">
+        </div>
+      </div>
+
+      <!-- アップロードフォーム -->
+      <form th:action="@{/users/{userId}/icon-update(userId=${userId})}" 
+            th:object="${userIconForm}" 
+            method="post" 
+            enctype="multipart/form-data">
+        <div class="field">
+          <label for="avatar">新しいアイコン画像を選択</label>
+          <br>
+          <input type="file" id="avatar" th:field="*{avatar}" required>
+        </div>
+
+        <div class="action">
+          <input class="form_btn" type="submit" value="アイコンを変更"/>
+        </div>
+      </form>
+
+      <div class="action">
+        <a th:href="@{/users/{userId}(userId=${userId})}" class="nav_btn">マイページへ戻る</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="/js/avatar_preview.js"></script>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>

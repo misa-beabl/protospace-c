@@ -64,9 +64,20 @@
           <textarea class="text_form" id="position" name="position" th:field="*{position}"></textarea>
         </div>
 
+        <div class="user-icon-preview-area">
+          <div class="icon-block">
+            <h2>現在のアイコン</h2>
+            <img th:src="@{${user.avatar}}" alt="現在のアイコン" class="user-icon-preview">
+          </div>
+          <div class="icon-block">
+            <h2>アップロード画像</h2>
+            <img id="preview-avatar" src="" alt="アップロード画像" class="user-icon-preview" style="display:none;">
+          </div>
+        </div>
+
         <div class="field">
           <label for="prototype_image">アイコンの画像</label><br>
-          <input type="file" id="avatar_image" th:field="*{avatar}">
+          <input type="file" id="avatar" th:field="*{avatar}">
         </div>
 
         <div class="action">
@@ -77,7 +88,7 @@
   </div>
 </main>
 
-
+<script src="/js/avatar_preview.js"></script>
 <div th:insert="~{footer :: footer}"></div>
 </body>
 </html>
