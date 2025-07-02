@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="_csrf" th:content="${_csrf.token}">
+  <meta name="_csrf_header" th:content="${_csrf.headerName}">
+  <title>ProtoSpace</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+  <script th:src="@{/js/like_button.js}" defer></script>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<main class="main">
+  <div class="inner">
+    test
+  </div>
+</main>
+
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>

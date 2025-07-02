@@ -61,6 +61,14 @@
         </table>
       </div>
 
+      <div class="dm-link-area">
+        <a th:if="${#authorization.expression('isAuthenticated()') and thisUser.id != user.id}"
+          th:href="@{/messages/{userId}(userId=${thisUser.id})}"
+          title="このユーザーにメッセージを送る">
+          <img th:src="@{/images/DM_blue.png}" alt="ダイレクトメッセージ" class="dm-icon-img" style="width:40px;height:40px;">
+        </a>
+      </div>
+
       <h2 class="heading" th:text="${thisUser.nickname} + 'さんのプロトタイプ'">OOOさんのプロトタイプ</h2>
       <div class="user__card my_prototype" id="my-prototype-list">
           <div th:if="${#lists.isEmpty(prototypes)}">
