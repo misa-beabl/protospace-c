@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ import in.tech_camp.protospace_c.form.CommentForm;
 import in.tech_camp.protospace_c.repository.CommentRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 
 
@@ -39,9 +41,7 @@ import lombok.AllArgsConstructor;
 public class CommentController {
 
   private final CommentRepository commentRepository;
-
   private final PrototypeRepository prototypeRepository;
-
   private final ImageUrl imageUrl;
 
   @PostMapping("/prototypes/{prototypeId}/comment")
@@ -53,13 +53,12 @@ public class CommentController {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
 
     if (result.hasErrors()) {
-        model.addAttribute("errorMessages", result.getAllErrors());
-        model.addAttribute("prototype", prototype);
-        model.addAttribute("commentForm", commentForm);
-        model.addAttribute("comments", prototype.getComments());
-        if (currentUser != null) {
-          model.addAttribute("user", currentUser.getUser());
-        }
+      model.addAttribute("errorMessages", result.getAllErrors());
+      model.addAttribute("commentForm", commentForm);
+      model.addAttribute("formAction", "/prototypes/" + prototypeId + "/comment");
+      model.addAttribute("submitLabel", "SEND");
+      model.addAttribute("commentId", null);
+      return "fragments/commentForm :: commentFormFragment";
     }
 
     CommentEntity comment = new CommentEntity();
@@ -83,12 +82,13 @@ public class CommentController {
         result.rejectValue("image", "upload", "画像の保存に失敗しました");
         List<ObjectError> errorMessages = new ArrayList<>();
         errorMessages.add(new ObjectError("globalError", "コメントの保存に失敗しました"));
+        errorMessages.add(new ObjectError("globalError", "コメントの保存に失敗しました"));
         model.addAttribute("errorMessages", errorMessages);
-        model.addAttribute("prototype", prototype);
         model.addAttribute("commentForm", commentForm);
-        model.addAttribute("comments", prototype.getComments());
-        model.addAttribute("user", currentUser.getUser());
-        return "prototypes/detail";
+        model.addAttribute("formAction", "/prototypes/" + prototypeId + "/comment");
+        model.addAttribute("submitLabel", "SEND");
+        model.addAttribute("commentId", null);
+        return "fragments/commentForm :: commentFormFragment";
       }
     }
 
@@ -97,20 +97,29 @@ public class CommentController {
       CommentEntity savedComment = commentRepository.findById(comment.getId());
       model.addAttribute("comment", savedComment);
       model.addAttribute("prototype", savedComment.getPrototype());
+      model.addAttribute("prototypeId", savedComment.getPrototype().getId());
       return "fragments/commentItem :: commentItemFragment";
     } catch (Exception e) {
-      List<String> errorMessages = new ArrayList<>();
-      errorMessages.add("コメントの保存に失敗しました");
+      List<ObjectError> errorMessages = new ArrayList<>();
+      errorMessages.add(new ObjectError("globalError", "コメントの保存に失敗しました"));
       model.addAttribute("errorMessages", errorMessages);
-      model.addAttribute("prototype", prototype);
       model.addAttribute("commentForm", commentForm);
-      model.addAttribute("comments", prototype.getComments());
-      model.addAttribute("user", currentUser.getUser());
-      return "prototypes/detail";
+      model.addAttribute("formAction", "/prototypes/" + prototypeId + "/comment");
+      model.addAttribute("submitLabel", "SEND");
+      model.addAttribute("commentId", null);
+      return "fragments/commentForm :: commentFormFragment";
     }
   }
 
-
+  @GetMapping("/prototypes/{prototypeId}/comment-form-fragment")
+  public String getEmptyCommentForm(
+          @PathVariable("prototypeId") Integer prototypeId, Model model) {
+      model.addAttribute("commentForm", new CommentForm());
+      model.addAttribute("formAction", "/prototypes/" + prototypeId + "/comment");
+      model.addAttribute("submitLabel", "SEND");
+      model.addAttribute("commentId", null);
+      return "fragments/commentForm :: commentFormFragment";
+  }
 
   @PostMapping("/prototype/{prototypeId}/comments/{commentId}/delete")
   @ResponseBody
@@ -130,4 +139,100 @@ public class CommentController {
       return res;
   }
   
+  @PostMapping("/comment/{commentId}/edit")
+  public String editComment(
+    @PathVariable("commentId") Integer commentId,
+    @ModelAttribute @Validated(ValidationOrder.class) CommentForm commentForm,
+    BindingResult result,
+    @AuthenticationPrincipal CustomUserDetail currentUser,
+    Model model,
+    HttpServletResponse response
+  ) {
+    CommentEntity commentToEdit = commentRepository.findById(commentId);
+    if (!commentToEdit.getUser().getId().equals(currentUser.getUser().getId())) {
+        response.setStatus(403);
+        return null;
+    }
+
+    if (result.hasErrors()) {
+        model.addAttribute("errorMessages", result.getAllErrors());
+        model.addAttribute("commentForm", commentForm);
+        model.addAttribute("formAction", "/comment/" + commentId + "/edit");
+        model.addAttribute("submitLabel", "UPDATE");
+        model.addAttribute("commentId", commentId);
+        return "fragments/commentForm :: commentFormFragment";
+    }
+
+    try {
+      commentToEdit.setText(commentForm.getText());
+      MultipartFile commentImage = commentForm.getImage();
+      if (commentImage != null && !commentImage.isEmpty()) {
+        try {
+          String commentImageUrl = imageUrl.getCommentImageUrl();
+          Path commentImageDir = Paths.get(commentImageUrl);
+          if (!Files.exists(commentImageDir)) {
+              Files.createDirectories(commentImageDir);
+          }
+          String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + commentImage.getOriginalFilename();
+          Path commentImagePath = Paths.get(commentImageUrl, fileName);
+          Files.copy(commentImage.getInputStream(), commentImagePath);
+          commentToEdit.setImage("/comment_images/" + fileName);
+        } catch (IOException e) {
+          result.rejectValue("image", "upload", "画像の保存に失敗しました");
+          List<ObjectError> errorMessages = new ArrayList<>();
+          errorMessages.add(new ObjectError("globalError", "コメントの保存に失敗しました"));
+          model.addAttribute("errorMessages", errorMessages);
+          model.addAttribute("commentForm", commentForm);
+          model.addAttribute("formAction", "/comment/" + commentId + "/edit");
+          model.addAttribute("submitLabel", "UPDATE");
+          model.addAttribute("commentId", commentId);
+          return "fragments/commentForm :: commentFormFragment";
+        }
+      }
+      commentRepository.update(commentToEdit);
+
+      CommentEntity updatedComment = commentRepository.findById(commentId);
+      model.addAttribute("comment", updatedComment);
+      model.addAttribute("prototype", updatedComment.getPrototype());
+      model.addAttribute("prototypeId", updatedComment.getPrototype().getId());
+      return "fragments/commentItem :: commentItemFragment";
+    } catch (Exception e) {
+      List<ObjectError> errorMessages = new ArrayList<>();
+      errorMessages.add(new ObjectError("globalError", "コメントの編集に失敗しました"));
+      model.addAttribute("errorMessages", errorMessages);
+      model.addAttribute("commentForm", commentForm);
+      model.addAttribute("formAction", "/comment/" + commentId + "/edit");
+      model.addAttribute("submitLabel", "UPDATE");
+      model.addAttribute("commentId", commentId);
+      return "fragments/commentForm :: commentFormFragment";
+    }
+  }
+
+  @GetMapping("/comment/{commentId}/edit-form")
+  public String getEditCommentForm(
+      @PathVariable("commentId") Integer commentId,
+      Model model
+  ) {
+      CommentEntity comment = commentRepository.findById(commentId);
+      CommentForm commentForm = new CommentForm();
+      commentForm.setText(comment.getText());
+      commentForm.setImage(null);
+      model.addAttribute("commentForm", commentForm);
+      model.addAttribute("formAction", "/comment/" + commentId + "/edit");
+      model.addAttribute("submitLabel", "UPDATE");
+      model.addAttribute("commentId", commentId);
+      return "fragments/commentForm :: commentFormFragment";
+  }
+
+  @GetMapping("/comment/{commentId}/item")
+  public String getCommentItem(
+      @PathVariable("commentId") Integer commentId,
+      Model model
+  ) {
+      CommentEntity comment = commentRepository.findById(commentId);
+      model.addAttribute("comment", comment);
+      model.addAttribute("prototype", comment.getPrototype());
+      model.addAttribute("prototypeId", comment.getPrototype().getId());
+      return "fragments/commentItem :: commentItemFragment";
+  }
 }

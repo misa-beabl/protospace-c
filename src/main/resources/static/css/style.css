@@ -951,6 +951,51 @@ background: linear-gradient(90deg,#289ae5,#256ed1);
 box-shadow: 0 3px 12px rgba(49,129,247,0.16);
 }
 
+.prototype__comments input[type="submit"],
+.prototype__comments .comment-edit-cancel {
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1.2;
+  display: inline-block;
+  vertical-align: middle;
+  min-width: 120px;
+  height: 40px;
+  padding: 0 28px;
+  border-radius: 7px;
+  margin-top: 4px;
+  margin-left: 12px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* 颜色和边框分别控制 */
+.prototype__comments input[type="submit"] {
+  background: linear-gradient(90deg,#44acf6,#3181f7);
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(49,129,247,0.08);
+}
+.prototype__comments input[type="submit"]:hover {
+  background: linear-gradient(90deg,#289ae5,#256ed1);
+  box-shadow: 0 3px 12px rgba(49,129,247,0.16);
+}
+.prototype__comments .comment-edit-cancel {
+  background: #f8f9fa;
+  color: #3181f7;
+  border: 2px solid #3181f7;
+  box-shadow: 0 2px 8px rgba(49,129,247,0.08);
+  transition: background 0.22s, box-shadow 0.22s, border 0.22s, color 0.22s;
+}
+.prototype__comments .comment-edit-cancel:hover {
+  background: #e3effe;
+  border-color: #256ed1;
+  box-shadow: 0 3px 12px rgba(49,129,247,0.16);
+}
+
 .prototype__comments .comments {
 margin-top: 18px;
 }
@@ -1172,6 +1217,35 @@ color: #444;
     background-color: #b23333;
     color: #fff;
   }
+  
+  .comment-button-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  
+  .comment-edit-cancel {
+    align-self: flex-end;
+    padding: 8px 28px;
+    background: #f8f9fa;
+    color: #3181f7;
+    border: 2px solid #3181f7;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(49,129,247,0.08);
+    cursor: pointer;
+    transition: background 0.22s, box-shadow 0.22s, border 0.22s, color 0.22s;
+    margin-top: 4px;
+    margin-left: 12px;
+  }
+  
+  .comment-edit-cancel:hover {
+    background: #e3effe;
+    border-color: #256ed1;
+    box-shadow: 0 3px 12px rgba(49,129,247,0.16);
+  }
+
   .genre-search {
     margin-bottom: 20px;
   }

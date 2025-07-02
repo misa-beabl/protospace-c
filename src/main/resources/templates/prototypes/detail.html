@@ -12,6 +12,11 @@
 <div th:insert="~{header :: header}"></div>
 
 <main class="main">
+  <div th:if="${errorMessages}">
+    <ul>
+      <li th:each="error : ${errorMessages}" th:text="${error.defaultMessage}"></li>
+    </ul>
+  </div>
   <div class="inner">
     <div class="prototype__wrapper">
       <p class="prototype__hedding"th:text="${prototype.name}">title</p>
@@ -68,22 +73,11 @@
       </div>
 
       <div class="prototype__comments">
-        <div th:if="${#authorization.expression('isAuthenticated()')}">
-          <div th:if="${errorMessages}">
-            <ul>
-              <li th:each="error : ${errorMessages}" th:text="${error.defaultMessage}"></li>
-            </ul>
-          </div>
-          <form id="form" th:action="@{/prototypes/{prototypeId}/comment(prototypeId=${prototype.id})}" method="post" th:object="${commentForm}">
-            <textarea id="text" th:field="*{text}" placeholder="コメントする" rows="2"></textarea>
         
-            <div class="field">
-              <label for="comment_image">コメントの画像</label><br>
-              <input type="file" id="comment_image" th:field="*{image}">
-            </div>
-
-            <input type="submit" value="SEND" id="send">
-          </form>
+        <div th:if="${#authorization.expression('isAuthenticated()')}">
+          <div class="comment-form-container">
+            <div th:replace="fragments/commentForm :: commentFormFragment(${commentForm}, '/prototypes/' + ${prototype.id} + '/comment', 'SEND', null)"></div>
+          </div>
         </div>
       
         <div th:if="${#authorization.expression('!isAuthenticated()')}">
@@ -95,7 +89,9 @@
         <div class="comments">
           <h4>＜コメント一覧＞</h4>
           <div th:each="comment : ${comments}">
-            <div th:replace="fragments/commentItem :: commentItemFragment"></div>
+            <div class="comment-container" th:attr="id=${'comment-container-' + comment.id}">
+              <div th:replace="fragments/commentItem :: commentItemFragment"></div>
+            </div>
           </div>
         </div>
       </div>
