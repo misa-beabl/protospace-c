@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +68,7 @@ public class PrototypeController {
     model.addAttribute("searchForm", searchForm);
     List<GenreEntity> genres = genreRepository.findAll();
     model.addAttribute("genres", genres);
+    model.addAttribute("selectedGenreNames", new ArrayList<GenreEntity>());
     if (currentUser != null) {
       UserEntity user = userRepository.findById(currentUser.getUser().getId());
       // model.addAttribute("user", currentUser.getUser());
@@ -91,7 +91,8 @@ public class PrototypeController {
 
   // ジャンル別のプロトタイプ検索
   @GetMapping("/prototype/genre")
-  public String searchByGenre(@RequestParam(value = "genreId", required = false) List<Long> genreIds, Model model) {
+  public String searchByGenre(@RequestParam(value = "genreId", required = false) List<Long> genreIds,
+  @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
     List<PrototypeEntity> prototypes;
      if (genreIds == null || genreIds.isEmpty()) {
         prototypes = prototypeRepository.findAll();//選択されてないときは全プロトタイプの表示
@@ -99,11 +100,27 @@ public class PrototypeController {
       prototypes = prototypeRepository.findByGenreIdIn(genreIds);//選択されたプロトタイプの表示
     }
 
+    
+    if (currentUser != null) {
+      model.addAttribute("user", currentUser.getUser());
+      List<Integer> likedIds = likesRepository.findLikedPrototypeIdsByUserId(currentUser.getUser().getId());
+      model.addAttribute("likedIds", likedIds);
+    } else {
+      model.addAttribute("user", null);
+      model.addAttribute("likedIds", new ArrayList<>());
+    }
+
     List<GenreEntity> genres = genreRepository.findAll();
+
+    List<GenreEntity> genreResults = new ArrayList<>();
+    for (Long genreId : genreIds) {
+        genreResults.add(genreRepository.findByLong(genreId));
+    }
 
     model.addAttribute("prototypes", prototypes);
     model.addAttribute("genres", genres);//検索語もチェックボックスの表示
     model.addAttribute("selectedGenreIds", genreIds != null ? genreIds : new ArrayList<Long>());
+    model.addAttribute("genreResults", genreResults);
     return "prototypes/genre";
   }
   
