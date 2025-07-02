@@ -704,6 +704,12 @@ img {
     gap: 12px;
 }
 
+.search-forms {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .search-input {
     flex: 1;
     padding: 12px 14px;
@@ -1162,7 +1168,7 @@ padding: 20px;
 .genre-list {
 list-style: none;
 padding: 0;
-margin: 0;
+margin-bottom: 20px;
 }
 
 
@@ -1208,7 +1214,6 @@ width: 100%;
 }
 
 .genre-serch-btn {
-    margin-top: 20px;
     color: black;
     background-color: beige;
     padding: 10px;
@@ -1225,8 +1230,34 @@ width: 100%;
     box-shadow: 0 2px 10px rgba(0,0,0,0.07);
 }
 
+.genre-by-search {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.genre-to-top {
+    text-decoration: none;
+    background-color: transparent;
+    color: #289ae5;
+    border: #289ae5 solid 2px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.genre-text {
+    margin: 5px 0 5px;
+    padding-left: 20px;
+}
+
+.no-prototypes{
+    margin: 5px 20px;
+}
+
 .search-forms {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
