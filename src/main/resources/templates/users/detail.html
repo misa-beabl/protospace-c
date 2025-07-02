@@ -31,6 +31,7 @@
           class="user-icon-edit-link">
             <img class="user-icon-img"
                   th:src="@{${thisUser.avatar}}"
+                  title="アイコンを編集する"
                   alt="ユーザーアイコン（編集リンク付き）">
           </a>
           <!-- 他人のページはリンクなし -->
@@ -59,14 +60,15 @@
             </tr>
           </tbody>
         </table>
-      </div>
 
-      <div class="dm-link-area">
-        <a th:if="${#authorization.expression('isAuthenticated()') and thisUser.id != user.id}"
-          th:href="@{/messages/{userId}(userId=${thisUser.id})}"
-          title="このユーザーにメッセージを送る">
-          <img th:src="@{/images/DM_blue.png}" alt="ダイレクトメッセージ" class="dm-icon-img" style="width:40px;height:40px;">
-        </a>
+        <div class="dm-link-area">
+          <a th:if="${#authorization.expression('isAuthenticated()') and thisUser.id != user.id}"
+            th:href="@{/messages/{userId}(userId=${thisUser.id})}"
+            title="このユーザーにメッセージを送る">
+            <img th:src="@{/images/DM_blue.png}" alt="ダイレクトメッセージ" class="dm-icon-img">
+            <span class="dm-label">メッセージ</span>
+          </a>
+        </div>
       </div>
 
       <h2 class="heading" th:text="${thisUser.nickname} + 'さんのプロトタイプ'">OOOさんのプロトタイプ</h2>

@@ -456,6 +456,10 @@ body {
     align-items: center;
 }
 
+.user-icon-area:hover {
+    opacity: 0.8;
+}
+
 .user-icon-img {
     width: 230px;
     height: 230px;
@@ -497,6 +501,46 @@ body {
 .like_heading {
     padding-top: 50px;
 }
+
+/* DMリンクエリアをきれいに右寄せ＆間隔調整 */
+.dm-link-area {
+    margin: 1em 0 2em 0;
+    text-align: center;
+    align-items: center;
+}
+
+/* DMボタン全体（aタグ）装飾 */
+.dm-link-area a {
+text-decoration: none;
+color: #347aec;
+font-weight: 500;
+display: flex;
+flex-direction: column; 
+align-items: center;
+transition: opacity 0.15s;
+}
+.dm-link-area a:hover {
+opacity: 0.8;
+}
+
+/* DMアイコン画像の見た目調整 */
+.dm-icon-img {
+vertical-align: middle;
+width: 100px;
+height: 100px;
+margin-right: 0.5em;
+margin-left: 2px;
+}
+
+/* メッセージテキスト（ラベル） */
+.dm-link-area .dm-label {
+vertical-align: middle;
+font-size: 1em;
+font-weight: bold;
+color: #347aec;
+margin-top: 0.3em;
+}
+
 
 /* プロトタイプ詳細ページ */
 
