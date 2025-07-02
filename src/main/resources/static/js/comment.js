@@ -74,3 +74,63 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+  const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+  const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+  document.querySelectorAll('.comments').forEach(commentList => {
+    commentList.addEventListener('click', function(e) {
+      
+      if (e.target && e.target.classList.contains('comment-edit')) {
+        e.preventDefault();
+        const form = e.target.closest('.edit-comment-form');
+        const commentId = form.getAttribute('data-comment-id');
+        fetch(`/comment/${commentId}/edit-form`, {
+          headers: { [csrfHeader]: csrfToken }
+        })
+        .then(resp => resp.text())
+        .then(html => {
+          document.getElementById(`comment-container-${commentId}`).innerHTML = html;
+        });
+      }
+
+      if (e.target && e.target.classList.contains('comment-edit-cancel')) {
+        e.preventDefault();
+        const commentId = e.target.id.replace('cancel-', '');
+        fetch(`/comment/${commentId}/item`)
+          .then(resp => resp.text())
+          .then(html => {
+            document.getElementById(`comment-container-${commentId}`).innerHTML = html;
+          });
+      }
+    });
+  });
+
+  document.addEventListener('submit', function(e) {
+    if (e.target && e.target.matches('form[id^="form-"]')) {
+      const submitLabel = e.target.querySelector('input[type="submit"]').value;
+      if (submitLabel === 'UPDATE') {
+        e.preventDefault();
+        const form = e.target;
+        const commentId = form.id.replace('form-', '');
+        const formData = new FormData(form);
+        fetch(`/comment/${commentId}/edit`, {
+          method: 'POST',
+          headers: { [csrfHeader]: csrfToken },
+          body: formData
+        })
+        .then(resp => resp.json())
+        .then(data => {
+          if (data.success) {
+            document.getElementById(`comment-container-${commentId}`).innerHTML = data.html;
+          } else if (data.html) {
+            document.getElementById(`comment-container-${commentId}`).innerHTML = data.html;
+          } else {
+            alert(data.error || '編集に失敗しました');
+          }
+        });
+      }
+    }
+  });
+});
+

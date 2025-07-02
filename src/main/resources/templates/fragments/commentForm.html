@@ -1,0 +1,20 @@
+<div th:fragment="commentFormFragment(commentForm, formAction, submitLabel, commentId)">
+  <form th:attr="id=${'form-' + (commentId != null ? commentId : 'new')}" 
+        th:action="@{${formAction}}" 
+        method="post" 
+        th:object="${commentForm}"
+        enctype="multipart/form-data">
+
+    <textarea th:attr="id=${'text-' + (commentId != null ? commentId : 'new')}" th:field="*{text}" placeholder="コメントする" rows="2"></textarea>
+
+    <div class="field">
+      <label th:attr="for=${'comment_image-' + (commentId != null ? commentId : 'new')}">コメントの画像</label><br>
+      <input type="file" th:attr="id=${'comment_image-' + (commentId != null ? commentId : 'new')}" th:field="*{image}">
+    </div>
+
+    <input type="submit" th:value="${submitLabel}" th:attr="id=${'send-' + (commentId != null ? commentId : 'new')}" />
+    <button type="button" th:if="${#strings.equals(submitLabel, 'UPDATE')}" 
+            th:attr="id=${'cancel-' + (commentId != null ? commentId : 'new')}"
+            class="comment-edit-cancel">キャンセル</button>
+  </form>
+</div>
