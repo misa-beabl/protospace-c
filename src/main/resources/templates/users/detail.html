@@ -31,6 +31,7 @@
           class="user-icon-edit-link">
             <img class="user-icon-img"
                   th:src="@{${thisUser.avatar}}"
+                  title="アイコンを編集する"
                   alt="ユーザーアイコン（編集リンク付き）">
           </a>
           <!-- 他人のページはリンクなし -->
@@ -59,6 +60,42 @@
             </tr>
           </tbody>
         </table>
+
+        <div class="dm-link-area">
+          <a th:if="${#authorization.expression('isAuthenticated()') and thisUser.id != user.id}"
+            th:href="@{/messages/{userId}(userId=${thisUser.id})}"
+            title="このユーザーにメッセージを送る">
+            <img th:src="@{/images/DM_blue.png}" alt="ダイレクトメッセージ" class="dm-icon-img">
+            <span class="dm-label">メッセージ</span>
+          </a>
+        </div>
+      </div>
+
+      <div th:if="${user != null and user.id == thisUser.id}">
+        <h2 class="heading" style="margin-top: 32px;">DM履歴</h2>
+        <div class="dm-history-list" th:if="${latestDmList != null and !latestDmList.isEmpty()}">
+          <ul>
+            <li th:each="dm : ${latestDmList}">
+              <a th:with="isSender=${dm.senderUser.id == thisUser.id}"
+                 th:href="@{/users/{userId}(userId=${isSender} ? ${dm.receiverUser.id} : ${dm.senderUser.id})}">
+                <img th:src="@{${isSender} ? ${dm.receiverUser.avatar} : ${dm.senderUser.avatar}}"
+                     th:alt="${isSender} ? ${dm.receiverUser.nickname} : ${dm.senderUser.nickname}"
+                     class="dm-history-icon" />
+                <strong th:text="${isSender} ? ${dm.receiverUser.nickname} : ${dm.senderUser.nickname}"></strong>
+              </a>
+              <a th:with="isSender=${dm.senderUser.id == thisUser.id}"
+                th:href="@{/messages/{userId}(userId=${isSender} ? ${dm.receiverUser.id} : ${dm.senderUser.id})}">
+                <span class="dm-latest-text"
+                    th:text="${dm.text}">メッセージ内容</span>
+              </a>
+              <span class="dm-history-date"
+                    th:text="${#dates.format(dm.sentAt, 'yyyy/MM/dd HH:mm')}">yyyy/MM/dd HH:mm</span>
+            </li>
+          </ul>
+        </div>
+        <div th:if="${latestDmList == null or latestDmList.isEmpty()}">
+          <p>まだDMの履歴がありません。</p>
+        </div>
       </div>
 
       <h2 class="heading" th:text="${thisUser.nickname} + 'さんのプロトタイプ'">OOOさんのプロトタイプ</h2>
