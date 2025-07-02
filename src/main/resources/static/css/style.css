@@ -541,6 +541,84 @@ color: #347aec;
 margin-top: 0.3em;
 }
 
+/* DM履歴リストの全体枠 */
+.dm-history-list {
+    margin: 24px 0 36px 0;
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 22px 28px;
+    box-shadow: 0 2px 8px rgba(30, 60, 120, 0.06);
+    max-width: 700px;
+  }
+  
+  .dm-history-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .dm-history-list li {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e7e7e7;
+    font-size: 1em;
+  }
+  .dm-history-list li:last-child {
+    border-bottom: none;
+  }
+  
+  .dm-history-list a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #347aec;
+    font-weight: 600;
+    margin-right: 1.1em;
+    min-width: 130px;
+    transition: opacity 0.16s;
+  }
+  .dm-history-list a:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+  }
+  
+  .dm-history-list img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin-right: 0.75em;
+    object-fit: cover;
+    background: #fff;
+    border: 1px solid #c9d7ec;
+  }
+  
+  .dm-history-list strong {
+    font-size: 1.06em;
+    color: #22559b;
+    margin-right: 0.15em;
+  }
+  
+  .dm-latest-text {
+    font-size: 1em;
+    color: #222;
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  
+  .dm-history-date {
+    color: #888;
+    font-size: 0.88em;
+    margin-left: 20px;
+    min-width: 98px;
+    text-align: right;
+    text-decoration: none;
+  }
+  
+
 
 /* プロトタイプ詳細ページ */
 

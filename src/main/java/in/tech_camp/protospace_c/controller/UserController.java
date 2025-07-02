@@ -27,10 +27,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import in.tech_camp.protospace_c.ImageUrl;
 import in.tech_camp.protospace_c.custom_user.CustomUserDetail;
+import in.tech_camp.protospace_c.entity.DirectMessageEntity;
 import in.tech_camp.protospace_c.entity.PrototypeEntity;
 import in.tech_camp.protospace_c.entity.UserEntity;
 import in.tech_camp.protospace_c.form.UserForm;
 import in.tech_camp.protospace_c.form.UserIconForm;
+import in.tech_camp.protospace_c.repository.DirectMessageRepository;
 import in.tech_camp.protospace_c.repository.LikesRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.repository.UserRepository;
@@ -47,6 +49,7 @@ public class UserController {
   private final UserRepository userRepository;
   private final PrototypeRepository prototypeRepository;
   private final LikesRepository likesRepository;
+  private final DirectMessageRepository directMessageRepository;
 
   private final UserService userService;
   private final HttpServletRequest request;
@@ -190,6 +193,10 @@ public class UserController {
             .map(prototypeRepository::findById)
             .filter(java.util.Objects::nonNull)
             .collect(Collectors.toList());
+
+        // DM履歴一覧
+        List<DirectMessageEntity> latestDmList = directMessageRepository.findLatestMessagesByPartner(userId);
+        model.addAttribute("latestDmList", latestDmList);
     }
 
     model.addAttribute("thisUser", user);

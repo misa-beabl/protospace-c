@@ -87,4 +87,32 @@ public interface DirectMessageRepository {
             "(sender_user_id = #{userId1} AND receiver_user_id = #{userId2}) " +
             "OR (sender_user_id = #{userId2} AND receiver_user_id = #{userId1})")
     void deleteBetweenUsers(Integer userId1, Integer userId2);
+
+    @Select(
+    "SELECT * FROM ("
+    + "  SELECT *, "
+    + "    CASE "
+    + "      WHEN sender_user_id = #{userId} THEN receiver_user_id "
+    + "      ELSE sender_user_id "
+    + "    END AS partner_id, "
+    + "    ROW_NUMBER() OVER (PARTITION BY "
+    + "      (CASE WHEN sender_user_id = #{userId} THEN receiver_user_id ELSE sender_user_id END) "
+    + "      ORDER BY sent_at DESC"
+    + "    ) AS rn "
+    + "  FROM direct_messages "
+    + "  WHERE sender_user_id = #{userId} OR receiver_user_id = #{userId} "
+    + ") t "
+    + "WHERE rn = 1 "
+    + "ORDER BY sent_at DESC"
+    )
+    @Results({
+      @Result(property = "id", column = "id"),
+      @Result(property = "text", column = "text"),
+      @Result(property = "senderUser", column = "sender_user_id",
+              one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
+      @Result(property = "receiverUser", column = "receiver_user_id",
+              one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
+      @Result(property = "sentAt", column = "sent_at")
+    })
+    List<DirectMessageEntity> findLatestMessagesByPartner(Integer userId);
 }
