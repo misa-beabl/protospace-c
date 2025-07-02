@@ -12,7 +12,7 @@
 
 <main class="main">
   <div class="inner">
-    <h2 th:text="'【' + ${partnerUser.nickname} + 'さん】とのダイレクトメッセージ'"></h2>
+    <h2 th:text=" ${partnerUser.nickname} + ' さんとのダイレクトメッセージ'"></h2>
     <section class="chat-container">
       <div th:each="msg : ${dmList}">
         <!-- 自分が送信したメッセージ -->
