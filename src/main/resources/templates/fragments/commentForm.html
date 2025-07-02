@@ -8,8 +8,8 @@
     <div id="comment-form-errors" th:if="${#fields.hasErrors('*') or errorMessages != null}">
       <ul>
         <li th:each="e : ${errorMessages}" th:text="${e.defaultMessage}"></li>
-        <li th:each="e : ${#fields.errors('text')}" th:text="${e}"></li>
-        <li th:each="e : ${#fields.errors('image')}" th:text="${e}"></li>
+        <!-- <li th:each="e : ${#fields.errors('text')}" th:text="${e}"></li>
+        <li th:each="e : ${#fields.errors('image')}" th:text="${e}"></li> -->
       </ul>
     </div>
 
@@ -20,9 +20,16 @@
       <input type="file" th:attr="id=${'comment_image-' + (commentId != null ? commentId : 'new')}" th:field="*{image}">
     </div>
 
-    <input type="submit" th:value="${submitLabel}" th:attr="id=${'send-' + (commentId != null ? commentId : 'new')}" />
-    <button type="button" th:if="${#strings.equals(submitLabel, 'UPDATE')}" 
-            th:attr="id=${'cancel-' + (commentId != null ? commentId : 'new')}"
-            class="comment-edit-cancel">キャンセル</button>
+    <div class="comment-button-row">
+      <input 
+      type="submit" 
+      th:value="${submitLabel}" 
+      th:attr="id=${'send-' + (commentId != null ? commentId : 'new')}" 
+      />
+      <button type="button" th:if="${#strings.equals(submitLabel, 'UPDATE')}" 
+              th:attr="id=${'cancel-' + (commentId != null ? commentId : 'new')}"
+              class="comment-edit-cancel">キャンセル</button>
+    </div>
+    
   </form>
 </div>
