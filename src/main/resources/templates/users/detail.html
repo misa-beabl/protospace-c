@@ -83,14 +83,13 @@
                      class="dm-history-icon" />
                 <strong th:text="${isSender} ? ${dm.receiverUser.nickname} : ${dm.senderUser.nickname}"></strong>
               </a>
-              <span class="dm-latest-text"
-                    th:text="${dm.text}">メッセージ内容</span>
               <a th:with="isSender=${dm.senderUser.id == thisUser.id}"
                 th:href="@{/messages/{userId}(userId=${isSender} ? ${dm.receiverUser.id} : ${dm.senderUser.id})}">
-                <span class="dm-history-date"
+                <span class="dm-latest-text"
+                    th:text="${dm.text}">メッセージ内容</span>
+              </a>
+              <span class="dm-history-date"
                     th:text="${#dates.format(dm.sentAt, 'yyyy/MM/dd HH:mm')}">yyyy/MM/dd HH:mm</span>
-                 </a>
-              
             </li>
           </ul>
         </div>

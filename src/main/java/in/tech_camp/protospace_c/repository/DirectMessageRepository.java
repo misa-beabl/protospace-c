@@ -103,7 +103,8 @@ public interface DirectMessageRepository {
     + "  WHERE sender_user_id = #{userId} OR receiver_user_id = #{userId} "
     + ") t "
     + "WHERE rn = 1 "
-    + "ORDER BY sent_at DESC"
+    + "ORDER BY sent_at DESC "
+    + "LIMIT 5"
     )
     @Results({
       @Result(property = "id", column = "id"),

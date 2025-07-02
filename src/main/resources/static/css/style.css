@@ -612,7 +612,7 @@ margin-top: 0.3em;
   .dm-history-date {
     color: #888;
     font-size: 0.88em;
-    margin-left: 20px;
+    margin-left: auto;
     min-width: 98px;
     text-align: right;
     text-decoration: none;
