@@ -21,11 +21,15 @@
 </div>
 <main class="main">
   <div class="inner">
-    <div class="greeting" th:if="${#authorization.expression('isAuthenticated()')}">こんにちは、<a class="user_san" th:href="@{/users/{userId}(userId=${user.id})}" th:text="${user.nickname} + さん！">OOさん!</a></div>
-    <form th:action="@{/prototype/search}" method="get" th:object="${searchForm}" class="search-form">
-      <input type="text" th:field="*{text}" name="text" placeholder="投稿を検索する" class="search-input" />
-      <input type="submit" class="search-btn" value="検索" />
-    </form>
+    <div class="search-forms">
+      <div class="greeting" th:if="${#authorization.expression('isAuthenticated()')}">こんにちは、<a class="user_san" th:href="@{/users/{userId}(userId=${user.id})}" th:text="${user.nickname} + さん！">OOさん!</a></div>
+      <form th:action="@{/prototype/search}" method="get" th:object="${searchForm}" class="search-form">
+        <input type="text" th:field="*{text}" name="text" placeholder="投稿を検索する" class="search-input" />
+        <input type="submit" class="search-btn" value="検索" />
+      </form>
+
+      <button id="openDrawerBtn" class="genre-toggle-btn">ジャンルで絞り込む</button>
+    </div>
     <div class="card__wrapper">
       <div class="card" th:each="prototype : ${prototypes}">
           <a th:href="@{/prototype/{prototypeId}(prototypeId=${prototype.id})}"><img class="card__img" th:src="${prototype.image}"></a>
@@ -60,6 +64,32 @@
     </div>
   </div>
 </main>
+
+<div id="drawerOverlay" class="drawer-overlay"></div>
+
+<nav id="genreDrawerNav" class="drawer-nav">
+  <div class="drawer-header">
+    <button id="closeDrawerBtn" class="drawer-close-btn">&times;</button>
+  </div>
+  <form th:action="@{/prototype/genre}" method="get" class="genre-search" id="genreFilterForm">
+    <ul class="genre-list">
+      <li th:each="genre : ${genres}">
+        <input type="checkbox"
+                th:id="${genre.id}"
+                th:value="${genre.id}"
+                name="genreId"
+                class="checkbox-display"
+                th:checked="${selectedGenreIds != null and selectedGenreIds.contains(genre.id)}" />
+        <label th:for="${genre.id}"
+                th:text="${genre.genreName}"></label>
+      </li>
+    </ul>
+      <button type="submit" class="genre-serch-btn">選択したジャンルで検索</button>
+  </form>
+</nav>
+
 <div th:insert="~{footer :: footer}"></div>
+
+<script th:src="@{/js/genre_drawer.js}" defer></script>
 </body>
 </html>

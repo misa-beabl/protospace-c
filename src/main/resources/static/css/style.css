@@ -161,7 +161,6 @@ body {
     width: 2em;
     height: 2em;
     border-radius: 50%;
-    object-fit: cover;
     background: #eee;
     border: 1px solid #ddd;
     margin-right: 7px;
@@ -181,6 +180,11 @@ body {
 
 .form_field label {
     font-weight: bold;
+}
+
+.select-box-genre {
+    position: relative;
+    width: 300px;
 }
 
 .userprimaryinfo {
@@ -224,6 +228,23 @@ body {
     border: 1px #87CEFA solid;
     background: #fff;
     color: #87CEFA;
+}
+
+.register-icon-preview-area {
+    width: 400px;
+    margin: 15px 0 50px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.register-icon-preview-img {
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background: #eee;
+    border: 2px solid #fafafa;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
 }
 
 /* 追加分 （style.cssに追記してください）*/
@@ -273,6 +294,50 @@ body {
   box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2),0 1px 8px 0 rgba(0,0,0,0.12);
   cursor: pointer;
 }
+
+.prototype-previews-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+.prototype-image-preview-area {
+    margin: 15px 0 50px 0;
+    width: 400px;
+    height: 400px;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+}
+
+.prototype-image-preview {
+    width: 350px;
+    height: 350px;
+    border-radius: 5%;
+    background: #f7f7f7;
+    margin-top: 12px;
+}
+
+.genre-select-input {
+    appearance: none;
+    width: 300px;
+    padding: 15px;
+    color: #333;
+    font-weight: bold;
+    border: 1px solid #333;
+    border-radius: 3px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.genre-select-input:focus {
+    outline: none;
+}
+
+.genre-select-input option {
+    font-weight: 600;
+}
+
 
 /* レスポンシブデザイン */
 
@@ -391,6 +456,10 @@ body {
     align-items: center;
 }
 
+.user-icon-area:hover {
+    opacity: 0.8;
+}
+
 .user-icon-img {
     width: 230px;
     height: 230px;
@@ -407,8 +476,6 @@ body {
     overflow-x: auto;
     gap: 100px;
     width: calc((100% - 50px) / 3);
-    /* justify-content: space-between; */
-    /* align-items: center; */
     padding-bottom: 20px;
 }
 
@@ -428,13 +495,130 @@ body {
 }
 
 .heading {
-    /* margin-bottom: 10px; */
     font-size: 2.0em;
 }
 
 .like_heading {
     padding-top: 50px;
 }
+
+/* DMリンクエリアをきれいに右寄せ＆間隔調整 */
+.dm-link-area {
+    margin: 1em 0 2em 0;
+    text-align: center;
+    align-items: center;
+}
+
+/* DMボタン全体（aタグ）装飾 */
+.dm-link-area a {
+text-decoration: none;
+color: #347aec;
+font-weight: 500;
+display: flex;
+flex-direction: column; 
+align-items: center;
+transition: opacity 0.15s;
+}
+.dm-link-area a:hover {
+opacity: 0.8;
+}
+
+/* DMアイコン画像の見た目調整 */
+.dm-icon-img {
+vertical-align: middle;
+width: 100px;
+height: 100px;
+margin-right: 0.5em;
+margin-left: 2px;
+}
+
+/* メッセージテキスト（ラベル） */
+.dm-link-area .dm-label {
+vertical-align: middle;
+font-size: 1em;
+font-weight: bold;
+color: #347aec;
+margin-top: 0.3em;
+}
+
+/* DM履歴リストの全体枠 */
+.dm-history-list {
+    margin: 24px 0 36px 0;
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 22px 28px;
+    box-shadow: 0 2px 8px rgba(30, 60, 120, 0.06);
+    max-width: 700px;
+  }
+  
+  .dm-history-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .dm-history-list li {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e7e7e7;
+    font-size: 1em;
+  }
+  .dm-history-list li:last-child {
+    border-bottom: none;
+  }
+  
+  .dm-history-list a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #347aec;
+    font-weight: 600;
+    margin-right: 1.1em;
+    min-width: 130px;
+    transition: opacity 0.16s;
+  }
+  .dm-history-list a:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+  }
+  
+  .dm-history-list img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin-right: 0.75em;
+    object-fit: cover;
+    background: #fff;
+    border: 1px solid #c9d7ec;
+  }
+  
+  .dm-history-list strong {
+    font-size: 1.06em;
+    color: #22559b;
+    margin-right: 0.15em;
+  }
+  
+  .dm-latest-text {
+    font-size: 1em;
+    color: #222;
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  
+  .dm-history-date {
+    color: #888;
+    font-size: 0.88em;
+    margin-left: auto;
+    min-width: 98px;
+    text-align: right;
+    text-decoration: none;
+  }
+  
+
 
 /* プロトタイプ詳細ページ */
 
@@ -548,7 +732,7 @@ img {
 
 /* 追加機能(バナー) */
 .banner {
-    height: 50vh;
+    /* height: 50vh; */
     width: 100%;
     background-color: rgb(237, 224, 218);
     display: flex;
@@ -556,9 +740,7 @@ img {
     flex-direction: column;
     align-items: center;
     font-style: oblique;
-
-    /* position: relative;
-    aspect-ratio: 16 / 9; */
+    aspect-ratio: 16/9;
 }
 
 .banner-title {
@@ -629,9 +811,6 @@ img {
     top: 0;
     width: 100%;
     height: 100%;
-
-    /* object-fit: cover;
-    aspect-ratio: 16 / 9; */
 }
 
 .search-form {
@@ -645,6 +824,12 @@ img {
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(60, 64, 67, 0.08);
     gap: 12px;
+}
+
+.search-forms {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .search-input {
@@ -1060,3 +1245,286 @@ color: #444;
     border-color: #256ed1;
     box-shadow: 0 3px 12px rgba(49,129,247,0.16);
   }
+
+  .genre-search {
+    margin-bottom: 20px;
+  }
+
+  /* ジャンルのdrawer */
+
+  
+/* ドロワーを開くボタン（前回のものと同じでOK） */
+.genre-toggle-btn {
+padding: 10px 15px;
+background-color: #007bff;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+margin-bottom: 20px;
+display: flex;
+justify-content: center;
+width: 30%;
+}
+  
+/* アイコン編集ページ */
+.user-icon-preview-area {
+    margin: 15px 0 50px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+.icon-block {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* オーバーレイ */
+.drawer-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+opacity: 0;
+visibility: hidden;
+transition: opacity 0.3s ease, visibility 0.3s ease;
+z-index: 999;
+}
+
+
+/* ドロワー本体  */
+.drawer-nav {
+position: fixed;
+top: 0;
+/* initial state: */
+left: -280px;
+width: 280px;
+height: 100%;
+background-color: #fff;
+box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+transition: transform 0.3s ease;
+z-index: 1000;
+overflow-y: auto;
+}
+
+
+/* ドロワーが開いた時 */
+.drawer-overlay.is-open {
+opacity: 1;
+visibility: visible;
+}
+
+
+.drawer-nav.is-open {
+transform: translateX(280px); /* ドロワーの幅分右に移動して表示 */
+}
+
+
+/* ドロワーヘッダー */
+.drawer-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 15px 20px;
+border-bottom: 1px solid #eee;
+background-color: #f8f8f8;
+}
+
+
+.drawer-header h3 {
+margin: 0;
+font-size: 1.2em;
+color: #333;
+}
+
+
+/* ドロワー閉じるボタン */
+.drawer-close-btn {
+background: none;
+border: none;
+font-size: 24px;
+cursor: pointer;
+color: #888;
+}
+
+
+/*ジャンルリストのスタイル（前回のCSSから調整) */
+.drawer-nav form {
+padding: 20px;
+}
+
+
+.genre-list {
+list-style: none;
+padding: 0;
+margin-bottom: 20px;
+}
+
+
+.genre-list li {
+margin-bottom: 5px;
+}
+
+
+.genre-list label {
+display: block;
+padding: 8px 10px;
+cursor: pointer;
+border-radius: 4px;
+transition: background-color 0.2s ease;
+}
+
+
+.genre-list label:hover {
+background-color: #e0e0e0;
+}
+
+
+.genre-list input[type="checkbox"]:checked + label {
+background-color: #007bff;
+color: white;
+font-weight: bold;
+}
+
+
+.apply-genre-btn {
+margin-top: 20px;
+padding: 10px 15px;
+background-color: #28a745;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+width: 100%;
+}
+
+.checkbox-display {
+    visibility: hidden;
+}
+
+.genre-serch-btn {
+    color: black;
+    background-color: beige;
+    padding: 10px;
+    border-radius: 5px;
+    margin-left: 20px;
+}
+
+.user-icon-preview {
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background: #eee;
+    border: 2px solid #fafafa;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+}
+
+.genre-by-search {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.genre-to-top {
+    text-decoration: none;
+    background-color: transparent;
+    color: #289ae5;
+    border: #289ae5 solid 2px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.genre-text {
+    margin: 5px 0 5px;
+    padding-left: 20px;
+}
+
+.no-prototypes{
+    margin: 5px 20px;
+}
+
+.search-forms {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* チャット全体の外枠 */
+.chat-container {
+    margin: 40px auto 24px;
+    width: 100%;
+    max-width: 600px;
+    min-height: 320px;
+    border: 1px #ccc solid;
+    background: #fdfdffe7;
+    padding: 22px 18px;
+    border-radius: 10px;
+    overflow-y: auto;
+}
+
+/* 各メッセージバブル */
+.chat-bubble {
+display: flex;
+margin-bottom: 18px;
+}
+.chat-bubble.left {
+justify-content: flex-start;
+}
+.chat-bubble.right {
+justify-content: flex-end;
+}
+
+/* メッセージ内容 */
+.chat-message {
+position: relative;
+max-width: 62vw;
+min-width: 40px;
+padding: 12px 20px;
+border-radius: 15px;
+background: #f0fff9;
+color: #333;
+word-break: break-word;
+line-height: 1.6;
+font-size: 1em;
+box-shadow: 2px 2px 6px #eee;
+}
+.chat-bubble.right .chat-message {
+background: #f1f4ff;
+color: #222;
+text-align: right;
+}
+/* 名前 */
+.chat-user-name {
+font-size: 0.89em;
+margin-bottom: 2px;
+color: #5b6787;
+font-weight: bold;
+}
+/* 日時 */
+.chat-date {
+font-size: 0.78em;
+color: #BBB;
+margin-top: 4px;
+text-align: right;
+}
+/* アバター */
+.chat-avatar {
+width: 36px;
+height: 36px;
+margin: auto 9px auto 0;
+border-radius: 50%;
+object-fit: cover;
+background: #fff;
+border: 1px solid #ccc;
+}
+.chat-bubble.right .chat-avatar {
+margin: auto 0 auto 9px;
+}

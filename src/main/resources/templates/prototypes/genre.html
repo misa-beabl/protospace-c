@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ProtoSpace</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+<main class="main">
+  <div class="inner">
+
+  <h2 class="filter-label">選択したジャンル</h2>
+    <span class="genre-texts" th:each="genreResult: ${genreResults}">
+      <div class="genre-text" th:text="${genreResult.genreName}"></div>
+    </span>
+    <h2>検索結果</h2>
+    <div th:if="${#lists.isEmpty(prototypes)}">
+      <p class="no-prototypes">選択したジャンルのプロトタイプは投稿されていません。</p>
+    </div>
+    <div th:if="${!#lists.isEmpty(prototypes)}">
+      <div class="card__wrapper">
+        <div th:each="prototype : ${prototypes}" class="card prototype_card">
+          <a th:href="@{/prototype/{prototypeId}(prototypeId=${prototype.id})}">
+            <img class="card__img" th:src="@{${prototype.image}}">
+          </a>
+          <div class="card__body">
+            <a class="card__title" th:href="@{/prototype/{prototypeId}(prototypeId=${prototype.id})}" th:text="${prototype.name}">title</a>
+            <p class="card__summary" th:text="${prototype.slogan}">summary</p>
+            <div class="card__like">
+              <div th:if="${#authorization.expression('isAuthenticated()')}">
+                  <button type="button"
+                          class="like-btn"
+                          th:attr="data-prototype-id=${prototype.id}"
+                          th:data-action="@{/prototype/{prototypeId}/like-from-u-detail(prototypeId=${prototype.id})}"
+                          th:classappend="${likedIds != null and likedIds.contains(prototype.id)} ? 'liked' : ''">
+                            <img th:src="@{${likedIds != null and likedIds.contains(prototype.id)} ? '/images/like_btn_liked.png' : '/images/like_btn.png'}"
+                                  alt="いいね"
+                                  class="heart-icon" />
+                            <span th:text="${prototype.likeCount}"class="like-count">0</span>
+                  </button>
+              </div>
+              <div th:if="${#authorization.expression('!isAuthenticated()')}">
+                <button class="like-btn" disabled>
+                  <img th:src="@{/images/like_btn.png}" alt="いいね" class="heart-icon" />
+                  <span th:text="${prototype.likeCount}">0</span>
+                </button>
+              </div>
+            </div>
+            <a class="card__user" th:href="@{/users/{userId}(userId=${prototype.user.id})}">
+              <img class="card__user-icon" th:src="@{${prototype.user.avatar}}" >
+              <span th:text="'by ' + ${prototype.user.nickname}">by username</span>
+            </a>
+          </div>
+        </div>
+      </div>
+        
+    </div>
+    <h2>再検索</h2>
+    <form th:action="@{/prototype/genre}" method="get" class="genre-search" id="genreFilterForm">
+      <ul class="genre-list">
+        <li th:each="genre : ${genres}">
+          <input type="checkbox"
+                  th:id="${genre.id}"
+                  th:value="${genre.id}"
+                  name="genreId"
+                  th:checked="${selectedGenreIds != null and selectedGenreIds.contains(genre.id)}"
+                  class="checkbox-display" />
+          <label th:for="${genre.id}"
+                  th:text="${genre.genreName}"></label>
+        </li>
+      </ul>
+      <div class="genre-by-search">
+        <button type="submit" class="genre-serch-btn">選択したジャンルで検索</button>
+        <div><a th:href="@{/}" class="genre-to-top">トップページに戻る</a></div>
+      </div>
+    </form>
+  </div>
+</main>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>

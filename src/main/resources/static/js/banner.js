@@ -1,8 +1,8 @@
 function change (){
-  const bannerItems = document.querySelectorAll("li");
+  const bannerItems = document.getElementsByClassName("li");
   let currentIndex = 0;
 
-  bannerItems.forEach((item, index) => {
+  Array.from(bannerItems).forEach((item, index) => {
     item.style.opacity = index === 0 ? "1" : "0";
     item.style.transition = "opacity 1s ease-in-out"
   });

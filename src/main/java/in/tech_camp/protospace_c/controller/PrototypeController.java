@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,6 +40,7 @@ import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.repository.UserRepository;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
+
 
 
 @Controller
@@ -63,6 +66,9 @@ public class PrototypeController {
     SearchForm searchForm = new SearchForm();
     model.addAttribute("prototypes", prototypes);
     model.addAttribute("searchForm", searchForm);
+    List<GenreEntity> genres = genreRepository.findAll();
+    model.addAttribute("genres", genres);
+    model.addAttribute("selectedGenreNames", new ArrayList<GenreEntity>());
     if (currentUser != null) {
       UserEntity user = userRepository.findById(currentUser.getUser().getId());
       // model.addAttribute("user", currentUser.getUser());
@@ -82,6 +88,42 @@ public class PrototypeController {
     model.addAttribute("searchForm", searchForm);
     return "prototypes/search";
   }
+
+  // ジャンル別のプロトタイプ検索
+  @GetMapping("/prototype/genre")
+  public String searchByGenre(@RequestParam(value = "genreId", required = false) List<Long> genreIds,
+  @AuthenticationPrincipal CustomUserDetail currentUser, Model model) {
+    List<PrototypeEntity> prototypes;
+     if (genreIds == null || genreIds.isEmpty()) {
+        prototypes = prototypeRepository.findAll();//選択されてないときは全プロトタイプの表示
+    } else {
+      prototypes = prototypeRepository.findByGenreIdIn(genreIds);//選択されたプロトタイプの表示
+    }
+
+    
+    if (currentUser != null) {
+      model.addAttribute("user", currentUser.getUser());
+      List<Integer> likedIds = likesRepository.findLikedPrototypeIdsByUserId(currentUser.getUser().getId());
+      model.addAttribute("likedIds", likedIds);
+    } else {
+      model.addAttribute("user", null);
+      model.addAttribute("likedIds", new ArrayList<>());
+    }
+
+    List<GenreEntity> genres = genreRepository.findAll();
+
+    List<GenreEntity> genreResults = new ArrayList<>();
+    for (Long genreId : genreIds) {
+        genreResults.add(genreRepository.findByLong(genreId));
+    }
+
+    model.addAttribute("prototypes", prototypes);
+    model.addAttribute("genres", genres);//検索語もチェックボックスの表示
+    model.addAttribute("selectedGenreIds", genreIds != null ? genreIds : new ArrayList<Long>());
+    model.addAttribute("genreResults", genreResults);
+    return "prototypes/genre";
+  }
+  
 
   @GetMapping("/prototype/new")
   public String showPrototypeNew(Model model) {
@@ -113,6 +155,7 @@ public class PrototypeController {
     List<GenreEntity> genres = genreRepository.findAll();
      
     model.addAttribute("genres", genres);
+    model.addAttribute("prototype", prototype);
     model.addAttribute("prototypeForm", prototypeForm);
     model.addAttribute("prototypeId", prototypeId);
     return "prototypes/edit";

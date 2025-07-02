@@ -27,9 +27,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import in.tech_camp.protospace_c.ImageUrl;
 import in.tech_camp.protospace_c.custom_user.CustomUserDetail;
+import in.tech_camp.protospace_c.entity.DirectMessageEntity;
 import in.tech_camp.protospace_c.entity.PrototypeEntity;
 import in.tech_camp.protospace_c.entity.UserEntity;
 import in.tech_camp.protospace_c.form.UserForm;
+import in.tech_camp.protospace_c.form.UserIconForm;
+import in.tech_camp.protospace_c.repository.DirectMessageRepository;
 import in.tech_camp.protospace_c.repository.LikesRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.repository.UserRepository;
@@ -39,12 +42,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
 
+
 @Controller
 @AllArgsConstructor
 public class UserController {
   private final UserRepository userRepository;
   private final PrototypeRepository prototypeRepository;
   private final LikesRepository likesRepository;
+  private final DirectMessageRepository directMessageRepository;
 
   private final UserService userService;
   private final HttpServletRequest request;
@@ -188,6 +193,10 @@ public class UserController {
             .map(prototypeRepository::findById)
             .filter(java.util.Objects::nonNull)
             .collect(Collectors.toList());
+
+        // DM履歴一覧
+        List<DirectMessageEntity> latestDmList = directMessageRepository.findLatestMessagesByPartner(userId);
+        model.addAttribute("latestDmList", latestDmList);
     }
 
     model.addAttribute("thisUser", user);
@@ -212,6 +221,7 @@ public class UserController {
       userForm.setPassword(user.getPassword());
       userForm.setPasswordConfirmation(user.getPassword());
 
+      model.addAttribute("user", user);
       model.addAttribute("userForm", userForm);
       model.addAttribute("userId", userId);
     
@@ -283,5 +293,85 @@ public class UserController {
     }
       
       return "redirect:/users/" + userId;
+  }
+
+  @GetMapping("/users/{userId}/icon-edit")
+  public String showUserIconEdit(
+    @PathVariable("userId") Integer userId, 
+    Model model,
+    @AuthenticationPrincipal CustomUserDetail currentUser) {
+      UserEntity user = userRepository.findById(userId);
+
+      UserIconForm userIconForm = new UserIconForm();
+
+      model.addAttribute("user", user);
+      model.addAttribute("userIconForm", userIconForm);
+      model.addAttribute("userId", userId);
+    return "users/icon_edit";
+  }
+
+  @PostMapping("/users/{userId}/icon-update")
+  public String updateUserIcon(
+    @PathVariable("userId") Integer userId,
+    @ModelAttribute("userIconForm") UserIconForm userIconForm,
+    BindingResult result,
+    @AuthenticationPrincipal CustomUserDetail currentUser,
+    Model model
+  ) {
+    if (result.hasErrors()) {
+      List<String> errorMessages = result.getAllErrors().stream()
+              .map(DefaultMessageSourceResolvable::getDefaultMessage)
+              .collect(Collectors.toList());
+      model.addAttribute("errorMessages", errorMessages);
+
+      model.addAttribute("userIconForm", userIconForm);
+      model.addAttribute("userId", userId);
+      return "users/icon_edit";
+    }
+
+    UserEntity user = userRepository.findById(userId);
+    
+    MultipartFile avatarFile = userIconForm.getAvatar();
+    String avatarPath = null;
+    if (avatarFile != null && !avatarFile.isEmpty()) {
+        try {
+            String uploadDir = imageUrl.getUserAvatarUrl();
+            Path uploadDirPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadDirPath)) {
+                Files.createDirectories(uploadDirPath);
+            }
+            String fileName = LocalDateTime.now()
+                                .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + avatarFile.getOriginalFilename();
+            Path imagePath = uploadDirPath.resolve(fileName);
+            Files.copy(avatarFile.getInputStream(), imagePath);
+            avatarPath = "/user_avatars/" + fileName; 
+        } catch (IOException e) {
+            result.rejectValue("avatar", "upload", "アイコン画像の保存に失敗しました");
+            List<String> errorMessages = result.getAllErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList());
+            model.addAttribute("errorMessages", errorMessages);
+            model.addAttribute("userIconForm", userIconForm);
+            model.addAttribute("userId", userId);
+            return "users/icon_edit";
+        }
+    } else {
+        avatarPath = user.getAvatar();
+    }
+    user.setAvatar(avatarPath);
+
+    try {
+      userRepository.updateIcon(userId, avatarPath);
+  } catch (Exception e) {
+      model.addAttribute("errorMessage", "保存時にエラーが発生しました：" + e.getMessage());
+      model.addAttribute("user", user);
+      model.addAttribute("userIconForm", userIconForm);
+      model.addAttribute("userId", userId);
+      return "users/icon_edit";
+  }
+
+  // 完了後はマイページへリダイレクト
+  return "redirect:/users/" + userId;
   }
 }

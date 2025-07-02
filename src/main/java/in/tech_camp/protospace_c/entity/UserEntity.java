@@ -16,4 +16,5 @@ public class UserEntity {
   private String avatar;
   private List<PrototypeEntity> prototypes;
   private List<CommentEntity> comments;
+  private List<DirectMessageEntity> directMessages;
 }
