@@ -1246,6 +1246,8 @@ color: #444;
     box-shadow: 0 3px 12px rgba(49,129,247,0.16);
   }
 
+  .comment-children { margin-left: 28px; border-left: 2px solid #ececec; padding-left: 8px;}
+
   .genre-search {
     margin-bottom: 20px;
   }

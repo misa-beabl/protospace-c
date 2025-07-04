@@ -1,0 +1,32 @@
+<div th:fragment="allTreeFragment(comments, prototype, prototypeId)">
+  <div th:each="comment : ${comments}">
+    <div class="comment-block" th:attr="id='comment-container-' + ${comment.id}">
+      <div th:replace="fragments/commentItem :: commentItemFragment(${comment}, ${prototype}, ${prototypeId})"></div>
+      
+      
+      <div class="comment-children" 
+           th:if="${comment.replyComments != null and #lists.size(comment.replyComments) > 0}"
+           th:with="replys=${comment.replyComments}">
+        
+        <div th:each="reply, repStat : ${replys}" th:if="${repStat.index} < 2">
+          <div th:replace="fragments/allTreeFragment :: allTreeFragment(${#lists.list(reply)}, ${prototype}, ${prototypeId})"></div>
+        </div>
+        
+        <div th:if="${#lists.size(replys) > 2}">
+          <button type="button"
+                  class="show-more-replies-btn"
+                  th:attr="data-parent-id=${comment.id}"
+                  onclick="showAllReplies(this)">
+            残り<span th:text="${#lists.size(replys)-2}"></span>件の返信を見る
+          </button>
+
+          <div class="hidden-replies" style="display:none;">
+            <div th:each="reply, repStat : ${replys}" th:if="${repStat.index} >= 2">
+              <div th:replace="fragments/allTreeFragment :: allTreeFragment(${#lists.list(reply)}, ${prototype}, ${prototypeId})"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
