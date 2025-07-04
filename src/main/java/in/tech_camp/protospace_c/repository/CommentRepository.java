@@ -23,12 +23,17 @@ public interface CommentRepository {
         @Result(property = "user", column = "user_id",
                 one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
         @Result(property = "prototype", column = "prototype_id", 
-                one = @One(select = "in.tech_camp.protospace_c.repository.PrototypeRepository.findById"))
+                one = @One(select = "in.tech_camp.protospace_c.repository.PrototypeRepository.findById")),
+        @Result(property="parentComment", column="parent_id",
+                one = @One(select="in.tech_camp.protospace_c.repository.CommentRepository.findBasicById"))
         })
         List<CommentEntity> findByPrototypeId(Integer prototypeId);
 
-        @Insert("INSERT INTO comments (text, user_id, prototype_id, image) " + 
-        "VALUES (#{text}, #{user.id}, #{prototype.id}, #{image})")
+        @Select("select id from comments where id=#{id}")
+        CommentEntity findBasicById(Integer id);
+
+        @Insert("INSERT INTO comments (text, user_id, prototype_id, image, parent_id) " + 
+        "VALUES (#{text}, #{user.id}, #{prototype.id}, #{image}, #{parentComment.id})")
         @Options(useGeneratedKeys = true, keyProperty = "id")
         void insert(CommentEntity comment);
 
@@ -47,4 +52,14 @@ public interface CommentRepository {
 
         @Update("UPDATE comments SET text = #{text}, image = #{image} WHERE id = #{id}")
         void update(CommentEntity comment);
+
+        // @Select("SELECT * from comments where parent_id=#{parentId}")
+        // @Results(value = {
+        // @Result(property="id", column="id"),
+        // @Result(property = "user", column = "user_id",
+        //         one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
+        // @Result(property = "prototype", column = "prototype_id",
+        //         one = @One(select = "in.tech_camp.protospace_c.repository.PrototypeRepository.findById"))
+        // })
+        // List<CommentEntity> findByParentId(Integer parentId);
 }

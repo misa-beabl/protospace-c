@@ -1,5 +1,7 @@
 package in.tech_camp.protospace_c.entity;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -9,4 +11,6 @@ public class CommentEntity {
   private String image;
   private UserEntity user;
   private PrototypeEntity prototype;
+  private List<CommentEntity> replyComments;
+  private CommentEntity ParentComment;
 }

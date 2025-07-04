@@ -31,6 +31,7 @@ import in.tech_camp.protospace_c.entity.PrototypeEntity;
 import in.tech_camp.protospace_c.form.CommentForm;
 import in.tech_camp.protospace_c.repository.CommentRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
+import in.tech_camp.protospace_c.utils.CommentUtil;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -65,6 +66,9 @@ public class CommentController {
     comment.setText(commentForm.getText());
     comment.setPrototype(prototype);
     comment.setUser(currentUser.getUser());
+    if(commentForm.getParentId() != null) {
+      comment.setParentComment(commentRepository.findById(commentForm.getParentId()));
+    }
     
     MultipartFile commentImage = commentForm.getImage();
     if (commentImage != null && !commentImage.isEmpty()) {
@@ -234,5 +238,13 @@ public class CommentController {
       model.addAttribute("prototype", comment.getPrototype());
       model.addAttribute("prototypeId", comment.getPrototype().getId());
       return "fragments/commentItem :: commentItemFragment";
+  }
+
+  @GetMapping("/prototypes/{prototypeId}/comments-tree")
+  public String getCommentsTree(@PathVariable("prototypeId") Integer prototypeId, Model model) {
+      List<CommentEntity> allComments = commentRepository.findByPrototypeId(prototypeId);
+      List<CommentEntity> commentTree = CommentUtil.buildCommentTree(allComments);
+      model.addAttribute("comments", commentTree);
+      return "fragments/allCommentTree :: allTreeFragment";
   }
 }
