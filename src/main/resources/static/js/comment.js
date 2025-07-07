@@ -28,13 +28,24 @@ document.addEventListener("DOMContentLoaded", function() {
           
           const parentId = form.querySelector('input[name="parentId"]')?.value;
           if (parentId && parentId !== '' && parentId !== 'null') {
-            
-            form.insertAdjacentHTML('beforebegin', html);
+            // 找到父评论的区块
+            const parentBlock = document.getElementById(`comment-container-${parentId}`);
+            if (parentBlock) {
+              // 找到/创建 .comment-children 区块
+              let children = parentBlock.querySelector('.comment-children');
+              if (!children) {
+                children = document.createElement('div');
+                children.className = 'comment-children';
+                parentBlock.appendChild(children);
+              }
+              children.insertAdjacentHTML('beforeend', html);
+            }
             form.remove();
           } else {
-            
+            // 新评论，插入到评论列表末尾
             document.querySelector('.comments').insertAdjacentHTML('beforeend', html);
-            
+          
+            // 刷新主评论表单
             fetch(`/prototypes/${prototypeId}/comment-form-fragment`, {
               headers: { 'X-Requested-With': 'XMLHttpRequest' }
             })
@@ -44,6 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
               bindCommentFormSubmit(document.getElementById('form-new'));
             });
           }
+          
         } else {
           
           const tmp = document.createElement('div');

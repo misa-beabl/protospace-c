@@ -1,4 +1,4 @@
-<div th:fragment="commentItemFragment">
+<div th:fragment="commentItemFragment(comment, prototype, prototypeId)">
   <div class="comment-item" th:attr="id=${'comment-' + comment.id}">
     <div class="comment-content">
       <strong class="comment-user">
@@ -9,7 +9,7 @@
         <img th:src="@{${comment.image}}" alt="コメント画像" class="comment-image">
       </div>
       <div class="comment-meta" style="font-size: 0.95em; color: #888;">
-        <span class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+        <span class="comment-date" th:text="${#dates.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
         <span th:if="${comment.updatedAt != null && comment.updatedAt != comment.createdAt}" class="comment-updated">
           (編集済み)
         </span>

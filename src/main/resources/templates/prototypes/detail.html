@@ -93,7 +93,7 @@
               <div th:replace="fragments/commentItem :: commentItemFragment"></div>
             </div>
           </div> -->
-          <div th:replace="fragments/allCommentTree :: allTreeFragment(${comments})"></div>
+          <div th:replace="fragments/commentTree :: allTreeFragment(${comments}, ${prototype}, ${prototype.id})"></div>
         </div>
       </div>
       
