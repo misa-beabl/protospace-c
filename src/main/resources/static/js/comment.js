@@ -1,39 +1,56 @@
 document.addEventListener("DOMContentLoaded", function() {
-  bindCommentFormSubmit();
 
-  function bindCommentFormSubmit() {
-    const form = document.getElementById('form-new');
+  bindCommentFormSubmit(document.getElementById('form-new'));
+
+  function bindCommentFormSubmit(form) {
     if (!form) return;
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-
       const prototypeId = form.action.match(/prototypes\/(\d+)/)[1];
       const formData = new FormData(form);
 
-      fetch(`/prototypes/${prototypeId}/comment`, {
+      fetch(form.action, {
         method: 'POST',
         body: formData,
-        headers: { 'X-Requested-With': 'XMLHttpRequest' } // optional
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
       })
-      .then(resp => resp.text())
+      .then(resp => {
+        if (resp.status === 403) {
+          alert('権限がありません');
+          return '';
+        }
+        return resp.text();
+      })
       .then(html => {
-        // 判断插入片段类型
-        if (html.includes('class="comment-item"')) {
-          // 成功：评论插入、重建空form
-          document.querySelector('.comments').insertAdjacentHTML('beforeend', html);
+        if (!html) return;
 
-          // 可选：拉取最新空表单片段
-          fetch(`/prototypes/${prototypeId}/comment-form-fragment`, { headers: {'X-Requested-With': 'XMLHttpRequest'} })
-            .then(resp => resp.text())
+        if (html.includes('class="comment-item"')) {
+          
+          const parentId = form.querySelector('input[name="parentId"]')?.value;
+          if (parentId && parentId !== '' && parentId !== 'null') {
+            
+            form.insertAdjacentHTML('beforebegin', html);
+            form.remove();
+          } else {
+            
+            document.querySelector('.comments').insertAdjacentHTML('beforeend', html);
+            
+            fetch(`/prototypes/${prototypeId}/comment-form-fragment`, {
+              headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(resp2 => resp2.text())
             .then(formHtml => {
               document.getElementById('comment-form-container').innerHTML = formHtml;
-              bindCommentFormSubmit(); // 绑定新form事件
+              bindCommentFormSubmit(document.getElementById('form-new'));
             });
-
+          }
         } else {
-          // 校验失败：直接替换整个form区域
-          document.getElementById('comment-form-container').innerHTML = html;
-          bindCommentFormSubmit(); // 绑定新form事件
+          
+          const tmp = document.createElement('div');
+          tmp.innerHTML = html;
+          const newForm = tmp.querySelector('form');
+          form.replaceWith(newForm);
+          bindCommentFormSubmit(newForm);
         }
       })
       .catch(err => {
@@ -42,53 +59,111 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
   }
-});
 
-document.addEventListener('DOMContentLoaded', function() {
+  
+  document.querySelector('.comments').addEventListener('click', function(e) {
+    if (e.target.classList.contains('comment-reply')) {
+      const commentId = e.target.getAttribute('data-comment-id');
+      const prototypeId = e.target.getAttribute('data-prototype-id');
+      
+      if (document.getElementById(`reply-form-${commentId}`)) return;
+
+      fetch(`/prototypes/${prototypeId}/comment-form-fragment`, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
+      .then(resp => resp.text())
+      .then(html => {
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+        const form = temp.querySelector('form');
+        form.id = `reply-form-${commentId}`;
+        
+        let parentInput = form.querySelector('input[name="parentId"]');
+        if (parentInput) {
+          parentInput.value = commentId;
+        } else {
+          parentInput = document.createElement('input');
+          parentInput.type = 'hidden';
+          parentInput.name = 'parentId';
+          parentInput.value = commentId;
+          form.appendChild(parentInput);
+        }
+        
+        form.querySelector('textarea')?.focus();
+
+        
+        let container = document.getElementById(`comment-container-${commentId}`);
+        container.appendChild(form);
+
+        bindCommentFormSubmit(form);
+      });
+    }
+  });
+
   const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
   const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
-  // 编辑和取消事件（委托在 .comments 区）
-  document.querySelectorAll('.comments').forEach(commentList => {
-    commentList.addEventListener('click', function(e) {
+  document.querySelector('.comments').addEventListener('click', function(e) {
+    
+    if (e.target.classList.contains('comment-edit')) {
+      e.preventDefault();
+      const commentId = e.target.getAttribute('data-comment-id');
+      fetch(`/comment/${commentId}/edit-form`, {
+        headers: { [csrfHeader]: csrfToken }
+      })
+      .then(resp => resp.text())
+      .then(html => {
+        document.getElementById(`comment-container-${commentId}`).innerHTML = html;
+        
+        bindCommentFormSubmit(document.getElementById(`form-${commentId}`));
+      });
+    }
 
-      // 点击编辑按钮，加载编辑form
-      if (e.target && e.target.classList.contains('comment-edit')) {
-        e.preventDefault();
-        const commentId = e.target.getAttribute('data-comment-id');
-        if (!commentId || commentId === 'null') {
-          alert('コメントIDを取得できません。');
-          return;
-        }
-        fetch(`/comment/${commentId}/edit-form`, {
-          headers: { [csrfHeader]: csrfToken }
+    
+    if (e.target.classList.contains('comment-edit-cancel')) {
+      e.preventDefault();
+      
+      const commentId = e.target.id.replace('cancel-', '');
+      fetch(`/comment/${commentId}/item`)
+      .then(resp => resp.text())
+      .then(html => {
+        document.getElementById(`comment-container-${commentId}`).innerHTML = html;
+      });
+    }
+
+    if (e.target.classList.contains('comment-delete')) {
+      const commentId = e.target.getAttribute('data-comment-id');
+      const prototypeId = e.target.getAttribute('data-prototype-id');
+      if (confirm('本当に削除しますか？')) {
+        fetch(`/prototype/${prototypeId}/comments/${commentId}/delete`, {
+          method: 'POST',
+          headers: {
+            [csrfHeader]: csrfToken,
+            'X-Requested-With': 'XMLHttpRequest'
+          }
         })
-        .then(resp => resp.text())
-        .then(html => {
-          document.getElementById(`comment-container-${commentId}`).innerHTML = html;
+        .then(resp => resp.json())
+        .then(json => {
+          if (json.success) {
+            
+            const container = document.getElementById(`comment-container-${commentId}`);
+            if (container) container.remove();
+          } else {
+            alert('削除に失敗しました: ' + (json.error || ''));
+          }
         });
       }
-
-      // 点击取消，恢复成只读item
-      if (e.target && e.target.classList.contains('comment-edit-cancel')) {
-        e.preventDefault();
-        const commentId = e.target.id.replace('cancel-', '');
-        fetch(`/comment/${commentId}/item`)
-          .then(resp => resp.text())
-          .then(html => {
-            document.getElementById(`comment-container-${commentId}`).innerHTML = html;
-          });
-      }
-    });
+    }
   });
 
-  // 编辑表单提交（全局事件，兼容表单被替换）
+ 
   document.addEventListener('submit', function(e) {
-    if (e.target && e.target.matches('form[id^="form-"]')) {
-      const submitLabel = e.target.querySelector('input[type="submit"]').value;
+    if (e.target.matches('form[id^="form-"]')) {
+      const form = e.target;
+      const submitLabel = form.querySelector('input[type="submit"]').value;
+      
       if (submitLabel === 'UPDATE') {
         e.preventDefault();
-        const form = e.target;
         const commentId = form.id.replace('form-', '');
         const formData = new FormData(form);
         fetch(`/comment/${commentId}/edit`, {
@@ -97,10 +172,8 @@ document.addEventListener('DOMContentLoaded', function() {
           body: formData
         })
         .then(resp => {
-          // 处理权限403弹框
-          if (resp.status === 403) {
+          if (resp.status == 403) {
             alert('編集権限がありません');
-            // 恢复为只读项
             fetch(`/comment/${commentId}/item`)
               .then(r => r.text())
               .then(html => {
@@ -111,7 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
           return resp.text();
         })
         .then(html => {
-          // 直接更新编辑区内容，无论出错还是成功
           document.getElementById(`comment-container-${commentId}`).innerHTML = html;
         })
         .catch(err => {
@@ -123,4 +195,13 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   });
+
+  window.showAllReplies = function(btn) {
+    var hidden = btn.nextElementSibling;
+    if (hidden) {
+      hidden.style.display = "";
+      btn.style.display = "none";
+    }
+  };
+
 });
