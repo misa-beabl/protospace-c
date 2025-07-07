@@ -1,5 +1,6 @@
 package in.tech_camp.protospace_c.entity;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import lombok.Data;
@@ -13,4 +14,6 @@ public class CommentEntity {
   private PrototypeEntity prototype;
   private List<CommentEntity> replyComments;
   private CommentEntity ParentComment;
+  private Timestamp createdAt;
+  private Timestamp updatedAt;
 }

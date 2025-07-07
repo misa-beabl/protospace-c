@@ -17,9 +17,11 @@ import in.tech_camp.protospace_c.entity.CommentEntity;
 @Mapper
 public interface CommentRepository {
         @Select("SELECT c.*, u.id AS user_id, u.nickname AS user_nickname " + 
-        "FROM comments c JOIN users u ON c.user_id = u.id WHERE c.prototype_id = #{prototypeId}")
+        "FROM comments c JOIN users u ON c.user_id = u.id WHERE c.prototype_id = #{prototypeId} ORDER BY c.created_at ASC")
         @Results(value = {
         @Result(property="id", column="id"),
+        @Result(property = "createdAt", column = "created_at"),
+        @Result(property = "updatedAt", column = "updated_at"),
         @Result(property = "user", column = "user_id",
                 one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
         @Result(property = "prototype", column = "prototype_id", 
@@ -43,6 +45,8 @@ public interface CommentRepository {
         @Select("SELECT c.*, u.id AS user_id, u.nickname AS user_nickname FROM comments c JOIN users u ON c.user_id = u.id WHERE c.id = #{id}")
         @Results(value = {
         @Result(property="id", column="id"),
+        @Result(property = "createdAt", column = "created_at"),
+        @Result(property = "updatedAt", column = "updated_at"),
         @Result(property = "user", column = "user_id",
                 one = @One(select = "in.tech_camp.protospace_c.repository.UserRepository.findById")),
         @Result(property = "prototype", column = "prototype_id",
