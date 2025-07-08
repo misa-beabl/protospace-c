@@ -16,7 +16,7 @@
     <section class="chat-container">
       <div th:each="msg : ${dmList}">
         <!-- 自分が送信したメッセージ -->
-        <div th:if="${msg.senderUser.id == currentUser.id}" class="chat-bubble left">
+        <div th:if="${msg.senderUser.id == currentUser.id}" class="chat-bubble right">
           <img th:src="@{${msg.senderUser.avatar}}" class="chat-avatar" alt="自分アイコン">
           <div>
             <div class="chat-user-name" th:text="${msg.senderUser.nickname}">あなた</div>
@@ -25,7 +25,7 @@
           </div>
         </div>
         <!-- 相手が送信したメッセージ -->
-        <div th:if="${msg.senderUser.id != currentUser.id}" class="chat-bubble right">
+        <div th:if="${msg.senderUser.id != currentUser.id}" class="chat-bubble left">
           <div>
             <div class="chat-user-name" th:text="${msg.senderUser.nickname}"></div>
             <div class="chat-message" th:text="${msg.text}"></div>
