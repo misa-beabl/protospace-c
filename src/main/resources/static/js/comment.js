@@ -28,10 +28,10 @@ document.addEventListener("DOMContentLoaded", function() {
           
           const parentId = form.querySelector('input[name="parentId"]')?.value;
           if (parentId && parentId !== '' && parentId !== 'null') {
-            // 找到父评论的区块
+            
             const parentBlock = document.getElementById(`comment-container-${parentId}`);
             if (parentBlock) {
-              // 找到/创建 .comment-children 区块
+              
               let children = parentBlock.querySelector('.comment-children');
               if (!children) {
                 children = document.createElement('div');
@@ -42,10 +42,12 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             form.remove();
           } else {
-            // 新评论，插入到评论列表末尾
+            
             document.querySelector('.comments').insertAdjacentHTML('beforeend', html);
+
+            const mainCommentForm = document.getElementById('form-new');
+            if (mainCommentForm) mainCommentForm.reset();
           
-            // 刷新主评论表单
             fetch(`/prototypes/${prototypeId}/comment-form-fragment`, {
               headers: { 'X-Requested-With': 'XMLHttpRequest' }
             })
@@ -71,16 +73,17 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
   }
-
-  
+    
   document.querySelector('.comments').addEventListener('click', function(e) {
     if (e.target.classList.contains('comment-reply')) {
+      document.querySelectorAll('form[id^="reply-form-"]').forEach(f => f.remove());
+
       const commentId = e.target.getAttribute('data-comment-id');
       const prototypeId = e.target.getAttribute('data-prototype-id');
       
-      if (document.getElementById(`reply-form-${commentId}`)) return;
+      // if (document.getElementById(`reply-form-${commentId}`)) return;
 
-      fetch(`/prototypes/${prototypeId}/comment-form-fragment`, {
+      fetch(`/prototypes/${prototypeId}/comment-reply-form-fragment/${commentId}`, {
         headers: { 'X-Requested-With': 'XMLHttpRequest' }
       })
       .then(resp => resp.text())
@@ -103,9 +106,14 @@ document.addEventListener("DOMContentLoaded", function() {
         
         form.querySelector('textarea')?.focus();
 
-        
-        let container = document.getElementById(`comment-container-${commentId}`);
-        container.appendChild(form);
+        let block = document.getElementById(`comment-container-${commentId}`);
+        let replyFormSpace = block.querySelector('.reply-form-space');
+        if (!replyFormSpace) {
+          alert('reply-form-space for commentId='+commentId + " not found");
+          return;
+        }
+        replyFormSpace.innerHTML = '';
+        replyFormSpace.appendChild(form);
 
         bindCommentFormSubmit(form);
       });
@@ -131,7 +139,15 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     }
 
-    
+    if (e.target.classList.contains('reply-cancel-btn')) {
+      e.preventDefault();
+      const form = e.target.closest("form");
+      const replyFormSpace = form && form.parentElement;
+      if (replyFormSpace && replyFormSpace.classList.contains('reply-form-space')) {
+        replyFormSpace.innerHTML = "";
+      }
+    }
+  
     if (e.target.classList.contains('comment-edit-cancel')) {
       e.preventDefault();
       

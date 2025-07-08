@@ -99,10 +99,10 @@ public class CommentController {
     try {
       commentRepository.insert(comment);
       CommentEntity savedComment = commentRepository.findById(comment.getId());
-      model.addAttribute("comment", savedComment);
+      model.addAttribute("comments", List.of(savedComment));
       model.addAttribute("prototype", savedComment.getPrototype());
       model.addAttribute("prototypeId", savedComment.getPrototype().getId());
-      return "fragments/commentItem :: commentItemFragment";
+      return "fragments/commentTree :: allTreeFragment";
     } catch (Exception e) {
       List<ObjectError> errorMessages = new ArrayList<>();
       errorMessages.add(new ObjectError("globalError", "コメントの保存に失敗しました"));
@@ -122,6 +122,20 @@ public class CommentController {
       model.addAttribute("formAction", "/prototypes/" + prototypeId + "/comment");
       model.addAttribute("submitLabel", "SEND");
       model.addAttribute("commentId", null);
+      return "fragments/commentForm :: commentFormFragment";
+  }
+
+  @GetMapping("/prototypes/{prototypeId}/comment-reply-form-fragment/{parentCommentId}")
+  public String getReplyFormFragment(
+        @PathVariable("prototypeId") Integer prototypeId,
+        @PathVariable("parentCommentId") Integer parentCommentId,
+        Model model) {
+      CommentForm commentForm = new CommentForm();
+      commentForm.setParentId(parentCommentId);
+      model.addAttribute("commentForm", commentForm);
+      model.addAttribute("formAction", "/prototypes/" + prototypeId + "/comment");
+      model.addAttribute("submitLabel", "SEND");
+      model.addAttribute("commentId", parentCommentId);
       return "fragments/commentForm :: commentFormFragment";
   }
 

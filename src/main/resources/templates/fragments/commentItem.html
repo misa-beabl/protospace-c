@@ -1,5 +1,5 @@
 <div th:fragment="commentItemFragment(comment, prototype, prototypeId)">
-  <div class="comment-item" th:attr="id=${'comment-' + comment.id}">
+  <div class="comment-item" th:attr="id=${'comment-container-' + comment.id}">
     <div class="comment-content">
       <strong class="comment-user">
         <a th:href="@{/users/{userId}(userId=${comment.user.id})}" th:text="${comment.user.nickname}"></a>

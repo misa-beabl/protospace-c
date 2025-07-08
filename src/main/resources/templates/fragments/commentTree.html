@@ -2,7 +2,8 @@
   <div th:each="comment : ${comments}">
     <div class="comment-block" th:attr="id='comment-container-' + ${comment.id}">
       <div th:replace="fragments/commentItem :: commentItemFragment(${comment}, ${prototype}, ${prototypeId})"></div>
-      
+
+      <div class="reply-form-space"></div>
       
       <div class="comment-children" 
            th:if="${comment.replyComments != null and #lists.size(comment.replyComments) > 0}"

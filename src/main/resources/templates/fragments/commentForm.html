@@ -44,6 +44,12 @@
       >
         キャンセル
       </button>
+      <button type="button"
+        th:if="${commentId != null and !#strings.equals(submitLabel, 'UPDATE')}"
+        class="reply-cancel-btn"
+        th:attr="id=${'cancel-' + commentId}">
+        キャンセル
+      </button>
     </div>
   </form>
 </div>
