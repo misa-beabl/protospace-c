@@ -1365,6 +1365,202 @@ color: #125bc9;
 }
 }
 
+/* 表单区整体色块与圆角，适合主评论和回复共用 */
+.comment-form {
+background: #f6faff;
+border-radius: 10px;
+box-shadow: 0 1.5px 9px rgba(49,129,247,0.035);
+padding: 18px 18px 12px 18px;
+margin-bottom: 20px;
+display: flex;
+flex-direction: column;
+gap: 14px;
+}
+
+.comment-form textarea {
+resize: none;
+border: 1.5px solid #d7e4ee;
+border-radius: 7px;
+min-height: 62px;
+padding: 10px 13px;
+background: #fff;
+font-size: 1rem;
+color: #333;
+transition: border-color 0.19s;
+}
+.comment-form textarea:focus {
+border-color: #3181f7;
+outline: none;
+background: #f0f8ff;
+}
+
+/* 错误提示 */
+.comment-form-errors {
+background: #fde2e2;
+border-radius: 7px;
+padding: 7px 11px 5px 13px;
+margin-bottom: 5px;
+font-size: 0.97em;
+color: #d0464a;
+border-left: 4px solid #e46363;
+}
+.comment-form-errors ul {
+padding-left: 15px;
+margin: 0;
+}
+.comment-form-errors li {
+color: #d0464a;
+font-size: 0.98rem;
+}
+
+
+/* 图片上传区域美化 */
+.comment-image-field {
+font-size: 0.97em;
+color: #4978ba;
+margin-bottom: 2px;
+}
+.comment-image-field label {
+font-weight: 500;
+color: #247ecd;
+}
+.comment-image-field input[type="file"] {
+padding: 4px 0;
+margin-top: 7px;
+}
+
+/* 按钮区域 */
+.comment-button-row {
+display: flex;
+gap: 10px;
+margin-top: 7px;
+align-items: center;
+justify-content: flex-end;
+}
+.comment-button-row input[type="submit"] {
+min-width: 110px;
+padding: 8px 24px;
+background: linear-gradient(90deg,#44acf6,#3181f7);
+color: #fff;
+border: none;
+border-radius: 7px;
+font-size: 1rem;
+font-weight: bold;
+box-shadow: 0 2px 8px rgba(49,129,247,0.09);
+cursor: pointer;
+transition: background 0.22s, box-shadow 0.22s;
+}
+.comment-button-row input[type="submit"]:hover {
+background: linear-gradient(90deg,#289ae5,#256ed1);
+box-shadow: 0 3px 12px rgba(49,129,247,0.16);
+}
+/* 编辑取消与回复取消同主样式统一 */
+.comment-button-row .comment-edit-cancel,
+.comment-button-row .reply-cancel-btn {
+background: #f8f9fa;
+color: #3181f7;
+border: 2px solid #3181f7;
+box-shadow: 0 2px 8px rgba(49,129,247,0.08);
+border-radius: 7px;
+font-size: 1rem;
+font-weight: bold;
+min-width: 92px;
+padding: 8px 15px;
+cursor: pointer;
+transition: background 0.22s, box-shadow 0.22s, border 0.22s, color 0.22s;
+}
+.comment-button-row .comment-edit-cancel:hover,
+.comment-button-row .reply-cancel-btn:hover {
+background: #e3effe;
+border-color: #256ed1;
+color: #1253b0;
+box-shadow: 0 3px 12px rgba(49,129,247,0.16);
+}
+
+/* 让嵌套表单宽度适应children区块 */
+.reply-form-space .comment-form {
+margin: 0;
+background: #f1faff;
+box-shadow: 0 1px 2.5px rgba(49,129,247,0.04);
+}
+@media (max-width: 700px) {
+.comment-form, .reply-form-space .comment-form {
+    padding: 11px 6vw;
+}
+}  
+
+.comment-button-row {
+display: flex;
+gap: 10px;
+margin-top: 7px;
+align-items: center;
+justify-content: flex-end;
+}
+
+/* 这部分统一按钮属性（无论是 <input type="submit"> 还是 <button>） */
+.comment-button-row input[type="submit"],
+.comment-button-row .comment-edit-cancel,
+.comment-button-row .reply-cancel-btn {
+min-width: 110px;
+height: 40px;
+padding: 0 24px;
+border-radius: 7px;
+font-size: 1rem;
+font-weight: bold;
+box-sizing: border-box;
+margin-top: 0;
+margin-bottom: 0;
+margin-left: 0;
+vertical-align: middle;
+display: inline-block;
+line-height: 1.2;
+/* appearance 清理 */
+appearance: none;
+-webkit-appearance: none;
+-moz-appearance: none;
+}
+
+/* 发送按钮独立背景 */
+.comment-button-row input[type="submit"] {
+background: linear-gradient(90deg,#44acf6,#3181f7);
+color: #fff;
+border: none;
+box-shadow: 0 2px 8px rgba(49,129,247,0.08);
+cursor: pointer;
+transition: background 0.22s, box-shadow 0.22s;
+}
+.comment-button-row input[type="submit"]:hover {
+background: linear-gradient(90deg,#289ae5,#256ed1);
+box-shadow: 0 3px 12px rgba(49,129,247,0.16);
+}
+
+/* 两个取消按钮是浅色风格 */
+.comment-button-row .comment-edit-cancel,
+.comment-button-row .reply-cancel-btn {
+background: #f8f9fa;
+color: #3181f7;
+border: 2px solid #3181f7;
+box-shadow: 0 2px 8px rgba(49,129,247,0.08);
+transition: background 0.22s, box-shadow 0.22s, border 0.22s, color 0.22s;
+cursor: pointer;
+}
+.comment-button-row .comment-edit-cancel:hover,
+.comment-button-row .reply-cancel-btn:hover {
+background: #e3effe;
+border-color: #256ed1;
+color: #1253b0;
+box-shadow: 0 3px 12px rgba(49,129,247,0.16);
+}  
+
+.comment-form textarea,
+.reply-form-space textarea,
+.prototype__comments form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;         /* 防止flex缩在极端边界 */
+  display: block;
+}
+
 .genre-search {
 margin-bottom: 20px;
 }

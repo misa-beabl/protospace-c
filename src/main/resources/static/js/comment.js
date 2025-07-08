@@ -310,7 +310,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
       }      
     }
-  
+  });
 
   window.showAllReplies = function(btn) {
     var hidden = btn.nextElementSibling;
@@ -321,4 +321,3 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
 });
-
