@@ -231,10 +231,6 @@ public class PrototypeController {
     @PathVariable("prototypeId") Integer prototypeId,
     Model model
   ) {
-    MultipartFile imageFile = prototypeForm.getImage();
-    if (imageFile == null || imageFile.isEmpty()) {
-      result.rejectValue("image", "required", "画像を添付してください");
-    }
 
     if (result.hasErrors()) {
       List<String> errorMessages = result.getAllErrors().stream()
@@ -256,19 +252,22 @@ public class PrototypeController {
     prototype.setConcept(prototypeForm.getConcept());
     prototype.setGenre(genre);
 
-    try {
-      String uploadDir = imageUrl.getImageUrl();
-      Path uploadDirPath = Paths.get(uploadDir);
-      if (!Files.exists(uploadDirPath)) {
-        Files.createDirectories(uploadDirPath);
+    MultipartFile imageFile = prototypeForm.getImage();
+    if (imageFile != null && !imageFile.isEmpty()) {
+      try {
+        String uploadDir = imageUrl.getImageUrl();
+        Path uploadDirPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadDirPath)) {
+          Files.createDirectories(uploadDirPath);
+        }
+        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
+        Path imagePath = Paths.get(uploadDir, fileName);
+        Files.copy(imageFile.getInputStream(), imagePath);
+        prototype.setImage("/uploads/" + fileName);
+      } catch (IOException e) {
+        System.out.println("エラー：" + e);
+        return "prototypes/edit";
       }
-      String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
-      Path imagePath = Paths.get(uploadDir, fileName);
-      Files.copy(imageFile.getInputStream(), imagePath);
-      prototype.setImage("/uploads/" + fileName);
-    } catch (IOException e) {
-      System.out.println("エラー：" + e);
-      return "prototypes/edit";
     }
 
     try {
