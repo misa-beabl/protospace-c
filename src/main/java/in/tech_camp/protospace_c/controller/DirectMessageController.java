@@ -1,6 +1,8 @@
 package in.tech_camp.protospace_c.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import in.tech_camp.protospace_c.custom_user.CustomUserDetail;
 import in.tech_camp.protospace_c.entity.DirectMessageEntity;
@@ -93,5 +96,47 @@ public class DirectMessageController {
       directMessageRepository.insert(dm);
 
       return "redirect:/messages/" + userId;
+  }
+
+  @PostMapping("/messages/{userId}/ajax")
+  @ResponseBody
+  public Map<String, Object> sendDmAjax(
+          @PathVariable("userId") Integer userId,
+          @AuthenticationPrincipal CustomUserDetail currentUser,
+          @Validated(ValidationOrder.class) MessageForm messageForm,
+          BindingResult result
+  ) {
+      Map<String, Object> response = new HashMap<>();
+      UserEntity sender = userRepository.findById(currentUser.getUser().getId());
+      UserEntity receiver = userRepository.findById(userId);
+
+      if (result.hasErrors()) {
+          // バリデーションエラー
+          List<String> errorMessages = result.getAllErrors().stream()
+              .map(e -> e.getDefaultMessage())
+              .collect(Collectors.toList());
+          response.put("status", "error");
+          response.put("errors", errorMessages);
+          return response;
+      }
+
+      DirectMessageEntity dm = new DirectMessageEntity();
+      dm.setSenderUser(sender);
+      dm.setReceiverUser(receiver);
+      dm.setText(messageForm.getText());
+      directMessageRepository.insert(dm);
+
+      // 時刻整形
+      String sentAt = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
+
+      // HTML断片 or メッセージデータそのものを返す
+      response.put("status", "ok");
+      response.put("message", Map.of(
+          "text", dm.getText(),
+          "nickname", sender.getNickname(),
+          "avatar", sender.getAvatar(),
+          "sentAt", sentAt
+      ));
+      return response;
   }
 }
