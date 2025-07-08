@@ -161,7 +161,7 @@ public class UserController {
   @GetMapping("/login")
   public String showLoginWithError(@RequestParam(value = "error") String error, Model model) {
     if (error != null) {
-      model.addAttribute("loginError", "メールアドレスかパスワードが間違っています");
+      model.addAttribute("loginError", "メールアドレス か パスワード が間違っています。");
     }
     return "users/login";
   }
