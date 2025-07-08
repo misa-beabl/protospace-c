@@ -98,7 +98,7 @@
         </div>
       </div>
 
-      <h2 class="heading" th:text="${thisUser.nickname} + 'さんのプロトタイプ'">OOOさんのプロトタイプ</h2>
+      <h2 class="heading like_heading" th:text="${thisUser.nickname} + 'さんのプロトタイプ'">OOOさんのプロトタイプ</h2>
       <div class="user__card my_prototype" id="my-prototype-list">
           <div th:if="${#lists.isEmpty(prototypes)}">
             <p>まだプロトタイプを投稿していません。</p>

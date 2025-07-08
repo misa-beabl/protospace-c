@@ -74,7 +74,7 @@ public class UserController {
     userForm.validatePasswordConfirmation(result);
 
     if (userRepository.existsByEmail(userForm.getEmail())) {
-      result.rejectValue("email", "null", "Email already exists");
+      result.rejectValue("email", "null", "そのメールアドレスは既に登録されています");
     }
 
     if (result.hasErrors()) {
@@ -161,7 +161,7 @@ public class UserController {
   @GetMapping("/login")
   public String showLoginWithError(@RequestParam(value = "error") String error, Model model) {
     if (error != null) {
-      model.addAttribute("loginError", "Invalid email or password.");
+      model.addAttribute("loginError", "メールアドレス か パスワード が間違っています。");
     }
     return "users/login";
   }
