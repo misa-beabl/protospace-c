@@ -1145,45 +1145,50 @@ color: #444;
 }
 
 .comment-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 0 12px 0;
-    border-bottom: 1px solid #e1e4e8;
-    gap: 12px;
-    position: relative;
+display: flex;
+align-items: stretch;
+justify-content: space-between;
+padding: 15px 10px 11px 0;
+border-bottom: 1px solid #e1e4e8;
+gap: 10px;
+background: #fff;
+border-radius: 8px;
+margin-bottom: 4px;
+/* 立体效果可选 box-shadow: 0 1px 6px rgba(90, 120, 130, 0.07); */
 }
 
 .comment-content {
 display: flex;
-align-items: center;
-gap: 14px;
+align-items: flex-start;
+gap: 12px;
 flex-wrap: wrap;
 flex: 1;
 min-width: 0;
+flex-direction: column;
 }
 
 .comment-user a {
 color: #3181f7;
 text-decoration: none;
 font-weight: bold;
-margin-right: 0.7em;
 font-size: 1.05em;
+margin-right: 2px;
 }
 .comment-user a:hover {
 text-decoration: underline;
 }
 
 .comment-text {
-font-size: 1rem;
-color: #333;
+font-size: 1.09rem;
+color: #222;
+margin: 6px 0 3px 0;
 word-break: break-all;
 }
 
 .comment-image-wrapper {
-margin-left: 12px;
+margin-top: 5px;
+margin-bottom: 7px;
 }
-
 .comment-image {
 max-width: 120px;
 max-height: 120px;
@@ -1192,32 +1197,62 @@ object-fit: contain;
 border: 1px solid #f6f6f6;
 background: #f8f9fa;
 padding: 2px;
-box-shadow: 0 1px 6px rgba(49, 129, 247, 0.05);
+box-shadow: 0 1px 6px rgba(49,129,247,0.05);
 display: block;
-}
+}  
 
 .comment-actions {
 margin-left: 14px;
 display: flex;
 align-items: center;
+gap: 8px;
+}
+/* 共通スタイル */
+.comment-actions button {
+border: none;
+height: 32px;
+border-radius: 5px;
+font-size: 0.92em;
+padding: 0 14px;
+font-weight: 500;
+cursor: pointer;
+transition: background 0.17s, color 0.17s;
+margin-left: 0;
+margin-right: 0;
+line-height: 1;
+outline: none;
+}
+
+/* 个别 */
+.comment-edit {
+background: #e2effb;
+color: #1a4679;
+border: 1px solid #b0d7fc;
+}
+.comment-edit:hover {
+background: #b6e0fe;
+color: #1253b0;
 }
 
 .comment-delete {
+background-color: #efbdbd;
+color: #b23333;
+border: 1px solid #e46363;
+}
+.comment-delete:hover {
 background-color: #e46363;
-border-radius: 4px;
 color: #fff;
-border: none;
-padding: 3px 15px;
-font-size: 0.90em;
-cursor: pointer;
-margin-left: 12px;
-transition: background 0.15s, color 0.15s;
 }
 
-.comment-delete:hover {
-background-color: #b23333;
-color: #fff;
+.comment-reply {
+background: #e4fae8;
+color: #296945;
+border: 1px solid #61deb3;
 }
+.comment-reply:hover {
+background: #61deb3;
+color: #fff;
+}  
 
 .comment-button-row {
 display: flex;
@@ -1248,12 +1283,23 @@ box-shadow: 0 3px 12px rgba(49,129,247,0.16);
 }
 
 .comment-meta {
-font-size: 0.92em;
-color: #888;
+font-size: 0.90em;
+color: #b0b0b0;
+margin-top: 3px;
+font-style: normal;
+display: inline-block;
 }
+
+.comment-date {
+color: #a7a7a7;
+}
+
 .comment-updated {
-margin-left: 6px;
 color: #b1b1b1;
+margin-left: 10px;
+font-size: 0.93em;
+font-style: italic;
+letter-spacing: 0.5px;
 }
 
 .reply-form-space {
@@ -1267,7 +1313,57 @@ display: block;
 width: 100%;
 }
 
-.comment-children { margin-left: 28px; border-left: 2px solid #ececec; padding-left: 8px;}
+.comment-block {
+padding-left: 0;
+border-left: none;
+margin-top: 6px;
+margin-bottom: 7px;
+}
+
+.comment-children {
+margin-left: 24px;
+border-left: 2.2px solid #ddecfb;
+padding-left: 15px;
+padding-top: 2px;
+background: #fdfcff;
+min-width: 1px;
+}
+.comment-children .comment-block {
+margin-top: 4px;
+}
+.hidden-replies {
+margin-left: 0;
+border: none;
+background: transparent;
+}
+.show-more-replies-btn {
+margin: 12px 0 4px 8px;
+background: #ecf4fc;
+color: #288afd;
+border: 1.2px solid #90bffe;
+border-radius: 4px;
+font-size: 0.95em;
+padding: 4px 12px;
+cursor: pointer;
+transition: background 0.18s, color 0.18s;
+}
+.show-more-replies-btn:hover {
+background: #d7e7fc;
+color: #125bc9;
+}
+
+@media (max-width: 700px) {
+.comment-item,
+.comment-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+.comment-children {
+    margin-left: 10px;
+    padding-left: 6px;
+}
+}
 
 .genre-search {
 margin-bottom: 20px;

@@ -213,6 +213,7 @@ public class CommentController {
       model.addAttribute("comment", updatedComment);
       model.addAttribute("prototype", updatedComment.getPrototype());
       model.addAttribute("prototypeId", updatedComment.getPrototype().getId());
+      // return "fragments/commentTree :: allTreeFragment";
       return "fragments/commentItem :: commentItemFragment";
     } catch (Exception e) {
       List<ObjectError> errorMessages = new ArrayList<>();

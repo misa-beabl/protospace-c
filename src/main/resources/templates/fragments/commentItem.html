@@ -8,11 +8,9 @@
       <div th:if="${comment.image != null}" class="comment-image-wrapper">
         <img th:src="@{${comment.image}}" alt="コメント画像" class="comment-image">
       </div>
-      <div class="comment-meta" style="font-size: 0.95em; color: #888;">
+      <div class="comment-meta">
         <span class="comment-date" th:text="${#dates.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
-        <span th:if="${comment.updatedAt != null && comment.updatedAt != comment.createdAt}" class="comment-updated">
-          (編集済み)
-        </span>
+        <span th:if="${comment.updatedAt != null && comment.updatedAt != comment.createdAt}" class="comment-updated">(編集済み)</span>
       </div>
     </div>
     

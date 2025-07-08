@@ -125,6 +125,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
   document.querySelector('.comments').addEventListener('click', function(e) {
     
+    // if (e.target.classList.contains('comment-edit')) {
+    //   e.preventDefault();
+    //   const commentId = e.target.getAttribute('data-comment-id');
+    //   fetch(`/comment/${commentId}/edit-form`, {
+    //     headers: { [csrfHeader]: csrfToken }
+    //   })
+    //   .then(resp => resp.text())
+    //   .then(html => {
+    //     document.getElementById(`comment-container-${commentId}`).innerHTML = html;
+        
+    //     bindCommentFormSubmit(document.getElementById(`form-${commentId}`));
+    //   });
+    // }
+
     if (e.target.classList.contains('comment-edit')) {
       e.preventDefault();
       const commentId = e.target.getAttribute('data-comment-id');
@@ -133,9 +147,16 @@ document.addEventListener("DOMContentLoaded", function() {
       })
       .then(resp => resp.text())
       .then(html => {
-        document.getElementById(`comment-container-${commentId}`).innerHTML = html;
-        
-        bindCommentFormSubmit(document.getElementById(`form-${commentId}`));
+        const container = document.getElementById(`comment-container-${commentId}`);
+        if (!container) return;
+        const commentItem = container.querySelector('.comment-item');
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+        const form = temp.querySelector('form');
+        if (commentItem && form) {
+          commentItem.replaceWith(form);
+          bindCommentFormSubmit(form);
+        }
       });
     }
 
@@ -148,16 +169,34 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     }
   
+    // if (e.target.classList.contains('comment-edit-cancel')) {
+    //   e.preventDefault();
+      
+    //   const commentId = e.target.id.replace('cancel-', '');
+    //   fetch(`/comment/${commentId}/item`)
+    //   .then(resp => resp.text())
+    //   .then(html => {
+    //     document.getElementById(`comment-container-${commentId}`).innerHTML = html;
+    //   });
+    // }
+
     if (e.target.classList.contains('comment-edit-cancel')) {
       e.preventDefault();
-      
       const commentId = e.target.id.replace('cancel-', '');
       fetch(`/comment/${commentId}/item`)
       .then(resp => resp.text())
       .then(html => {
-        document.getElementById(`comment-container-${commentId}`).innerHTML = html;
+        const container = document.getElementById(`comment-container-${commentId}`);
+        if (!container) return;
+        const formEl = container.querySelector('form');
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+        const commentItem = temp.querySelector('.comment-item');
+        if (formEl && commentItem) {
+          formEl.replaceWith(commentItem);
+        }
       });
-    }
+    }    
 
     if (e.target.classList.contains('comment-delete')) {
       const commentId = e.target.getAttribute('data-comment-id');
@@ -190,6 +229,37 @@ document.addEventListener("DOMContentLoaded", function() {
       const form = e.target;
       const submitLabel = form.querySelector('input[type="submit"]').value;
       
+      // if (submitLabel === 'UPDATE') {
+      //   e.preventDefault();
+      //   const commentId = form.id.replace('form-', '');
+      //   const formData = new FormData(form);
+      //   fetch(`/comment/${commentId}/edit`, {
+      //     method: 'POST',
+      //     headers: { [csrfHeader]: csrfToken },
+      //     body: formData
+      //   })
+      //   .then(resp => {
+      //     if (resp.status == 403) {
+      //       alert('編集権限がありません');
+      //       fetch(`/comment/${commentId}/item`)
+      //         .then(r => r.text())
+      //         .then(html => {
+      //           document.getElementById(`comment-container-${commentId}`).innerHTML = html;
+      //         });
+      //       throw new Error('編集権限がありません');
+      //     }
+      //     return resp.text();
+      //   })
+      //   .then(html => {
+      //     document.getElementById(`comment-container-${commentId}`).innerHTML = html;
+      //   })
+      // .catch(err => {
+      //   if (err.message !== '編集権限がありません') {
+      //     alert('コメント編集処理時にエラーが発生しました');
+      //     console.error(err);
+      //   }
+      // });
+
       if (submitLabel === 'UPDATE') {
         e.preventDefault();
         const commentId = form.id.replace('form-', '');
@@ -205,14 +275,32 @@ document.addEventListener("DOMContentLoaded", function() {
             fetch(`/comment/${commentId}/item`)
               .then(r => r.text())
               .then(html => {
-                document.getElementById(`comment-container-${commentId}`).innerHTML = html;
+                // 下面一样：只替换掉表单为普通评论item
+                const container = document.getElementById(`comment-container-${commentId}`);
+                if (!container) return;
+                const formEl = container.querySelector('form');
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                const commentItem = temp.querySelector('.comment-item');
+                if (formEl && commentItem) {
+                  formEl.replaceWith(commentItem);
+                }
               });
             throw new Error('編集権限がありません');
           }
           return resp.text();
         })
         .then(html => {
-          document.getElementById(`comment-container-${commentId}`).innerHTML = html;
+          // 只替换掉表单为普通评论item
+          const container = document.getElementById(`comment-container-${commentId}`);
+          if (!container) return;
+          const formEl = container.querySelector('form');
+          const temp = document.createElement('div');
+          temp.innerHTML = html;
+          const commentItem = temp.querySelector('.comment-item');
+          if (formEl && commentItem) {
+            formEl.replaceWith(commentItem);
+          }
         })
         .catch(err => {
           if (err.message !== '編集権限がありません') {
@@ -220,7 +308,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.error(err);
           }
         });
-      }
+      }      
     }
   });
 
