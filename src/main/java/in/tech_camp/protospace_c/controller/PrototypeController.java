@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import in.tech_camp.protospace_c.ImageUrl;
 import in.tech_camp.protospace_c.custom_user.CustomUserDetail;
+import in.tech_camp.protospace_c.entity.CommentEntity;
 import in.tech_camp.protospace_c.entity.GenreEntity;
 import in.tech_camp.protospace_c.entity.PrototypeEntity;
 import in.tech_camp.protospace_c.entity.UserEntity;
@@ -38,6 +39,7 @@ import in.tech_camp.protospace_c.repository.GenreRepository;
 import in.tech_camp.protospace_c.repository.LikesRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.repository.UserRepository;
+import in.tech_camp.protospace_c.utils.CommentUtil;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
 
@@ -303,9 +305,13 @@ public class PrototypeController {
     Model model
   ) {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+
+    List<CommentEntity> comments = prototype.getComments();
+    List<CommentEntity> commentTree = CommentUtil.buildCommentTree(comments);
+
     model.addAttribute("prototype", prototype);
     model.addAttribute("commentForm", new CommentForm());
-    model.addAttribute("comments", prototype.getComments());
+    model.addAttribute("comments", commentTree);
     if (currentUser != null) {
         UserEntity user = userRepository.findById(currentUser.getUser().getId());
         // model.addAttribute("user", currentUser.getUser());

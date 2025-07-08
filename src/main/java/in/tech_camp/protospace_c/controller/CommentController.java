@@ -31,6 +31,7 @@ import in.tech_camp.protospace_c.entity.PrototypeEntity;
 import in.tech_camp.protospace_c.form.CommentForm;
 import in.tech_camp.protospace_c.repository.CommentRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
+import in.tech_camp.protospace_c.utils.CommentUtil;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -65,6 +66,9 @@ public class CommentController {
     comment.setText(commentForm.getText());
     comment.setPrototype(prototype);
     comment.setUser(currentUser.getUser());
+    if(commentForm.getParentId() != null) {
+      comment.setParentComment(commentRepository.findById(commentForm.getParentId()));
+    }
     
     MultipartFile commentImage = commentForm.getImage();
     if (commentImage != null && !commentImage.isEmpty()) {
@@ -95,10 +99,10 @@ public class CommentController {
     try {
       commentRepository.insert(comment);
       CommentEntity savedComment = commentRepository.findById(comment.getId());
-      model.addAttribute("comment", savedComment);
+      model.addAttribute("comments", List.of(savedComment));
       model.addAttribute("prototype", savedComment.getPrototype());
       model.addAttribute("prototypeId", savedComment.getPrototype().getId());
-      return "fragments/commentItem :: commentItemFragment";
+      return "fragments/commentTree :: allTreeFragment";
     } catch (Exception e) {
       List<ObjectError> errorMessages = new ArrayList<>();
       errorMessages.add(new ObjectError("globalError", "コメントの保存に失敗しました"));
@@ -118,6 +122,20 @@ public class CommentController {
       model.addAttribute("formAction", "/prototypes/" + prototypeId + "/comment");
       model.addAttribute("submitLabel", "SEND");
       model.addAttribute("commentId", null);
+      return "fragments/commentForm :: commentFormFragment";
+  }
+
+  @GetMapping("/prototypes/{prototypeId}/comment-reply-form-fragment/{parentCommentId}")
+  public String getReplyFormFragment(
+        @PathVariable("prototypeId") Integer prototypeId,
+        @PathVariable("parentCommentId") Integer parentCommentId,
+        Model model) {
+      CommentForm commentForm = new CommentForm();
+      commentForm.setParentId(parentCommentId);
+      model.addAttribute("commentForm", commentForm);
+      model.addAttribute("formAction", "/prototypes/" + prototypeId + "/comment");
+      model.addAttribute("submitLabel", "SEND");
+      model.addAttribute("commentId", parentCommentId);
       return "fragments/commentForm :: commentFormFragment";
   }
 
@@ -195,6 +213,7 @@ public class CommentController {
       model.addAttribute("comment", updatedComment);
       model.addAttribute("prototype", updatedComment.getPrototype());
       model.addAttribute("prototypeId", updatedComment.getPrototype().getId());
+      // return "fragments/commentTree :: allTreeFragment";
       return "fragments/commentItem :: commentItemFragment";
     } catch (Exception e) {
       List<ObjectError> errorMessages = new ArrayList<>();
@@ -234,5 +253,13 @@ public class CommentController {
       model.addAttribute("prototype", comment.getPrototype());
       model.addAttribute("prototypeId", comment.getPrototype().getId());
       return "fragments/commentItem :: commentItemFragment";
+  }
+
+  @GetMapping("/prototypes/{prototypeId}/comments-tree")
+  public String getCommentsTree(@PathVariable("prototypeId") Integer prototypeId, Model model) {
+      List<CommentEntity> allComments = commentRepository.findByPrototypeId(prototypeId);
+      List<CommentEntity> commentTree = CommentUtil.buildCommentTree(allComments);
+      model.addAttribute("comments", commentTree);
+      return "fragments/allCommentTree :: allTreeFragment";
   }
 }

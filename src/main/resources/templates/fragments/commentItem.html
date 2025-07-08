@@ -1,5 +1,5 @@
-<div th:fragment="commentItemFragment">
-  <div class="comment-item" th:attr="id=${'comment-' + comment.id}">
+<div th:fragment="commentItemFragment(comment, prototype, prototypeId)">
+  <div class="comment-item" th:attr="id=${'comment-container-' + comment.id}">
     <div class="comment-content">
       <strong class="comment-user">
         <a th:href="@{/users/{userId}(userId=${comment.user.id})}" th:text="${comment.user.nickname}"></a>
@@ -8,16 +8,26 @@
       <div th:if="${comment.image != null}" class="comment-image-wrapper">
         <img th:src="@{${comment.image}}" alt="コメント画像" class="comment-image">
       </div>
+      <div class="comment-meta">
+        <span class="comment-date" th:text="${#dates.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+        <span th:if="${comment.updatedAt != null && comment.updatedAt != comment.createdAt}" class="comment-updated">(編集済み)</span>
+      </div>
     </div>
-    <div th:if="${#authorization.expression('isAuthenticated()') and #authentication?.principal.getId() == prototype.user.id or #authentication?.principal.getId() == comment.user.id}" class="comment-actions">
-      <form class="edit-comment-form" style="display:inline">
-        <button type="button" class="comment-edit"
-          th:attr="data-comment-id=${comment.id}">編集する</button>
-      </form>
-      <form class="delete-comment-form"
-      th:attr="data-comment-id=${comment.id}, data-prototype-id=${prototypeId}" style="display:inline;">
-        <button type="button" class="comment-delete">削除する</button>
-      </form>
+    
+    <div class="comment-actions">
+      
+      <button type="button" class="comment-edit"
+        th:if="${#authorization.expression('isAuthenticated()') && #authentication?.principal.getId() == comment.user.id}"
+        th:attr="data-comment-id=${comment.id}">編集する</button>
+      
+      <button type="button" class="comment-delete"
+        th:if="${#authorization.expression('isAuthenticated()') && (#authentication?.principal.getId() == prototype.user.id or #authentication?.principal.getId() == comment.user.id)}"
+        th:attr="data-comment-id=${comment.id}, data-prototype-id=${prototypeId}">削除する</button>
+      
+      <button type="button" class="comment-reply"
+        th:if="${#authorization.expression('isAuthenticated()')}"
+        th:attr="data-comment-id=${comment.id}, data-prototype-id=${prototypeId}">返信</button>
+        
     </div>
   </div>
 </div>
