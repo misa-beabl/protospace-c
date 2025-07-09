@@ -6,6 +6,8 @@
   <meta name="_csrf_header" th:content="${_csrf.headerName}">
   <title>ProtoSpace</title>
   <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+  <script th:src="@{/js/dm_scroll.js}"></script>
+  <script th:src="@{/js/dm_ajax.js}"></script>
 </head>
 <body>
 <div th:insert="~{header :: header}"></div>
@@ -16,7 +18,7 @@
     <section class="chat-container">
       <div th:each="msg : ${dmList}">
         <!-- 自分が送信したメッセージ -->
-        <div th:if="${msg.senderUser.id == currentUser.id}" class="chat-bubble left">
+        <div th:if="${msg.senderUser.id == currentUser.id}" class="chat-bubble right">
           <img th:src="@{${msg.senderUser.avatar}}" class="chat-avatar" alt="自分アイコン">
           <div>
             <div class="chat-user-name" th:text="${msg.senderUser.nickname}">あなた</div>
@@ -25,7 +27,7 @@
           </div>
         </div>
         <!-- 相手が送信したメッセージ -->
-        <div th:if="${msg.senderUser.id != currentUser.id}" class="chat-bubble right">
+        <div th:if="${msg.senderUser.id != currentUser.id}" class="chat-bubble left">
           <div>
             <div class="chat-user-name" th:text="${msg.senderUser.nickname}"></div>
             <div class="chat-message" th:text="${msg.text}"></div>
@@ -43,8 +45,8 @@
             <li th:each="error : ${errorMessages}" th:text="${error.defaultMessage}"></li>
           </ul>
         </div>
-        <form id="form" th:action="@{/messages/{userId}(userId=${partnerUser.id})}" method="post" th:object="${messageForm}">
-          <textarea id="text" th:field="*{text}" placeholder="メッセージを入力" rows="2"></textarea>
+        <form id="dm-form" th:action="@{/messages/{userId}/ajax(userId=${partnerUser.id})}" method="post" th:object="${messageForm}">
+          <textarea id="text" name="text" th:field="*{text}" placeholder="メッセージを入力" rows="2"></textarea>
 
           <input type="submit" value="SEND" id="send">
         </form>

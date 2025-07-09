@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import in.tech_camp.protospace_c.ImageUrl;
 import in.tech_camp.protospace_c.custom_user.CustomUserDetail;
+import in.tech_camp.protospace_c.entity.CommentEntity;
 import in.tech_camp.protospace_c.entity.GenreEntity;
 import in.tech_camp.protospace_c.entity.PrototypeEntity;
 import in.tech_camp.protospace_c.entity.UserEntity;
@@ -38,6 +39,7 @@ import in.tech_camp.protospace_c.repository.GenreRepository;
 import in.tech_camp.protospace_c.repository.LikesRepository;
 import in.tech_camp.protospace_c.repository.PrototypeRepository;
 import in.tech_camp.protospace_c.repository.UserRepository;
+import in.tech_camp.protospace_c.utils.CommentUtil;
 import in.tech_camp.protospace_c.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
 
@@ -231,10 +233,6 @@ public class PrototypeController {
     @PathVariable("prototypeId") Integer prototypeId,
     Model model
   ) {
-    MultipartFile imageFile = prototypeForm.getImage();
-    if (imageFile == null || imageFile.isEmpty()) {
-      result.rejectValue("image", "required", "画像を添付してください");
-    }
 
     if (result.hasErrors()) {
       List<String> errorMessages = result.getAllErrors().stream()
@@ -256,19 +254,22 @@ public class PrototypeController {
     prototype.setConcept(prototypeForm.getConcept());
     prototype.setGenre(genre);
 
-    try {
-      String uploadDir = imageUrl.getImageUrl();
-      Path uploadDirPath = Paths.get(uploadDir);
-      if (!Files.exists(uploadDirPath)) {
-        Files.createDirectories(uploadDirPath);
+    MultipartFile imageFile = prototypeForm.getImage();
+    if (imageFile != null && !imageFile.isEmpty()) {
+      try {
+        String uploadDir = imageUrl.getImageUrl();
+        Path uploadDirPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadDirPath)) {
+          Files.createDirectories(uploadDirPath);
+        }
+        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
+        Path imagePath = Paths.get(uploadDir, fileName);
+        Files.copy(imageFile.getInputStream(), imagePath);
+        prototype.setImage("/uploads/" + fileName);
+      } catch (IOException e) {
+        System.out.println("エラー：" + e);
+        return "prototypes/edit";
       }
-      String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "_" + imageFile.getOriginalFilename();
-      Path imagePath = Paths.get(uploadDir, fileName);
-      Files.copy(imageFile.getInputStream(), imagePath);
-      prototype.setImage("/uploads/" + fileName);
-    } catch (IOException e) {
-      System.out.println("エラー：" + e);
-      return "prototypes/edit";
     }
 
     try {
@@ -304,9 +305,13 @@ public class PrototypeController {
     Model model
   ) {
     PrototypeEntity prototype = prototypeRepository.findById(prototypeId);
+
+    List<CommentEntity> comments = prototype.getComments();
+    List<CommentEntity> commentTree = CommentUtil.buildCommentTree(comments);
+
     model.addAttribute("prototype", prototype);
     model.addAttribute("commentForm", new CommentForm());
-    model.addAttribute("comments", prototype.getComments());
+    model.addAttribute("comments", commentTree);
     if (currentUser != null) {
         UserEntity user = userRepository.findById(currentUser.getUser().getId());
         // model.addAttribute("user", currentUser.getUser());

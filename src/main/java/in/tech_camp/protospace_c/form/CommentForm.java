@@ -12,4 +12,6 @@ public class CommentForm {
   private String text;
 
   private MultipartFile image;
+
+  private Integer parentId;
 }
